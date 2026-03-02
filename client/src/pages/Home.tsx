@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence, useSpring, useTransform } from "framer-motion";
 import loadingBg from "@/assets/images/loading-bg.png";
 import compassBg from "@/assets/images/compass-bg.png";
 import compassImg from "@/assets/images/compass.png";
@@ -10,6 +10,58 @@ type Stage = "loading" | "compass" | "transition" | "main";
 export default function Home() {
   const [stage, setStage] = useState<Stage>("loading");
   const [progress, setProgress] = useState(0);
+  const compassRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  // Mouse/Touch tracking for compass rotation
+  const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
+  const mouseY = useSpring(0, { stiffness: 50, damping: 20 });
+  
+  // Mobile scroll/slide tracking
+  const scrollY = useSpring(0, { stiffness: 50, damping: 20 });
+
+  const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
+  
+  // Arrow rotation logic
+  const [arrowRotation, setArrowRotation] = useState(0);
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      if (stage !== "compass") return;
+      
+      const { clientX, clientY } = e;
+      const { innerWidth, innerHeight } = window;
+      
+      const x = clientX - innerWidth / 2;
+      const y = clientY - innerHeight / 2;
+      
+      mouseX.set(x);
+      mouseY.set(y);
+
+      // Calculate angle for the arrow to point at the cursor
+      const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
+      setArrowRotation(angle);
+    };
+
+    const handleTouchMove = (e: TouchEvent) => {
+      if (stage !== "compass") return;
+      const touch = e.touches[0];
+      const { clientY } = touch;
+      const { innerHeight } = window;
+      
+      // Map vertical slide to rotation
+      const normalizedY = (clientY / innerHeight) * 360;
+      setArrowRotation(normalizedY);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("touchmove", handleTouchMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("touchmove", handleTouchMove);
+    };
+  }, [stage, mouseX, mouseY]);
 
   // Fake loading progress
   useEffect(() => {
@@ -19,10 +71,9 @@ export default function Home() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
-          setTimeout(() => setStage("compass"), 800); // Small pause at 100%
+          setTimeout(() => setStage("compass"), 800); 
           return 100;
         }
-        // Random increments for a slightly more "real" feel
         return Math.min(prev + Math.floor(Math.random() * 15) + 5, 100);
       });
     }, 250);
@@ -32,10 +83,9 @@ export default function Home() {
 
   const handleEnter = () => {
     setStage("transition");
-    // Wait for the transition animation to finish before moving to main
     setTimeout(() => {
       setStage("main");
-    }, 2500); // 2.5s matches our animation sequence
+    }, 2500);
   };
 
   return (
@@ -112,51 +162,85 @@ export default function Home() {
 
             <div className="relative z-10 flex flex-col items-center justify-center w-full h-full">
               <motion.div
+                ref={compassRef}
+                style={{ 
+                  rotateX, 
+                  rotateY,
+                  perspective: 1000 
+                }}
                 initial={{ scale: 0.8, opacity: 0, y: 50 }}
                 animate={
                   stage === "compass" 
                     ? { scale: 1, opacity: 1, y: 0 }
                     : { 
-                        scale: 5, // Zoom past the screen
-                        rotateZ: 360, // Spin wildly
-                        opacity: 0, 
-                        z: 500
+                        scale: 8, 
+                        rotateZ: 720, 
+                        opacity: 0,
+                        filter: "blur(10px)"
                       }
                 }
                 transition={
                   stage === "compass"
                     ? { duration: 2, ease: "easeOut" }
-                    : { duration: 2, ease: "anticipate" } // Cinematic zoom
+                    : { duration: 2.2, ease: [0.7, 0, 0.3, 1] }
                 }
-                className="relative w-[300px] h-[300px] md:w-[450px] md:h-[450px]"
+                className="relative w-[280px] h-[280px] md:w-[500px] md:h-[500px] cursor-none"
               >
                 {/* Glowing aura behind compass */}
                 <motion.div 
-                  className="absolute inset-0 rounded-full bg-[#d4af37]/20 blur-3xl"
-                  animate={{ scale: [1, 1.2, 1] }}
+                  className="absolute inset-0 rounded-full bg-[#d4af37]/15 blur-3xl"
+                  animate={{ scale: [1, 1.1, 1] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                 />
+                
+                {/* Compass Body */}
                 <img 
                   src={compassImg} 
                   alt="Navigational Compass" 
-                  className="w-full h-full object-contain drop-shadow-[0_0_30px_rgba(212,175,55,0.3)]"
+                  className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(212,175,55,0.4)]"
                 />
+
+                {/* Animated Compass Needle/Arrow */}
+                <motion.div
+                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                  animate={{ rotate: arrowRotation }}
+                  transition={{ type: "spring", stiffness: 60, damping: 15 }}
+                >
+                  <div className="w-1 md:w-2 h-1/2 bg-gradient-to-t from-transparent via-[#d4af37] to-[#d4af37] rounded-full shadow-[0_0_15px_#d4af37] relative">
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 md:w-5 h-3 md:h-5 bg-[#d4af37] rotate-45 border-t-2 border-l-2 border-white/30" />
+                  </div>
+                </motion.div>
               </motion.div>
 
               <AnimatePresence>
                 {stage === "compass" && (
-                  <motion.button
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20, transition: { duration: 0.5 } }}
-                    transition={{ delay: 1, duration: 1 }}
-                    onClick={handleEnter}
-                    className="mt-12 px-8 py-4 bg-transparent border border-[#d4af37]/50 text-[#d4af37] font-cinzel font-bold tracking-[0.2em] text-xl relative group overflow-hidden"
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="flex flex-col items-center"
                   >
-                    <span className="relative z-10 text-glow">ENTER THE VOYAGE</span>
-                    <div className="absolute inset-0 bg-[#d4af37]/10 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-                    <div className="absolute inset-0 box-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </motion.button>
+                    <motion.button
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: 1.5, duration: 1 }}
+                      onClick={handleEnter}
+                      className="mt-12 px-10 py-5 bg-black/40 backdrop-blur-md border border-[#d4af37]/50 text-[#d4af37] font-cinzel font-bold tracking-[0.3em] text-xl relative group overflow-hidden"
+                    >
+                      <span className="relative z-10 text-glow">ENTER THE VOYAGE</span>
+                      <div className="absolute inset-0 bg-[#d4af37]/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" />
+                      <div className="absolute inset-0 box-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </motion.button>
+                    
+                    <motion.p
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.6 }}
+                      transition={{ delay: 2.5 }}
+                      className="mt-4 text-[#d4af37] text-xs tracking-widest font-cinzel uppercase"
+                    >
+                      {typeof window !== 'undefined' && 'ontouchstart' in window ? 'Slide to Navigate' : 'Move Cursor to Navigate'}
+                    </motion.p>
+                  </motion.div>
                 )}
               </AnimatePresence>
             </div>
