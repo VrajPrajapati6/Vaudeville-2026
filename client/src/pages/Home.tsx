@@ -1,30 +1,39 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useSpring, useTransform } from "framer-motion";
+import { motion, AnimatePresence, useSpring, useTransform, useScroll } from "framer-motion";
 import loadingBg from "@/assets/images/loading-bg.png";
 import compassBg from "@/assets/images/compass-bg.png";
 import compassImg from "@/assets/images/compass.png";
 import mainBg from "@/assets/images/main-bg.png";
+import pirateMap from "@/assets/images/pirate-map.png";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 type Stage = "loading" | "compass" | "transition" | "main";
+
+const EVENTS = [
+  { id: 1, name: "Treasure Hunt", description: "Solve riddles to find the hidden chest.", x: "20%", y: "20%" },
+  { id: 2, name: "Sea Battle", description: "Naval strategy game with miniature ships.", x: "40%", y: "50%" },
+  { id: 3, name: "Pirate Ball", description: "A night of music and rum-inspired drinks.", x: "70%", y: "30%" },
+  { id: 4, name: "The Black Spot", description: "Elite coding competition for the bold.", x: "85%", y: "75%" },
+];
 
 export default function Home() {
   const [stage, setStage] = useState<Stage>("loading");
   const [progress, setProgress] = useState(0);
+  const [selectedEvent, setSelectedEvent] = useState<typeof EVENTS[0] | null>(null);
   const compassRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  
+  const { scrollYProgress } = useScroll();
+  const indicatorX = useTransform(scrollYProgress, [0, 1], ["10%", "90%"]);
+  const indicatorY = useTransform(scrollYProgress, [0, 1], ["10%", "80%"]);
 
   // Mouse/Touch tracking for compass rotation
   const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 50, damping: 20 });
   
-  // Mobile scroll/slide tracking
-  const scrollY = useSpring(0, { stiffness: 50, damping: 20 });
-
   const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
   const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
   
-  // Arrow rotation logic
-  const [arrowRotation, setArrowRotation] = useState(0);
+  const [compassRotation, setCompassRotation] = useState(0);
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -39,20 +48,20 @@ export default function Home() {
       mouseX.set(x);
       mouseY.set(y);
 
-      // Calculate angle for the arrow to point at the cursor
-      const angle = Math.atan2(y, x) * (180 / Math.PI) + 90;
-      setArrowRotation(angle);
+      const angle = Math.atan2(y, x) * (180 / Math.PI);
+      setCompassRotation(angle);
     };
 
     const handleTouchMove = (e: TouchEvent) => {
       if (stage !== "compass") return;
       const touch = e.touches[0];
-      const { clientY } = touch;
-      const { innerHeight } = window;
+      const { clientY, clientX } = touch;
+      const { innerHeight, innerWidth } = window;
       
-      // Map vertical slide to rotation
-      const normalizedY = (clientY / innerHeight) * 360;
-      setArrowRotation(normalizedY);
+      const x = clientX - innerWidth / 2;
+      const y = clientY - innerHeight / 2;
+      const angle = Math.atan2(y, x) * (180 / Math.PI);
+      setCompassRotation(angle);
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -184,7 +193,7 @@ export default function Home() {
                     ? { duration: 2, ease: "easeOut" }
                     : { duration: 2.2, ease: [0.7, 0, 0.3, 1] }
                 }
-                className="relative w-[280px] h-[280px] md:w-[500px] md:h-[500px] cursor-none"
+                className="relative w-[320px] h-[320px] md:w-[650px] md:h-[650px] cursor-none"
               >
                 {/* Glowing aura behind compass */}
                 <motion.div 
@@ -194,22 +203,12 @@ export default function Home() {
                 />
                 
                 {/* Compass Body */}
-                <img 
+                <motion.img 
                   src={compassImg} 
                   alt="Navigational Compass" 
-                  className="w-full h-full object-contain drop-shadow-[0_0_50px_rgba(212,175,55,0.4)]"
+                  style={{ rotate: compassRotation }}
+                  className="w-full h-full object-contain drop-shadow-[0_0_60px_rgba(212,175,55,0.5)]"
                 />
-
-                {/* Animated Compass Needle/Arrow */}
-                <motion.div
-                  className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                  animate={{ rotate: arrowRotation }}
-                  transition={{ type: "spring", stiffness: 60, damping: 15 }}
-                >
-                  <div className="w-1 md:w-2 h-1/2 bg-gradient-to-t from-transparent via-[#d4af37] to-[#d4af37] rounded-full shadow-[0_0_15px_#d4af37] relative">
-                    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3 md:w-5 h-3 md:h-5 bg-[#d4af37] rotate-45 border-t-2 border-l-2 border-white/30" />
-                  </div>
-                </motion.div>
               </motion.div>
 
               <AnimatePresence>
@@ -247,109 +246,112 @@ export default function Home() {
           </motion.div>
         )}
 
-        {/* STAGE 4: MAIN HOMEPAGE */}
+        {/* STAGE 4: MAIN HOMEPAGE WITH MAP */}
         {stage === "main" && (
           <motion.div
             key="main"
-            initial={{ opacity: 0, scale: 1.1 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 2, ease: "easeOut" }}
-            className="absolute inset-0 z-20 overflow-y-auto overflow-x-hidden scroll-smooth"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 z-20 overflow-y-auto bg-[#0a0a0a]"
           >
-            <div 
-              className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10"
-              style={{ backgroundImage: `url(${mainBg})` }}
-            />
-            <div className="fixed inset-0 bg-black/60 -z-10 backdrop-blur-[2px]" />
-            <div className="fixed inset-0 bg-gradient-to-b from-transparent via-black/40 to-black -z-10" />
-
             {/* Navigation */}
-            <motion.nav 
-              initial={{ y: -50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 1, duration: 1 }}
-              className="w-full p-6 flex justify-between items-center relative z-20 border-b border-[#d4af37]/20 bg-black/30 backdrop-blur-sm"
-            >
-              <div className="font-pirata text-3xl text-[#d4af37] text-glow">VDV</div>
-              <div className="hidden md:flex gap-8 font-cinzel text-sm tracking-widest text-white/70">
-                {['EVENTS', 'CREW', 'TICKETS', 'LEGEND'].map((item) => (
-                  <a key={item} href={`#${item.toLowerCase()}`} className="hover:text-[#d4af37] hover:text-glow transition-all duration-300">
-                    {item}
-                  </a>
-                ))}
+            <nav className="fixed top-0 left-0 w-full p-6 flex justify-between items-center z-50 border-b border-[#d4af37]/20 bg-black/80 backdrop-blur-md">
+              <div className="font-pirata text-3xl text-[#d4af37] text-glow">VAUDEVILLE</div>
+              <div className="flex gap-8 font-cinzel text-sm tracking-widest text-white/70">
+                <button className="hover:text-[#d4af37] transition-colors">VOYAGE</button>
+                <button className="hover:text-[#d4af37] transition-colors">EVENTS</button>
               </div>
-              <button className="md:hidden text-[#d4af37]">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M3 12h18M3 6h18M3 18h18"/>
-                </svg>
-              </button>
-            </motion.nav>
+            </nav>
 
-            {/* Hero Section */}
-            <div className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4 relative">
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 1.5 }}
-              >
-                <h2 className="font-cinzel-decorative text-xl md:text-3xl text-[#d4af37] mb-4 tracking-[0.3em]">
-                  THE CULTURAL FESTIVAL OF
-                </h2>
-                <h1 className="font-pirata text-7xl md:text-9xl text-white drop-shadow-[0_0_30px_rgba(212,175,55,0.4)] mb-8">
-                  VAUDEVILLE
-                </h1>
-                <p className="font-cinzel text-lg md:text-xl text-white/70 max-w-2xl mx-auto leading-relaxed mb-12">
-                  Where legends are forged and myths come to life. Embark on a voyage of artistry, music, and untamed chaos.
-                </p>
-                <button className="px-10 py-5 bg-[#d4af37]/10 border border-[#d4af37] text-[#d4af37] font-cinzel font-bold tracking-widest hover:bg-[#d4af37] hover:text-black transition-all duration-500 box-glow">
-                  UNFOLD THE MAP
-                </button>
-              </motion.div>
+            <div className="h-[400vh] relative w-full pt-24">
+              <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                <motion.div 
+                  className="relative w-[95%] h-[85%] border-8 border-[#2a1a0a] shadow-2xl rounded-sm overflow-hidden"
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 1.5 }}
+                >
+                  <img src={pirateMap} alt="Pirate Map" className="w-full h-full object-cover opacity-80" />
+                  <div className="absolute inset-0 bg-black/20" />
+                  
+                  {/* The Path Indicator */}
+                  <motion.div 
+                    style={{ left: indicatorX, top: indicatorY }}
+                    className="absolute w-8 h-8 -ml-4 -mt-4 z-40"
+                  >
+                    <div className="w-full h-full bg-[#d4af37] rounded-full shadow-[0_0_20px_#d4af37] animate-pulse" />
+                    <div className="absolute inset-0 border-2 border-white rounded-full animate-ping" />
+                  </motion.div>
+
+                  {/* Events on Map */}
+                  {EVENTS.map((event, idx) => {
+                    const threshold = idx / (EVENTS.length - 1);
+                    return (
+                      <motion.div
+                        key={event.id}
+                        className="absolute z-30 flex flex-col items-center"
+                        style={{ left: event.x, top: event.y }}
+                        initial={{ opacity: 0.3, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1.2 }}
+                        onClick={() => setSelectedEvent(event)}
+                      >
+                        <button className="group relative">
+                          <div className="w-12 h-12 bg-[#2a1a0a] border-2 border-[#d4af37] rotate-45 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300">
+                            <span className="font-pirata text-[#d4af37] group-hover:text-black -rotate-45 text-xl">{idx + 1}</span>
+                          </div>
+                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-cinzel text-[#d4af37] text-sm font-bold tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">
+                            {event.name}
+                          </div>
+                        </button>
+                      </motion.div>
+                    );
+                  })}
+
+                  {/* Connecting Line (simplified path) */}
+                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
+                    <path 
+                      d="M 10,10 Q 30,20 40,50 T 70,30 T 85,75" 
+                      fill="none" 
+                      stroke="#d4af37" 
+                      strokeWidth="4" 
+                      strokeDasharray="10,10"
+                      className="path-draw"
+                      style={{ pathLength: scrollYProgress }}
+                    />
+                  </svg>
+                </motion.div>
+              </div>
+
+              {/* Scroll cues */}
+              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37] font-cinzel animate-bounce tracking-widest text-xs">
+                SCROLL TO NAVIGATE THE SEAS
+              </div>
             </div>
 
-            {/* Sample Content Section */}
-            <div className="py-24 px-6 md:px-12 max-w-7xl mx-auto">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                <motion.div 
-                  initial={{ opacity: 0, x: -50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1 }}
-                  className="space-y-6"
-                >
-                  <h3 className="font-cinzel-decorative text-4xl text-[#d4af37]">THE CAPTAIN'S CALL</h3>
-                  <div className="w-24 h-1 bg-[#d4af37]/50" />
-                  <p className="font-cinzel text-white/70 leading-loose text-lg">
-                    The winds have shifted, and the tides bring tales of a gathering unlike any other. Vaudeville is not merely a festival; it is a test of mettle, a showcase of the extraordinary, and a haven for the bold.
-                  </p>
-                  <p className="font-cinzel text-white/70 leading-loose text-lg">
-                    Gather your crew, hoist your colors, and prepare for days of relentless competition and nights of thunderous celebration.
-                  </p>
-                </motion.div>
-                
-                <motion.div 
-                  initial={{ opacity: 0, x: 50 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 1 }}
-                  className="relative aspect-square border border-[#d4af37]/30 p-4"
-                >
-                  <div className="w-full h-full bg-black/50 backdrop-blur-md flex items-center justify-center border border-[#d4af37]/10">
-                    <img src={compassImg} alt="Compass" className="w-1/2 opacity-30 animate-[spin_60s_linear_infinite]" />
+            {/* Event Registration Dialog */}
+            <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
+              <DialogContent className="bg-[#1a120a] border-[#d4af37] text-[#d4af37] font-cinzel">
+                <DialogHeader>
+                  <DialogTitle className="font-pirata text-4xl">{selectedEvent?.name}</DialogTitle>
+                  <DialogDescription className="text-white/70 italic">
+                    {selectedEvent?.description}
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="py-6 space-y-4">
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest">Sailor Name</label>
+                    <input className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-white focus:border-[#d4af37] outline-none" placeholder="Enter name..." />
                   </div>
-                  {/* Decorative corners */}
-                  <div className="absolute top-0 left-0 w-4 h-4 border-t-2 border-l-2 border-[#d4af37]" />
-                  <div className="absolute top-0 right-0 w-4 h-4 border-t-2 border-r-2 border-[#d4af37]" />
-                  <div className="absolute bottom-0 left-0 w-4 h-4 border-b-2 border-l-2 border-[#d4af37]" />
-                  <div className="absolute bottom-0 right-0 w-4 h-4 border-b-2 border-r-2 border-[#d4af37]" />
-                </motion.div>
-              </div>
-            </div>
-            
-            {/* Footer space to allow scrolling */}
-            <footer className="py-12 border-t border-[#d4af37]/20 text-center font-cinzel text-white/50 text-sm">
-              <p>© 2026 VAUDEVILLE. ALL RIGHTS RESERVED TO THE SEA.</p>
-            </footer>
+                  <div className="space-y-2">
+                    <label className="text-xs uppercase tracking-widest">Vessel (College)</label>
+                    <input className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-white focus:border-[#d4af37] outline-none" placeholder="Enter college..." />
+                  </div>
+                  <button className="w-full py-4 bg-[#d4af37] text-black font-bold tracking-widest hover:brightness-125 transition-all">
+                    JOIN THE CREW
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
           </motion.div>
         )}
       </AnimatePresence>
