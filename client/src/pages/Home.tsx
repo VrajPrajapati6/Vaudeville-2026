@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import PirateNavbar from "@/components/layout/PirateNavbar";
-import HeroScene from "@/scenes/HeroScene";
+import HeroScene from "@/scenes/HeroScene"; 
+import CampusScene from "@/scenes/CampusScene";
+import EventsScene from "@/scenes/EventsScene";
 import invasionBg from "@/assets/images/04.webp";
 import { motion, AnimatePresence, useSpring, useTransform, useScroll, useMotionValue } from "framer-motion";
 import loadingBg from "@/assets/images/loading-bg.png";
@@ -11,6 +13,8 @@ import pirateMap from "@/assets/images/pirate-map.png";
 import preloaderShip from "@/assets/images/preloader-ship.png";
 import parchmentImg from "@/assets/images/parchment.png";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import CountdownScene from "@/scenes/CountdownScene";
+import TimelineVenueScene from "@/scenes/TimelineVenueScene";
 
 type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 
@@ -344,6 +348,10 @@ const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
 
            <div className="snap-y snap-mandatory">
                 <HeroScene />
+                <CampusScene />
+                <EventsScene />
+                <CountdownScene />
+                <TimelineVenueScene />
            </div>
 
             {/* DIALOG */}
