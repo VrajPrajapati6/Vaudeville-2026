@@ -1,0 +1,217 @@
+Refactor and enhance the existing VAUDEVILLE 2026 frontend into a high-end cinematic pirate-themed experience.
+
+DO NOT change folder structure.
+DO NOT rebuild components from scratch.
+Only upgrade styling, animation quality, depth, and polish.
+
+Theme:
+Dark ocean cinematic pirate aesthetic inspired by epic sea adventure films.
+
+=========================================
+🎬 1. ADD CINEMATIC PRELOADER
+=========================================
+
+Create a premium preloader before the main site renders.
+
+Requirements:
+- Dark ocean gradient background (#0b0f1a)
+- Layered fog overlay
+- Pirate ship image/model moving from far distance to near
+- Loading progress 0% → 100%
+- Ship scale and position synced with progress
+- Gold glowing percentage text
+- Subtitle: "Preparing the Voyage..."
+- Duration: ~2.5–3 seconds simulated
+- Smooth fade out transition
+- Smooth fade in of main site
+- Mobile optimized
+
+Keep it cinematic, not flashy.
+
+=========================================
+🌊 2. IMPLEMENT DEPTH LAYERING SYSTEM
+=========================================
+
+Add multi-layer parallax depth:
+
+Layer 1: Ocean gradient background  
+Layer 2: Moving clouds  
+Layer 3: Fog overlay  
+Layer 4: 3D ship or hero element  
+Layer 5: Foreground rope elements  
+
+Each layer should move at slightly different speeds on scroll.
+Use GPU-accelerated transforms only.
+Disable heavy parallax on mobile.
+
+=========================================
+🚢 3. UPGRADE HERO SECTION
+=========================================
+
+Make HeroSection feel like a movie intro.
+
+Add:
+- Subtle camera zoom on scroll
+- Parallax fog layers
+- Smooth stagger reveal for title text
+- Gold gradient heading with glow shimmer
+- Slight depth perspective effect
+- Ambient sound toggle button (optional)
+
+Slow animation pacing by 20%.
+Use smooth easing (power2.out or easeOut).
+Avoid bouncy motion.
+
+=========================================
+⚓ 4. ENTER BUTTON IMPROVEMENT
+=========================================
+
+Upgrade Enter button:
+
+- Circular pirate compass style
+- Rope border animation
+- Gold metallic gradient
+- Glow intensifies on hover
+- Slight scale-up effect
+- On click: smooth scroll transition to About section
+
+Add subtle wave-like background distortion on click.
+
+=========================================
+📜 5. SECTION TRANSITION CINEMATIC FLOW
+=========================================
+
+Between sections:
+- Add subtle fade-to-dark divider moment
+- Slight upward fade reveal for new section
+- Slow reveal pacing
+- No abrupt transitions
+
+Each section should feel like a chapter.
+
+Add small uppercase subtitle above main section headings like:
+"Chapter I — The Legend"
+"Chapter II — The Treasure"
+
+=========================================
+💰 6. EVENTS SECTION PREMIUM UPGRADE
+=========================================
+
+Enhance treasure chest cards:
+
+- Dark wooden texture feel
+- Gold metallic accents
+- Hover lift effect
+- Subtle glow spill
+- Dust particle overlay (lightweight)
+- Modal opens with parchment-style animation
+
+Keep animations elegant, not chaotic.
+
+=========================================
+🗺 7. TREASURE MAP INTERACTION
+=========================================
+
+Improve map section:
+
+- Glowing island markers
+- Hover pulse animation
+- Click reveal content with smooth fade + slide
+- Subtle map pan effect
+
+Keep it lightweight and responsive.
+
+=========================================
+⚔️ 8. TIMELINE CINEMATIC MODE
+=========================================
+
+If horizontal scroll exists:
+- Smooth it
+- Add golden sword-like timeline line
+- Add subtle glow to active milestone
+- Add cannon spark burst animation on reveal
+
+If vertical:
+- Add stagger reveal
+- Add subtle fade transitions
+
+Ensure mobile fallback works perfectly.
+
+=========================================
+🏴‍☠️ 9. TEAM SECTION
+=========================================
+
+Upgrade wanted poster cards:
+
+- Slight rotation
+- Lantern glow background
+- Hover straighten effect
+- Subtle scale animation
+- Optional flip reveal
+
+=========================================
+💎 10. SPONSORS SECTION
+=========================================
+
+Treasure vault atmosphere:
+
+- Dark cave-like background
+- Gold underlight glow
+- Scroll-based light sweep over logos
+- Smooth fade reveal
+
+=========================================
+🌌 11. FOOTER ENHANCEMENT
+=========================================
+
+- Night ocean gradient
+- Subtle moon reflection shimmer
+- Floating lantern effect (lightweight)
+- Calm ending animation
+
+=========================================
+🎮 12. ADD PREMIUM MICROINTERACTIONS
+=========================================
+
+Include at least 4 subtle features:
+
+- Compass-style custom cursor
+- Sword-shaped scroll progress bar
+- Occasional thunder flash effect
+- Subtle gold shimmer on headings
+- Hidden clickable treasure easter egg
+
+Keep them subtle and premium.
+
+=========================================
+🚀 13. PERFORMANCE OPTIMIZATION
+=========================================
+
+- Reduce animation intensity on mobile
+- Remove unnecessary re-renders
+- Clean up scroll listeners
+- Ensure 60fps smooth performance
+- Lighthouse score above 85
+- No layout shifts
+
+=========================================
+🎥 FINAL QUALITY REQUIREMENT
+=========================================
+
+The site must feel like:
+
+A cinematic festival reveal experience,
+Not a normal animated website.
+
+Animations must be:
+- Smooth
+- Controlled
+- Slow-paced
+- Layered
+- Premium
+
+Do not over-animate.
+Do not add chaotic motion.
+
+Only enhance and refine existing structure.
+Production-ready quality only.

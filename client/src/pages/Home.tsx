@@ -1,19 +1,21 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useSpring, useTransform, useScroll, useMotionValue } from "framer-motion";
 import loadingBg from "@/assets/images/loading-bg.png";
 import compassBg from "@/assets/images/compass-bg.png";
 import compassImg from "@/assets/images/compass.png";
 import mainBg from "@/assets/images/main-bg.png";
 import pirateMap from "@/assets/images/pirate-map.png";
+import preloaderShip from "@/assets/images/preloader-ship.png";
+import parchmentImg from "@/assets/images/parchment.png";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
 type Stage = "loading" | "compass" | "transition" | "main";
 
 const EVENTS = [
-  { id: 1, name: "Treasure Hunt", description: "Solve riddles to find the hidden chest.", x: "20%", y: "20%" },
-  { id: 2, name: "Sea Battle", description: "Naval strategy game with miniature ships.", x: "40%", y: "50%" },
-  { id: 3, name: "Pirate Ball", description: "A night of music and rum-inspired drinks.", x: "70%", y: "30%" },
-  { id: 4, name: "The Black Spot", description: "Elite coding competition for the bold.", x: "85%", y: "75%" },
+  { id: 1, name: "Treasure Hunt", chapter: "Chapter I", description: "Solve riddles to find the hidden chest.", x: "20%", y: "20%" },
+  { id: 2, name: "Sea Battle", chapter: "Chapter II", description: "Naval strategy game with miniature ships.", x: "40%", y: "50%" },
+  { id: 3, name: "Pirate Ball", chapter: "Chapter III", description: "A night of music and rum-inspired drinks.", x: "70%", y: "30%" },
+  { id: 4, name: "The Black Spot", chapter: "Chapter IV", description: "Elite coding competition for the bold.", x: "85%", y: "75%" },
 ];
 
 export default function Home() {
@@ -25,6 +27,11 @@ export default function Home() {
   const { scrollYProgress } = useScroll();
   const indicatorX = useTransform(scrollYProgress, [0, 1], ["10%", "90%"]);
   const indicatorY = useTransform(scrollYProgress, [0, 1], ["10%", "80%"]);
+  
+  // Parallax layers
+  const yBg = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const yFog = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const shipScale = useTransform(scrollYProgress, [0, 0.2], [1, 1.2]);
 
   // Mouse/Touch tracking for compass rotation
   const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
@@ -52,42 +59,30 @@ export default function Home() {
       setCompassRotation(angle);
     };
 
-    const handleTouchMove = (e: TouchEvent) => {
-      if (stage !== "compass") return;
-      const touch = e.touches[0];
-      const { clientY, clientX } = touch;
-      const { innerHeight, innerWidth } = window;
-      
-      const x = clientX - innerWidth / 2;
-      const y = clientY - innerHeight / 2;
-      const angle = Math.atan2(y, x) * (180 / Math.PI);
-      setCompassRotation(angle);
-    };
-
     window.addEventListener("mousemove", handleMouseMove);
-    window.addEventListener("touchmove", handleTouchMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("touchmove", handleTouchMove);
-    };
-  }, [stage, mouseX, mouseY]);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, [stage]);
 
-  // Fake loading progress
+  // Premium Preloader Logic
   useEffect(() => {
     if (stage !== "loading") return;
 
-    const interval = setInterval(() => {
+    const duration = 3000;
+    const interval = 30;
+    const step = 100 / (duration / interval);
+
+    const timer = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          clearInterval(interval);
-          setTimeout(() => setStage("compass"), 800); 
+          clearInterval(timer);
+          setTimeout(() => setStage("compass"), 500);
           return 100;
         }
-        return Math.min(prev + Math.floor(Math.random() * 15) + 5, 100);
+        return prev + step;
       });
-    }, 250);
+    }, interval);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(timer);
   }, [stage]);
 
   const handleEnter = () => {
@@ -103,45 +98,55 @@ export default function Home() {
       <div className="absolute inset-0 z-50 pointer-events-none bg-noise" />
 
       <AnimatePresence mode="wait">
-        {/* STAGE 1: LOADING */}
+        {/* STAGE 1: CINEMATIC PRELOADER */}
         {stage === "loading" && (
           <motion.div
             key="loading"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0, transition: { duration: 1.5, ease: "easeInOut" } }}
-            className="absolute inset-0 flex flex-col items-center justify-center z-40"
+            className="absolute inset-0 flex flex-col items-center justify-center z-40 bg-[#0b0f1a]"
           >
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-60"
-              style={{ backgroundImage: `url(${loadingBg})` }}
+            {/* Fog Layers */}
+            <div className="absolute inset-0 opacity-40 bg-noise mix-blend-overlay pointer-events-none" />
+            <motion.div 
+              className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0b0f1a]/50 to-[#0b0f1a]"
+              animate={{ opacity: [0.4, 0.6, 0.4] }}
+              transition={{ duration: 4, repeat: Infinity }}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black opacity-80" />
+            
+            {/* Approaching Ship */}
+            <motion.div
+              initial={{ scale: 0.5, opacity: 0, z: -500 }}
+              animate={{ 
+                scale: 0.5 + (progress / 100) * 0.5, 
+                opacity: progress > 10 ? 1 : 0,
+                z: 0 
+              }}
+              className="relative mb-12"
+            >
+              <img src={preloaderShip} alt="Ship" className="w-[300px] md:w-[500px] drop-shadow-[0_0_50px_rgba(0,0,0,0.8)]" />
+            </motion.div>
             
             <div className="relative z-10 flex flex-col items-center">
               <motion.h1 
-                className="font-pirata text-6xl md:text-8xl lg:text-9xl text-glow text-[#d4af37] mb-8"
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 2, ease: "easeOut" }}
+                className="font-pirata text-6xl md:text-8xl text-glow text-[#d4af37]"
+                animate={{ letterSpacing: ["0.1em", "0.2em", "0.1em"] }}
+                transition={{ duration: 5, repeat: Infinity }}
               >
                 VAUDEVILLE
               </motion.h1>
+              <p className="font-cinzel text-[#d4af37]/60 text-xs tracking-[0.5em] mt-2 uppercase">Preparing the Voyage...</p>
               
-              <div className="w-64 md:w-96 h-1 bg-white/10 rounded-full overflow-hidden relative">
-                <motion.div 
-                  className="absolute top-0 left-0 h-full bg-[#d4af37] shadow-[0_0_10px_#d4af37]"
-                  style={{ width: `${progress}%` }}
-                  layout
-                />
+              <div className="mt-8 flex flex-col items-center">
+                <span className="font-pirata text-2xl text-[#d4af37] mb-2">{Math.round(progress)}%</span>
+                <div className="w-48 h-[2px] bg-white/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    className="h-full bg-[#d4af37] shadow-[0_0_15px_#d4af37]"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
               </div>
-              <motion.p 
-                className="mt-4 font-cinzel text-[#d4af37]/80 text-xl md:text-2xl tracking-widest"
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              >
-                {progress}%
-              </motion.p>
             </div>
           </motion.div>
         )}
@@ -224,11 +229,16 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ delay: 1.5, duration: 1 }}
                       onClick={handleEnter}
-                      className="mt-12 px-10 py-5 bg-black/40 backdrop-blur-md border border-[#d4af37]/50 text-[#d4af37] font-cinzel font-bold tracking-[0.3em] text-xl relative group overflow-hidden"
+                      className="mt-12 group relative"
                     >
-                      <span className="relative z-10 text-glow">ENTER THE VOYAGE</span>
-                      <div className="absolute inset-0 bg-[#d4af37]/20 translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-out" />
-                      <div className="absolute inset-0 box-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      {/* Rope Border Animation Effect */}
+                      <div className="absolute -inset-4 border-2 border-[#d4af37]/20 rounded-full border-dashed animate-[spin_10s_linear_infinite]" />
+                      
+                      <div className="px-10 py-5 bg-black/60 backdrop-blur-xl border border-[#d4af37]/50 text-[#d4af37] font-cinzel font-bold tracking-[0.3em] text-xl relative overflow-hidden rounded-full shadow-2xl hover:scale-110 transition-transform duration-500">
+                        <span className="relative z-10 text-glow">ENTER THE VOYAGE</span>
+                        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#d4af37]/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                        <div className="absolute inset-0 box-glow opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      </div>
                     </motion.button>
                     
                     <motion.p
@@ -264,92 +274,105 @@ export default function Home() {
             </nav>
 
             <div className="h-[400vh] relative w-full pt-24">
+              {/* Depth Layering System */}
+              <motion.div style={{ y: yBg }} className="fixed inset-0 -z-10 bg-gradient-to-b from-[#0b0f1a] to-black" />
+              <motion.div style={{ y: yFog }} className="fixed inset-0 -z-10 opacity-30 bg-noise pointer-events-none" />
+              
               <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                {/* Parallax Hero Element (Ship) */}
                 <motion.div 
-                  className="relative w-[95%] h-[85%] border-8 border-[#2a1a0a] shadow-2xl rounded-sm overflow-hidden"
+                  style={{ scale: shipScale }}
+                  className="absolute bottom-20 opacity-20 pointer-events-none"
+                >
+                   <img src={preloaderShip} alt="Background Ship" className="w-[800px] grayscale blur-sm" />
+                </motion.div>
+
+                <motion.div 
+                  className="relative w-[95%] h-[85%] border-[12px] border-[#2a1a0a] shadow-[0_0_100px_rgba(0,0,0,0.8)] rounded-sm overflow-hidden"
                   initial={{ scale: 0.9, opacity: 0 }}
                   animate={{ scale: 1, opacity: 1 }}
                   transition={{ duration: 1.5 }}
                 >
-                  <img src={pirateMap} alt="Pirate Map" className="w-full h-full object-cover opacity-80" />
-                  <div className="absolute inset-0 bg-black/20" />
+                  <img src={pirateMap} alt="Pirate Map" className="w-full h-full object-cover opacity-90 scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
                   
                   {/* The Path Indicator */}
                   <motion.div 
                     style={{ left: indicatorX, top: indicatorY }}
-                    className="absolute w-8 h-8 -ml-4 -mt-4 z-40"
+                    className="absolute w-12 h-12 -ml-6 -mt-6 z-40"
                   >
-                    <div className="w-full h-full bg-[#d4af37] rounded-full shadow-[0_0_20px_#d4af37] animate-pulse" />
-                    <div className="absolute inset-0 border-2 border-white rounded-full animate-ping" />
+                    <div className="w-full h-full bg-[#d4af37] rounded-full shadow-[0_0_30px_#d4af37] animate-pulse" />
+                    <div className="absolute inset-0 border-4 border-white/50 rounded-full animate-ping" />
                   </motion.div>
 
-                  {/* Events on Map */}
-                  {EVENTS.map((event, idx) => {
-                    const threshold = idx / (EVENTS.length - 1);
-                    return (
-                      <motion.div
-                        key={event.id}
-                        className="absolute z-30 flex flex-col items-center"
-                        style={{ left: event.x, top: event.y }}
-                        initial={{ opacity: 0.3, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1.2 }}
+                  {/* Events on Map with Premium Cards */}
+                  {EVENTS.map((event, idx) => (
+                    <motion.div
+                      key={event.id}
+                      className="absolute z-30 flex flex-col items-center"
+                      style={{ left: event.x, top: event.y }}
+                      initial={{ opacity: 0.3, scale: 0.8 }}
+                      whileInView={{ opacity: 1, scale: 1.2 }}
+                      viewport={{ margin: "-100px" }}
+                    >
+                      <button 
                         onClick={() => setSelectedEvent(event)}
+                        className="group relative"
                       >
-                        <button className="group relative">
-                          <div className="w-12 h-12 bg-[#2a1a0a] border-2 border-[#d4af37] rotate-45 flex items-center justify-center hover:bg-[#d4af37] transition-colors duration-300">
-                            <span className="font-pirata text-[#d4af37] group-hover:text-black -rotate-45 text-xl">{idx + 1}</span>
-                          </div>
-                          <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap font-cinzel text-[#d4af37] text-sm font-bold tracking-tighter opacity-0 group-hover:opacity-100 transition-opacity">
-                            {event.name}
-                          </div>
-                        </button>
-                      </motion.div>
-                    );
-                  })}
-
-                  {/* Connecting Line (simplified path) */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none opacity-40">
-                    <path 
-                      d="M 10,10 Q 30,20 40,50 T 70,30 T 85,75" 
-                      fill="none" 
-                      stroke="#d4af37" 
-                      strokeWidth="4" 
-                      strokeDasharray="10,10"
-                      className="path-draw"
-                      style={{ pathLength: scrollYProgress }}
-                    />
-                  </svg>
+                        <p className="absolute -top-10 left-1/2 -translate-x-1/2 font-pirata text-[#d4af37] text-xs tracking-widest whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">
+                          {event.chapter}
+                        </p>
+                        <div className="w-16 h-16 bg-[#1a120a] border-4 border-[#d4af37] rotate-45 flex items-center justify-center hover:bg-[#d4af37] hover:scale-110 transition-all duration-500 shadow-2xl">
+                          <span className="font-pirata text-[#d4af37] group-hover:text-black -rotate-45 text-2xl">{idx + 1}</span>
+                        </div>
+                        <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap font-cinzel text-white text-sm font-bold tracking-widest group-hover:text-[#d4af37] transition-colors">
+                          {event.name}
+                        </div>
+                      </button>
+                    </motion.div>
+                  ))}
                 </motion.div>
-              </div>
-
-              {/* Scroll cues */}
-              <div className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[#d4af37] font-cinzel animate-bounce tracking-widest text-xs">
-                SCROLL TO NAVIGATE THE SEAS
               </div>
             </div>
 
-            {/* Event Registration Dialog */}
+            {/* Event Registration Dialog - Parchment Style */}
             <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
-              <DialogContent className="bg-[#1a120a] border-[#d4af37] text-[#d4af37] font-cinzel">
-                <DialogHeader>
-                  <DialogTitle className="font-pirata text-4xl">{selectedEvent?.name}</DialogTitle>
-                  <DialogDescription className="text-white/70 italic">
-                    {selectedEvent?.description}
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="py-6 space-y-4">
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest">Sailor Name</label>
-                    <input className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-white focus:border-[#d4af37] outline-none" placeholder="Enter name..." />
+              <DialogContent className="max-w-2xl bg-transparent border-none p-0 overflow-hidden">
+                <motion.div 
+                  initial={{ rotateY: 90, opacity: 0 }}
+                  animate={{ rotateY: 0, opacity: 1 }}
+                  className="relative p-12 min-h-[500px] flex flex-col"
+                  style={{ 
+                    backgroundImage: `url(${parchmentImg})`,
+                    backgroundSize: 'cover',
+                    boxShadow: '0 0 50px rgba(0,0,0,0.5)'
+                  }}
+                >
+                  <DialogHeader>
+                    <p className="font-cinzel text-xs text-black/50 tracking-[0.3em] uppercase mb-2">{selectedEvent?.chapter}</p>
+                    <DialogTitle className="font-pirata text-6xl text-[#2a1a0a] border-b-2 border-black/10 pb-4">
+                      {selectedEvent?.name}
+                    </DialogTitle>
+                    <DialogDescription className="text-[#2a1a0a]/80 font-cinzel text-lg italic mt-4 leading-relaxed">
+                      "{selectedEvent?.description}"
+                    </DialogDescription>
+                  </DialogHeader>
+                  
+                  <div className="mt-8 space-y-6 flex-grow">
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-black/60">Signature of the Bold</label>
+                      <input className="w-full bg-transparent border-b-2 border-black/20 p-2 text-[#2a1a0a] font-cinzel italic focus:border-black outline-none placeholder:text-black/20" placeholder="Your name here..." />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="text-[10px] font-bold uppercase tracking-widest text-black/60">Origin of the Vessel</label>
+                      <input className="w-full bg-transparent border-b-2 border-black/20 p-2 text-[#2a1a0a] font-cinzel italic focus:border-black outline-none placeholder:text-black/20" placeholder="Your college or crew..." />
+                    </div>
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-xs uppercase tracking-widest">Vessel (College)</label>
-                    <input className="w-full bg-black/50 border border-[#d4af37]/30 p-3 text-white focus:border-[#d4af37] outline-none" placeholder="Enter college..." />
-                  </div>
-                  <button className="w-full py-4 bg-[#d4af37] text-black font-bold tracking-widest hover:brightness-125 transition-all">
-                    JOIN THE CREW
+
+                  <button className="mt-12 w-full py-5 bg-[#2a1a0a] text-[#d4af37] font-pirata text-3xl tracking-widest hover:bg-black transition-all shadow-xl">
+                    SEAL THE COMPACT
                   </button>
-                </div>
+                </motion.div>
               </DialogContent>
             </Dialog>
           </motion.div>
