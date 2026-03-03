@@ -12,7 +12,7 @@ import preloaderShip from "@/assets/images/preloader-ship.png";
 import parchmentImg from "@/assets/images/parchment.png";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 
-type Stage = "loading" | "compass" | "transition" | "main";
+type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 
 const EVENTS = [
   { id: 1, name: "Treasure Hunt", chapter: "Chapter I", description: "Solve riddles to find the hidden chest.", x: "20%", y: "20%" },
@@ -38,8 +38,8 @@ export default function Home() {
   const mouseX = useSpring(0, { stiffness: 50, damping: 20 });
   const mouseY = useSpring(0, { stiffness: 50, damping: 20 });
 
-  const rotateX = useTransform(mouseY, [-300, 300], [15, -15]);
-  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
+  const rotateX = useTransform(mouseY, [-300, 300], [10, -10]);
+const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
 
   const [compassRotation, setCompassRotation] = useState(0);
 
@@ -83,9 +83,16 @@ export default function Home() {
   }, [stage]);
 
   const handleEnter = () => {
-    setStage("transition");
-    setTimeout(() => setStage("main"), 2500);
-  };
+  setStage("activating");
+
+  setTimeout(() => {
+    setStage("revealing");
+  }, 700);
+
+  setTimeout(() => {
+    setStage("main");
+  }, 1700);
+};
 
   return (
     <div className="relative w-full min-h-screen overflow-x-hidden bg-black">
@@ -95,21 +102,24 @@ export default function Home() {
       <AnimatePresence mode="wait">
 
         {/* ---------------- PRELOADER ---------------- */}
-        {stage === "loading" && (
+       {stage === "loading" && (
   <motion.div
     key="loading"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
-    exit={{ opacity: 0, transition: { duration: 1.5 } }}
+    exit={{ opacity: 0, transition: { duration: 0.6 } }}
     className="absolute inset-0 z-40 overflow-hidden bg-[#0e1a22]"
   >
-    {/* Cinematic Background */}
+    {/* Cinematic Background Reacting to Progress */}
     <motion.img
       src={invasionBg}
       alt="Invasion"
-      initial={{ scale: 1.15, filter: "blur(8px) brightness(0.5)" }}
-      animate={{ scale: 1, filter: "blur(0px) brightness(1)" }}
-      transition={{ duration: 2.5, ease: "easeOut" }}
+      initial={false}
+      animate={{
+        scale: 1.15 - progress * 0.0015,
+        filter: `blur(${8 - progress * 0.08}px) brightness(${0.5 + progress * 0.005})`
+      }}
+      transition={{ duration: 0.2 }}
       className="absolute inset-0 w-full h-full object-cover"
     />
 
@@ -119,23 +129,48 @@ export default function Home() {
     {/* Subtle Noise */}
     <div className="absolute inset-0 opacity-30 bg-noise mix-blend-overlay pointer-events-none" />
 
-    {/* Lightning Flash */}
+    {/* Final Lightning Strike at 100% */}
     <motion.div
       initial={{ opacity: 0 }}
-      animate={{ opacity: progress > 70 ? [0, 0.6, 0] : 0 }}
-      transition={{ duration: 0.2 }}
+      animate={{
+        opacity: progress > 95 ? [0, 1, 0] : 0
+      }}
+      transition={{ duration: 0.25 }}
       className="absolute inset-0 bg-white pointer-events-none"
+    />
+
+    {/* Dramatic Dark Dip Before Exit */}
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{
+        opacity: progress > 97 ? [0, 0.8, 1] : 0
+      }}
+      transition={{ duration: 0.4 }}
+      className="absolute inset-0 bg-black pointer-events-none"
     />
 
     {/* Content */}
     <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-4">
 
-      {/* Title */}
+      {/* Title with Breathing Glow */}
       <motion.h1
         initial={{ opacity: 0, y: 40 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.5, duration: 1 }}
-        className="font-pirata text-4xl sm:text-6xl md:text-8xl text-[#d4af37] drop-shadow-[0_0_25px_rgba(212,175,55,0.6)]"
+        animate={{
+          opacity: 1,
+          y: 0,
+          textShadow: [
+            "0 0 15px rgba(212,175,55,0.4)",
+            "0 0 35px rgba(212,175,55,0.8)",
+            "0 0 15px rgba(212,175,55,0.4)"
+          ]
+        }}
+        transition={{
+          delay: 1.2,
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        className="font-pirata text-4xl sm:text-6xl md:text-8xl text-[#d4af37]"
       >
         VAUDEVILLE
       </motion.h1>
@@ -143,7 +178,7 @@ export default function Home() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 0.8 }}
-        transition={{ delay: 2 }}
+        transition={{ delay: 1.8 }}
         className="mt-4 font-cinzel text-xs sm:text-lg tracking-widest text-white/80 uppercase"
       >
         The Fog Descends...
@@ -155,9 +190,9 @@ export default function Home() {
           {Math.round(progress)}%
         </span>
 
-        <div className="mt-3 h-[2px] bg-white/20 overflow-hidden">
+        <div className="mt-3 h-[2px] bg-white/20 overflow-hidden relative">
           <motion.div
-            className="h-full bg-[#d4af37] shadow-[0_0_15px_#d4af37]"
+            className="h-full bg-[#d4af37] shadow-[0_0_20px_#d4af37]"
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -167,48 +202,114 @@ export default function Home() {
   </motion.div>
 )}
 
-        {/* ---------------- COMPASS ---------------- */}
-        {(stage === "compass" || stage === "transition") && (
-          <motion.div
-            key="compass"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0, transition: { duration: 1.5 } }}
-            className="absolute inset-0 flex flex-col items-center justify-center z-30 perspective-1000"
-          >
-            <motion.div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${compassBg})` }}
-            />
+       {/* ---------------- COMPASS ---------------- */}
+{(stage === "compass" ||
+  stage === "activating" ||
+  stage === "revealing") && (
+  <motion.div
+    key="compass"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    exit={{ opacity: 0 }}
+    className="absolute inset-0 flex flex-col items-center justify-center z-30"
+  >
+    {/* Background */}
+    <motion.div
+      className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+      style={{ backgroundImage: `url(${compassBg})` }}
+    />
 
-            <div className="absolute inset-0 bg-black/40" />
+    {/* Dark Overlay */}
+    <motion.div
+      className="absolute inset-0 bg-black"
+      animate={{
+        opacity:
+          stage === "activating"
+            ? 0.6
+            : stage === "revealing"
+            ? 1
+            : 0.4,
+      }}
+      transition={{ duration: 0.7 }}
+    />
 
-            <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
+    <div className="relative z-10 flex flex-col items-center justify-center w-full h-full px-4">
 
-              <motion.div
-                ref={compassRef}
-                style={{ rotateX, rotateY, perspective: 1000 }}
-                className="relative w-[70vw] h-[70vw] max-w-[650px] max-h-[650px] cursor-none"
-              >
-                <motion.img
-                  src={compassImg}
-                  alt="Navigational Compass"
-                  style={{ rotate: compassRotation }}
-                  className="w-full h-full object-contain drop-shadow-[0_0_60px_rgba(212,175,55,0.5)]"
-                />
-              </motion.div>
+      {/* Compass */}
+      <motion.div
+        ref={compassRef}
+        style={{ rotateX, rotateY }}
+        animate={
+          stage === "activating"
+            ? { scale: 1.1 }
+            : stage === "revealing"
+            ? { scale: 4, opacity: 0 }
+            : { scale: 1, opacity: 1 }
+        }
+        transition={{ duration: 0.8, ease: "easeInOut" }}
+        className="
+          relative
+          w-[min(75vw,75vh)]
+          h-[min(75vw,75vh)]
+          max-w-[620px]
+          max-h-[620px]
+          md:w-[min(60vw,60vh)]
+          md:h-[min(60vw,60vh)]
+        "
+      >
+        <motion.img
+          src={compassImg}
+          alt="Navigational Compass"
+          style={{ rotate: compassRotation }}
+          animate={
+            stage === "activating"
+              ? {
+                  filter:
+                    "drop-shadow(0 0 45px rgba(212,175,55,0.9))",
+                }
+              : {
+                  filter:
+                    "drop-shadow(0 0 30px rgba(212,175,55,0.6))",
+                }
+          }
+          transition={{ duration: 0.4 }}
+          className="w-full h-full object-contain"
+        />
+      </motion.div>
 
-              {stage === "compass" && (
-                <motion.button
-                  onClick={handleEnter}
-                  className="mt-8 sm:mt-12 px-6 sm:px-10 py-4 sm:py-5 bg-black/60 backdrop-blur-xl border border-[#d4af37]/50 text-[#d4af37] font-cinzel font-bold tracking-[0.2em] sm:tracking-[0.3em] text-sm sm:text-xl rounded-full shadow-2xl hover:scale-110 transition-transform duration-500 text-center"
-                >
-                  ENTER THE VOYAGE
-                </motion.button>
-              )}
-            </div>
-          </motion.div>
-        )}
+      {/* Button */}
+      {stage === "compass" && (
+        <motion.button
+          onClick={handleEnter}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+          className="
+            mt-8 sm:mt-12
+            px-6 sm:px-10
+            py-4 sm:py-5
+            bg-black/60
+            backdrop-blur-xl
+            border border-[#d4af37]/50
+            text-[#d4af37]
+            font-cinzel
+            font-bold
+            tracking-[0.2em] sm:tracking-[0.3em]
+            text-sm sm:text-xl
+            rounded-full
+            shadow-2xl
+            hover:scale-105
+            transition-transform
+            duration-300
+            text-center
+          "
+        >
+          ENTER THE VOYAGE
+        </motion.button>
+      )}
+    </div>
+  </motion.div>
+)}
 
         {/* ---------------- MAIN ---------------- */}
         {stage === "main" && (
