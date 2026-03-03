@@ -44,22 +44,41 @@ const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
   const [compassRotation, setCompassRotation] = useState(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (stage !== "compass") return;
+  if (stage !== "compass") return;
 
-      const x = e.clientX - window.innerWidth / 2;
-      const y = e.clientY - window.innerHeight / 2;
+  const handlePointerMove = (x: number, y: number) => {
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
 
-      mouseX.set(x);
-      mouseY.set(y);
+    const dx = x - centerX;
+    const dy = y - centerY;
 
-      const angle = Math.atan2(y, x) * (180 / Math.PI);
-      setCompassRotation(angle);
-    };
+    mouseX.set(dx);
+    mouseY.set(dy);
 
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [stage]);
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    setCompassRotation(angle);
+  };
+
+  const handleMouseMove = (e: MouseEvent) => {
+    handlePointerMove(e.clientX, e.clientY);
+  };
+
+  const handleTouchMove = (e: TouchEvent) => {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      handlePointerMove(touch.clientX, touch.clientY);
+    }
+  };
+
+  window.addEventListener("mousemove", handleMouseMove);
+  window.addEventListener("touchmove", handleTouchMove);
+
+  return () => {
+    window.removeEventListener("mousemove", handleMouseMove);
+    window.removeEventListener("touchmove", handleTouchMove);
+  };
+}, [stage]);
 
   useEffect(() => {
     if (stage !== "loading") return;
