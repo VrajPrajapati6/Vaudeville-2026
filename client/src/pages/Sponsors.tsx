@@ -1,10 +1,63 @@
+import PiratePageLayout from "@/components/layout/PiratePageLayout"
+import { sponsors } from "@/data/sponsorsData"
+
+function SponsorRow({ title, items }) {
+
+return (
+
+<div className="mb-16">
+
+<h2 className="font-pirata text-4xl text-[#d4af37] text-center mb-10">
+{title}
+</h2>
+
+<div className="grid md:grid-cols-3 gap-10 items-center">
+
+{items.map((sponsor, index) => (
+
+<div
+key={index}
+className="bg-black/40 border border-[#d4af37]/40 rounded-lg p-6 flex items-center justify-center"
+>
+
+<img
+src={sponsor.logo}
+alt={sponsor.name}
+className="max-h-16 object-contain"
+/>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+)
+
+}
+
 export default function Sponsors() {
-  return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white grid place-items-center px-6">
-      <section className="text-center">
-        <h1 className="font-pirata text-5xl text-[#d4af37]">Sponsors</h1>
-        <p className="mt-4 font-cinzel text-white/80">Content coming soon.</p>
-      </section>
-    </main>
-  );
+
+return (
+
+<PiratePageLayout title="Sponsors">
+
+<p className="font-cinzel text-gray-300 text-center max-w-xl mx-auto mb-16">
+Vaudeville is made possible with the support of our amazing partners and sponsors.
+</p>
+
+<SponsorRow title="Title Sponsor" items={sponsors.title} />
+
+<SponsorRow title="Gold Sponsors" items={sponsors.gold} />
+
+<SponsorRow title="Silver Sponsors" items={sponsors.silver} />
+
+<SponsorRow title="Community Partners" items={sponsors.community} />
+
+</PiratePageLayout>
+
+)
+
 }

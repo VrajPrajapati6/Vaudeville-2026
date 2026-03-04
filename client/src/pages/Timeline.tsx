@@ -1,10 +1,61 @@
+import PiratePageLayout from "@/components/layout/PiratePageLayout"
+import { timeline } from "@/data/timelineData"
+
 export default function Timeline() {
-  return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white grid place-items-center px-6">
-      <section className="text-center">
-        <h1 className="font-pirata text-5xl text-[#d4af37]">Timeline</h1>
-        <p className="mt-4 font-cinzel text-white/80">Content coming soon.</p>
-      </section>
-    </main>
-  );
+
+return (
+
+<PiratePageLayout title="Event Timeline">
+
+<p className="font-cinzel text-gray-300 text-center max-w-xl mx-auto mb-16">
+Plan your journey through Vaudeville. Explore events across three days of adventure.
+</p>
+
+<div className="space-y-16">
+
+{timeline.map((day, index) => (
+
+<div key={index}>
+
+<h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center">
+{day.day} • {day.date}
+</h2>
+
+<div className="space-y-6 max-w-3xl mx-auto">
+
+{day.events.map((event, i) => (
+
+<div
+key={i}
+className="flex justify-between items-center border border-[#d4af37]/30 bg-black/40 p-4 rounded-lg"
+>
+
+<div className="font-cinzel text-[#d4af37] text-lg">
+{event.time}
+</div>
+
+<div className="font-pirata text-xl text-white">
+{event.event}
+</div>
+
+<div className="font-cinzel text-gray-300">
+{event.venue}
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</div>
+
+))}
+
+</div>
+
+</PiratePageLayout>
+
+)
+
 }
