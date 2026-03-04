@@ -1,38 +1,161 @@
-require('dotenv').config({ path: '../.env' }); // Read from the root .env file
+require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const Registration = require('./models/Registration');
+
+const Event = require('./models/Event');
+const getRegistrationModel = require('./models/getRegistrationModel');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
 
-// Database Connection
+// ── Static event catalogue (mirrors client/src/data/eventsData.ts) ────────────
+const EVENT_CATALOGUE = [
+  {
+    slug: 'treasure-hunt', title: 'Treasure Hunt',
+    desc: 'Solve riddles hidden across the campus and uncover the lost treasure.',
+    description: 'Teams must follow clues spread across the campus. Each clue leads to another location. The fastest team to reach the final treasure wins.',
+    rules: ['Team size: 2–4 members', 'Follow clues across campus', 'No external help allowed', 'Decision of judges is final'],
+    teamSize: '2–4', prize: '₹10,000',
+  },
+  {
+    slug: 'code-arena', title: 'Code Arena',
+    desc: 'Battle with logic and algorithms in an intense coding duel.',
+    description: 'Participants solve algorithmic problems under time pressure. The highest score wins.',
+    rules: ['Individual participation', 'Languages allowed: C, C++, Java, Python', '3 rounds of coding'],
+    teamSize: 'Solo', prize: '₹15,000',
+  },
+  {
+    slug: 'circuit-clash', title: 'Circuit Clash',
+    desc: 'Design and debug electronic circuits before time runs out.',
+    description: 'Participants must build and troubleshoot circuits using provided components.',
+    rules: ['Team of 2 allowed', 'Components provided on spot', 'Working circuit required'],
+    teamSize: '2', prize: '₹8,000',
+  },
+  {
+    slug: 'robo-wars', title: 'Robo Wars',
+    desc: 'Bring your robot and battle in the arena.',
+    description: 'Robots compete in a controlled arena where the last robot standing wins.',
+    rules: ['Max weight 15kg', 'No destructive weapons', 'Remote controlled robots allowed'],
+    teamSize: '2–5', prize: '₹20,000',
+  },
+  {
+    slug: 'tech-quiz', title: 'Tech Quiz',
+    desc: 'Test your knowledge across multiple technical domains.',
+    description: 'A quiz competition covering technology, engineering, and science.',
+    rules: ['Teams of 2', 'Multiple rounds', 'Rapid fire included'],
+    teamSize: '2', prize: '₹5,000',
+  },
+  {
+    slug: 'hackathon', title: 'Hackathon',
+    desc: '24 hour coding marathon to build innovative solutions.',
+    description: 'Participants build projects within 24 hours and present them to judges.',
+    rules: ['Teams of 2–4', 'Prototype required', 'Presentation required'],
+    teamSize: '2–4', prize: '₹50,000',
+  },
+  {
+    slug: 'design-duel', title: 'Design Duel',
+    desc: 'Compete in UI/UX and graphic design challenges.',
+    description: 'Participants design creative UI/UX interfaces within a limited time.',
+    rules: ['Individual participation', 'Tools allowed: Figma, Adobe XD'],
+    teamSize: 'Solo', prize: '₹7,000',
+  },
+  {
+    slug: 'gaming-arena', title: 'Gaming Arena',
+    desc: 'Compete in esports tournaments with fellow gamers.',
+    description: 'Multiplayer gaming competition featuring popular esports titles.',
+    rules: ['Team based tournament', 'Knockout rounds'],
+    teamSize: '5', prize: '₹12,000',
+  },
+  {
+    slug: 'project-expo', title: 'Project Expo',
+    desc: 'Showcase innovative engineering projects.',
+    description: 'Students present their technical projects to judges.',
+    rules: ['Project demonstration required', 'Evaluation based on innovation'],
+    teamSize: '1–4', prize: '₹10,000',
+  },
+  {
+    slug: 'ai-challenge', title: 'AI Challenge',
+    desc: 'Solve machine learning challenges.',
+    description: 'Participants build AI models to solve real-world datasets.',
+    rules: ['Python recommended', 'Dataset provided'],
+    teamSize: '1–3', prize: '₹18,000',
+  },
+  {
+    slug: 'debugging-contest', title: 'Debugging Contest',
+    desc: 'Find and fix bugs in complex codebases.',
+    description: 'Participants must debug faulty programs within a time limit.',
+    rules: ['Individual participation', 'Multiple bug levels'],
+    teamSize: 'Solo', prize: '₹6,000',
+  },
+  {
+    slug: 'startup-pitch', title: 'Startup Pitch',
+    desc: 'Pitch your startup idea to expert judges.',
+    description: 'Teams present innovative startup ideas and business models.',
+    rules: ['Presentation required', 'Pitch time: 5 minutes'],
+    teamSize: '2–4', prize: '₹25,000',
+  },
+];
+
+// ── DB Connection + event seeding ─────────────────────────────────────────────
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB'))
+  .then(async () => {
+    console.log('Connected to MongoDB');
+    // Upsert every event into the shared "events" collection
+    for (const ev of EVENT_CATALOGUE) {
+      await Event.findOneAndUpdate(
+        { slug: ev.slug },
+        ev,
+        { upsert: true, returnDocument: 'after', setDefaultsOnInsert: true }
+      );
+    }
+    console.log(`Events collection synced (${EVENT_CATALOGUE.length} events).`);
+  })
   .catch((err) => console.error('MongoDB connection error:', err));
 
-// Routes
+// ── Routes ────────────────────────────────────────────────────────────────────
+
+// POST /api/register  →  saves into per-event collection  reg_<slug>
 app.post('/api/register', async (req, res) => {
   try {
     const { eventId, teamName, members } = req.body;
 
-    // Basic Validation
+    // Basic validation
     if (!eventId || !members || members.length === 0) {
       return res.status(400).json({ error: 'Missing required fields: eventId and members are required.' });
     }
 
-    // Create the registration
-    const newRegistration = new Registration({
-      eventId,
-      teamName,
-      members,
-    });
+    // Verify event exists in the events collection
+    const event = await Event.findOne({ slug: eventId });
+    if (!event) {
+      return res.status(404).json({ error: `Event "${eventId}" not found.` });
+    }
 
+    // Normalise roll numbers to lowercase
+    const submittedRollNos = members.map(m => m.rollNo.toLowerCase());
+
+    // Duplicate check within the same submission
+    if (new Set(submittedRollNos).size !== submittedRollNos.length) {
+      return res.status(409).json({ error: 'Duplicate roll numbers found in your submission. Each member must have a unique roll number.' });
+    }
+
+    // Get the per-event registration collection  →  reg_<eventId>
+    const RegModel = getRegistrationModel(eventId);
+
+    // Check roll numbers against existing registrations in this event's collection
+    const existing = await RegModel.findOne({ 'members.rollNo': { $in: submittedRollNos } });
+    if (existing) {
+      const dup = existing.members.find(m => submittedRollNos.includes(m.rollNo.toLowerCase()));
+      return res.status(409).json({ error: `Roll number "${dup?.rollNo}" is already registered for this event.` });
+    }
+
+    // Save to the event-specific collection
+    const normalizedMembers = members.map(m => ({ ...m, rollNo: m.rollNo.toLowerCase() }));
+    const newRegistration = new RegModel({ teamName, members: normalizedMembers });
     await newRegistration.save();
 
     res.status(201).json({ message: 'Registration successful!', registration: newRegistration });
@@ -42,7 +165,31 @@ app.post('/api/register', async (req, res) => {
   }
 });
 
-// Start server
+// GET /api/events  →  list all events
+app.get('/api/events', async (_req, res) => {
+  try {
+    const events = await Event.find({}, '-__v').lean();
+    res.json(events);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch events.' });
+  }
+});
+
+// GET /api/events/:slug/registrations  →  all registrations for one event
+app.get('/api/events/:slug/registrations', async (req, res) => {
+  try {
+    const event = await Event.findOne({ slug: req.params.slug });
+    if (!event) return res.status(404).json({ error: 'Event not found.' });
+
+    const RegModel = getRegistrationModel(req.params.slug);
+    const registrations = await RegModel.find({}).lean();
+    res.json({ event: event.title, count: registrations.length, registrations });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch registrations.' });
+  }
+});
+
+// ── Start ─────────────────────────────────────────────────────────────────────
 app.listen(PORT, () => {
   console.log(`Backend server running on http://localhost:${PORT}`);
 });

@@ -26,7 +26,8 @@ export default function EventRegister() {
   const event = events.find((e) => e.slug === params?.slug);
   const isSolo = event?.teamSize.toLowerCase() === "solo";
 
-  const { register, control, handleSubmit, reset, formState: { errors } } = useForm<FormData>({
+  const { register, control, handleSubmit, reset, getValues, formState: { errors } } = useForm<FormData>({
+    mode: "onTouched",
     defaultValues: {
       teamName: "",
       members: [{ name: "", rollNo: "", year: "", branch: "", institute: "" }],
@@ -58,20 +59,34 @@ export default function EventRegister() {
         body: JSON.stringify({
           eventId: event?.slug,
           teamName: isSolo ? undefined : data.teamName,
-          members: data.members,
+          members: data.members.map(member => ({
+            ...member,
+            rollNo: member.rollNo.toLowerCase() // Always convert to lowercase
+          })),
         }),
       });
 
       if (!response.ok) {
-        throw new Error(await response.text());
+        const errData = await response.json().catch(() => ({ error: "An unknown error occurred." }));
+        throw new Error(errData.error || "Registration failed. Please try again.");
       }
 
+      // Capture before reset() clears any reactive state
+      const eventTitle = event?.title ?? "this event";
+      const eventSlug  = event?.slug;
+
       toast({
-        title: "Registration Successful!",
-        description: `You have successfully registered for ${event?.title}!`,
+        title: "⚓ Registration Successful!",
+        description: `You have successfully registered for ${eventTitle}!`,
+        variant: "success",
+        duration: 3000,
       });
       reset();
-      setLocation(`/events/${event?.slug}`);
+
+      // Wait long enough for the user to read the toast
+      setTimeout(() => {
+        setLocation(`/events/${eventSlug}`);
+      }, 3000);
 
     } catch (error: any) {
       toast({
@@ -105,10 +120,12 @@ export default function EventRegister() {
               <label className="text-[#d4af37] block">Team Name</label>
               <input
                 {...register("teamName", { required: "Team name is required for team events" })}
-                className="w-full bg-black/40 border border-[#d4af37]/60 text-white p-3 rounded focus:outline-none focus:border-[#d4af37] transition-colors"
+                className={`w-full bg-black/40 border text-white p-3 rounded focus:outline-none focus:border-[#d4af37] transition-colors ${
+                  errors.teamName ? "border-red-500" : "border-[#d4af37]/60"
+                }`}
                 placeholder="Enter your team name"
               />
-              {errors.teamName && <span className="text-red-500 text-sm">{errors.teamName.message}</span>}
+              {errors.teamName && <span className="text-red-500 text-sm mt-1 block">⚠ {errors.teamName.message}</span>}
             </div>
           )}
 
@@ -136,27 +153,47 @@ export default function EventRegister() {
                     <label className="text-gray-300 text-sm">Full Name</label>
                     <input
                       {...register(`members.${index}.name` as const, { required: "Name is required" })}
-                      className="w-full bg-black/40 border border-gray-600 text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition"
+                      className={`w-full bg-black/40 border text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition ${
+                        errors.members?.[index]?.name ? "border-red-500" : "border-gray-600"
+                      }`}
                       placeholder="Jack Sparrow"
                     />
-                    {errors.members?.[index]?.name && <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.name?.message}</span>}
+                    {errors.members?.[index]?.name && (
+                      <span className="text-red-500 text-xs block mt-1">⚠ {errors.members[index]?.name?.message}</span>
+                    )}
                   </div>
 
                   <div className="space-y-1">
                     <label className="text-gray-300 text-sm">Roll No</label>
                     <input
-                      {...register(`members.${index}.rollNo` as const, { required: "Roll number is required" })}
-                      className="w-full bg-black/40 border border-gray-600 text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition"
+                      {...register(`members.${index}.rollNo` as const, {
+                        required: "Roll number is required",
+                        validate: (value) => {
+                          const allMembers = getValues("members");
+                          const normalized = value.toLowerCase().trim();
+                          const duplicates = allMembers.filter(
+                            (m, i) => i !== index && m.rollNo.toLowerCase().trim() === normalized
+                          );
+                          return duplicates.length === 0 ? true : "Roll number must be unique across all crew members";
+                        },
+                      })}
+                      className={`w-full bg-black/40 border text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition ${
+                        errors.members?.[index]?.rollNo ? "border-red-500" : "border-gray-600"
+                      }`}
                       placeholder="24BCE206"
                     />
-                    {errors.members?.[index]?.rollNo && <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.rollNo?.message}</span>}
+                    {errors.members?.[index]?.rollNo && (
+                      <span className="text-red-500 text-xs block mt-1">⚠ {errors.members[index]?.rollNo?.message}</span>
+                    )}
                   </div>
 
                   <div className="space-y-1">
                     <label className="text-gray-300 text-sm">Year</label>
                     <select
-                      {...register(`members.${index}.year` as const, { required: "Year is required" })}
-                      className="w-full bg-[#0a0a0a] border border-gray-600 text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer"
+                      {...register(`members.${index}.year` as const, { required: "Please select a year" })}
+                      className={`w-full bg-[#0a0a0a] border text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${
+                        errors.members?.[index]?.year ? "border-red-500" : "border-gray-600"
+                      }`}
                     >
                       <option value="">Select Year</option>
                       <option value="1">1st Year</option>
@@ -164,25 +201,37 @@ export default function EventRegister() {
                       <option value="3">3rd Year</option>
                       <option value="4">4th Year</option>
                     </select>
-                    {errors.members?.[index]?.year && <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.year?.message}</span>}
+                    {errors.members?.[index]?.year && (
+                      <span className="text-red-500 text-xs block mt-1">⚠ {errors.members[index]?.year?.message}</span>
+                    )}
                   </div>
 
                   <div className="space-y-1">
                     <label className="text-gray-300 text-sm">Branch</label>
                     <input
                       {...register(`members.${index}.branch` as const, { required: "Branch is required" })}
-                      className="w-full bg-black/40 border border-gray-600 text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition"
+                      className={`w-full bg-black/40 border text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition ${
+                        errors.members?.[index]?.branch ? "border-red-500" : "border-gray-600"
+                      }`}
                       placeholder="e.g. CSE, ECE"
                     />
+                    {errors.members?.[index]?.branch && (
+                      <span className="text-red-500 text-xs block mt-1">⚠ {errors.members[index]?.branch?.message}</span>
+                    )}
                   </div>
 
                   <div className="space-y-1 md:col-span-2">
                     <label className="text-gray-300 text-sm">Institute</label>
                     <input
                       {...register(`members.${index}.institute` as const, { required: "Institute is required" })}
-                      className="w-full bg-black/40 border border-gray-600 text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition"
+                      className={`w-full bg-black/40 border text-white p-2.5 rounded focus:outline-none focus:border-[#d4af37] transition ${
+                        errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
+                      }`}
                       placeholder="e.g. Technology, Commerce, Law"
                     />
+                    {errors.members?.[index]?.institute && (
+                      <span className="text-red-500 text-xs block mt-1">⚠ {errors.members[index]?.institute?.message}</span>
+                    )}
                   </div>
                 </div>
               </div>
