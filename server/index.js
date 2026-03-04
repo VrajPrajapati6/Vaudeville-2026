@@ -2,9 +2,13 @@ require('dotenv').config({ path: '../.env' });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const multer = require('multer');
+const https = require('https');
+const { v2: cloudinary } = require('cloudinary');
 
 const Event = require('./models/Event');
 const getRegistrationModel = require('./models/getRegistrationModel');
+const MerchOrder = require('./models/MerchOrder');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -12,6 +16,98 @@ const PORT = process.env.PORT || 5000;
 // ── Middleware ────────────────────────────────────────────────────────────────
 app.use(cors());
 app.use(express.json());
+
+// ── Cloudinary config ─────────────────────────────────────────────────────────
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// ── Multer (memory storage — file is uploaded to Cloudinary, not disk) ────────
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB max
+  fileFilter: (_req, file, cb) => {
+    if (file.mimetype.startsWith('image/')) cb(null, true);
+    else cb(new Error('Only image files are allowed.'));
+  },
+});
+
+// ── Google Apps Script webhook helper ────────────────────────────────────────
+// Node's built-in fetch converts POST → GET on 302 redirects (Apps Script does this).
+// We manually follow the redirect with https, keeping POST method.
+function appendToGoogleSheet(data) {
+  return new Promise((resolve) => {
+    const url = process.env.GOOGLE_APPS_SCRIPT_URL;
+    if (!url || url === 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
+      console.warn('Google Apps Script URL not set — skipping sheet update.');
+      return resolve();
+    }
+
+    const body = JSON.stringify(data);
+
+    // Step 1: POST to exec URL → triggers doPost() on Apps Script
+    // Apps Script always responds with 302 → script.googleusercontent.com
+    // Step 2: GET that redirect URL to retrieve the response
+    function getFrom(targetUrl) {
+      const parsed = new URL(targetUrl);
+      const req = https.request(
+        { hostname: parsed.hostname, path: parsed.pathname + parsed.search, method: 'GET' },
+        (res) => {
+          if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
+            return getFrom(res.headers.location);
+          }
+          let raw = '';
+          res.on('data', (chunk) => (raw += chunk));
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(raw);
+              if (!json.success) console.error('Apps Script returned error:', json);
+              else console.log('✅ Google Sheet updated successfully.');
+            } catch (_) {
+              console.error('Apps Script response parse error. Raw:', raw.slice(0, 300));
+            }
+            resolve();
+          });
+        }
+      );
+      req.on('error', (err) => { console.error('Google Sheets GET error:', err.message); resolve(); });
+      req.end();
+    }
+
+    const parsed = new URL(url);
+    const options = {
+      hostname: parsed.hostname,
+      path: parsed.pathname + parsed.search,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(body) },
+    };
+    const req = https.request(options, (res) => {
+      // Drain the POST response body (required before following redirect)
+      res.resume();
+      if ((res.statusCode === 301 || res.statusCode === 302) && res.headers.location) {
+        return getFrom(res.headers.location);
+      }
+      // Unexpected: no redirect — read directly
+      let raw = '';
+      res.on('data', (chunk) => (raw += chunk));
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(raw);
+          if (!json.success) console.error('Apps Script returned error:', json);
+          else console.log('✅ Google Sheet updated successfully.');
+        } catch (_) {
+          console.error('Apps Script response parse error. Raw:', raw.slice(0, 300));
+        }
+        resolve();
+      });
+    });
+    req.on('error', (err) => { console.error('Google Sheets POST error:', err.message); resolve(); });
+    req.write(body);
+    req.end();
+  });
+}
 
 // ── Static event catalogue (mirrors client/src/data/eventsData.ts) ────────────
 const EVENT_CATALOGUE = [
@@ -186,6 +282,72 @@ app.get('/api/events/:slug/registrations', async (req, res) => {
     res.json({ event: event.title, count: registrations.length, registrations });
   } catch (error) {
     res.status(500).json({ error: 'Failed to fetch registrations.' });
+  }
+});
+
+// POST /api/merch/order  →  Cloudinary upload + MongoDB + Google Sheets
+app.post('/api/merch/order', upload.single('screenshot'), async (req, res) => {
+  try {
+    const { name, transactionId, mobileNumber, rollNumber, year, branch, institute, size } = req.body;
+
+    // ── Field validation ──────────────────────────────────────────────────────
+    if (!name || !transactionId || !mobileNumber || !rollNumber || !year || !branch || !institute || !size) {
+      return res.status(400).json({ error: 'All fields are required.' });
+    }
+    if (!/^\d{10}$/.test(mobileNumber)) {
+      return res.status(400).json({ error: 'Mobile number must be exactly 10 digits.' });
+    }
+    if (!req.file) {
+      return res.status(400).json({ error: 'Payment screenshot is required.' });
+    }
+
+    // ── Duplicate transaction ID check ────────────────────────────────────────
+    const existing = await MerchOrder.findOne({ transactionId: transactionId.trim() });
+    if (existing) {
+      return res.status(409).json({ error: 'This transaction ID has already been submitted.' });
+    }
+
+    // ── Upload screenshot to Cloudinary ───────────────────────────────────────
+    const uploadResult = await new Promise((resolve, reject) => {
+      const stream = cloudinary.uploader.upload_stream(
+        { folder: 'vaudeville-merch', resource_type: 'image' },
+        (err, result) => (err ? reject(err) : resolve(result))
+      );
+      stream.end(req.file.buffer);
+    });
+    const screenshotUrl = uploadResult.secure_url;
+
+    // ── Save to MongoDB ───────────────────────────────────────────────────────
+    const order = new MerchOrder({
+      name: name.trim(),
+      transactionId: transactionId.trim(),
+      mobileNumber: mobileNumber.trim(),
+      rollNumber: rollNumber.trim(),
+      year,
+      branch,
+      institute: institute.trim(),
+      size,
+      screenshotUrl,
+    });
+    await order.save();
+
+    // ── Append to Google Sheet via Apps Script webhook ──────────────────
+    await appendToGoogleSheet({
+      name: name.trim(),
+      transactionId: transactionId.trim(),
+      mobileNumber: mobileNumber.trim(),
+      rollNumber: rollNumber.trim(),
+      year,
+      branch,
+      institute: institute.trim(),
+      size,
+      screenshotUrl,
+    });
+
+    res.status(201).json({ message: 'Order submitted successfully! We will verify your payment shortly.' });
+  } catch (error) {
+    console.error('Merch Order Error:', error);
+    res.status(500).json({ error: 'Failed to submit order. Please try again.' });
   }
 });
 

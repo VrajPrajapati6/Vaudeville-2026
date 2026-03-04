@@ -15,6 +15,7 @@ import EventRegister from "@/pages/EventRegister";
 import Timeline from "@/pages/Timeline";
 import Sponsors from "@/pages/Sponsors";
 import Merch from "@/pages/Merch";
+import MerchPayment from "@/pages/MerchPayment";
 import Core from "@/pages/Core";
 
 function Router() {
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/timeline" component={Timeline} />
       <Route path="/sponsors" component={Sponsors} />
       <Route path="/merch" component={Merch} />
+      <Route path="/merch/payment" component={MerchPayment} />
       <Route path="/core" component={Core} />
 
       <Route component={NotFound} />
