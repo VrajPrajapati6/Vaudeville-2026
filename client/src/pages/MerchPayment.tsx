@@ -50,7 +50,8 @@ export default function MerchPayment() {
       formData.append("size", data.size);
       formData.append("screenshot", data.screenshot[0]);
 
-      const response = await fetch("http://localhost:5000/api/merch/order", {
+      const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000";
+      const response = await fetch(`${API_URL}/api/merch/order`, {
         method: "POST",
         body: formData, // no Content-Type header — browser sets multipart boundary
       });

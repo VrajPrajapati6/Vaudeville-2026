@@ -13,4 +13,9 @@ export default defineConfig({
       "@": path.resolve(__dirname, "client/src"),
     },
   },
+
+  build: {
+    outDir: path.resolve(__dirname, "client/dist"),
+    emptyOutDir: true,
+  },
 });
