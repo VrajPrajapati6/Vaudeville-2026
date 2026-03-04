@@ -17,7 +17,6 @@ type FormData = {
   screenshot: FileList;
 };
 
-const BRANCHES = ["CSE", "IT", "Mechanical", "Civil", "Electronics", "Electrical", "Chemical", "Biotechnology", "Other"];
 
 export default function MerchPayment() {
   const [, setLocation] = useLocation();
@@ -235,15 +234,12 @@ export default function MerchPayment() {
 
               <div className="space-y-1">
                 <label className="text-gray-300 text-sm font-cinzel">Branch</label>
-                <select
-                  {...register("branch", { required: "Please select a branch" })}
-                  className={selectClass(!!errors.branch)}
-                >
-                  <option value="">Select Branch</option>
-                  {BRANCHES.map(b => (
-                    <option key={b} value={b}>{b}</option>
-                  ))}
-                </select>
+                <input
+                  type="text"
+                  placeholder="e.g. CSE, Mechanical…"
+                  {...register("branch", { required: "Branch is required" })}
+                  className={inputClass(!!errors.branch)}
+                />
                 {errMsg(errors.branch?.message)}
               </div>
             </div>
