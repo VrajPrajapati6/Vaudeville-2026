@@ -1,18 +1,34 @@
-export const events = [
+export const EVENTS = [
   {
-    slug: "treasure-hunt",
-    title: "Treasure Hunt",
-    shortDesc: "Decode. Discover. Dominate.",
-    description: "Full event description here...",
-    rules: [
-      "Team size: 2-4 members",
-      "No external help allowed",
-      "Decision of judges is final"
-    ],
-    prize: "₹20,000",
-    venue: "Central Auditorium",
-    date: "20 March 2026",
-    coordinator: "John Doe",
+    id: 1,
+    name: "Treasure Hunt",
+    chapter: "Chapter I",
+    description: "Solve riddles to find the hidden chest.",
+    x: "20%",
+    y: "20%"
   },
-  // add all 20 events here
-];
+  {
+    id: 2,
+    name: "Sea Battle",
+    chapter: "Chapter II",
+    description: "Naval strategy game with miniature ships.",
+    x: "40%",
+    y: "50%"
+  },
+  {
+    id: 3,
+    name: "Pirate Ball",
+    chapter: "Chapter III",
+    description: "A night of music and rum-inspired drinks.",
+    x: "70%",
+    y: "30%"
+  },
+  {
+    id: 4,
+    name: "The Black Spot",
+    chapter: "Chapter IV",
+    description: "Elite coding competition for the bold.",
+    x: "85%",
+    y: "75%"
+  }
+]

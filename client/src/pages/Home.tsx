@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "wouter";
+import CinematicScene from "@/components/CinematicScene"
 import PirateNavbar from "@/components/layout/PirateNavbar";
 import HeroScene from "@/scenes/HeroScene"; 
-import CampusScene from "@/scenes/CampusScene";
-import EventsScene from "@/scenes/EventsScene";
 import invasionBg from "@/assets/images/04.webp";
 import { motion, AnimatePresence, useSpring, useTransform, useScroll, useMotionValue } from "framer-motion";
 import loadingBg from "@/assets/images/loading-bg.png";
@@ -13,8 +13,14 @@ import pirateMap from "@/assets/images/pirate-map.png";
 import preloaderShip from "@/assets/images/preloader-ship.png";
 import parchmentImg from "@/assets/images/parchment.png";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
-import CountdownScene from "@/scenes/CountdownScene";
-import TimelineVenueScene from "@/scenes/TimelineVenueScene";
+import { Ship } from "lucide-react";
+import VoyageSection from "@/components/VoyageSection"
+import aboutImg from "@/assets/images/05.webp"
+import eventsImg from "@/assets/images/06.webp"
+import timelineImg from "@/assets/images/07.webp"
+import sponsorsImg from "@/assets/images/08.webp"
+import merchImg from "@/assets/images/09.webp"
+import coreImg from "@/assets/images/10.webp"
 
 type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 
@@ -26,6 +32,7 @@ const EVENTS = [
 ];
 
 export default function Home() {
+  const [, navigate] = useLocation();
   const [stage, setStage] = useState<Stage>("loading");
   const [progress, setProgress] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<typeof EVENTS[0] | null>(null);
@@ -337,22 +344,60 @@ const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
         {/* ---------------- MAIN ---------------- */}
         {stage === "main" && (
           <motion.div
-            key="main"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="fixed inset-0 z-20 overflow-y-auto bg-[#0a0a0a]"
-          >
+  key="main"
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 1 }}
+  className="relative z-20 bg-[#0a0a0a]"
+>
 
             {/* NAV */}
            <PirateNavbar />
 
            <div className="snap-y snap-mandatory">
                 <HeroScene />
-                <CampusScene />
-                <EventsScene />
-                <CountdownScene />
-                <TimelineVenueScene />
-           </div>
+                <VoyageSection
+    image={aboutImg}
+    title="About Vaudeville"
+    subtitle="Discover the legend"
+    link="/about"
+  />
+
+  <VoyageSection
+    image={eventsImg}
+    title="Events"
+    subtitle="Where adventure begins"
+    link="/events"
+  />
+
+  <VoyageSection
+    image={timelineImg}
+    title="Timeline"
+    subtitle="The chronicles unfold"
+    link="/timeline"
+  />
+
+  <VoyageSection
+    image={sponsorsImg}
+    title="Sponsors"
+    subtitle="Our allies at sea"
+    link="/sponsors"
+  />
+
+  <VoyageSection
+    image={merchImg}
+    title="Merch"
+    subtitle="Wear the legend"
+    link="/merch"
+  />
+
+  <VoyageSection
+    image={coreImg}
+    title="Core Crew"
+    subtitle="Meet the captains"
+    link="/core"
+  />
+
+</div>
 
             {/* DIALOG */}
             <Dialog open={!!selectedEvent} onOpenChange={() => setSelectedEvent(null)}>
