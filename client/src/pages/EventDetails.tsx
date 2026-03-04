@@ -1,4 +1,4 @@
-import { useRoute } from "wouter"
+import { useRoute, Link } from "wouter"
 import PiratePageLayout from "@/components/layout/PiratePageLayout"
 import { events } from "@/data/eventsData"
 
@@ -62,15 +62,14 @@ Prize Pool
 
 </div>
 
-<a
-href={event.registrationLink}
-target="_blank"
+<Link
+href={`/register/${event.slug}`}
 className="inline-block mt-10 px-6 py-3 border border-[#d4af37] text-[#d4af37] font-cinzel hover:bg-[#d4af37] hover:text-black transition"
 >
 
 Register Now
 
-</a>
+</Link>
 
 </div>
 
