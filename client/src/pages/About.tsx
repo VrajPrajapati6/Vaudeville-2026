@@ -1,10 +1,20 @@
+import PiratePageLayout from "@/components/layout/PiratePageLayout";
+
 export default function About() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white grid place-items-center px-6">
-      <section className="text-center">
-        <h1 className="font-pirata text-5xl text-[#d4af37]">About Vaudeville</h1>
-        <p className="mt-4 font-cinzel text-white/80">Content coming soon.</p>
-      </section>
-    </main>
+    <PiratePageLayout title="About Vaudeville">
+
+      <p className="font-cinzel text-lg leading-relaxed text-gray-300">
+        Vaudeville is the annual cultural and technical festival of the
+        Electronics & Instrumentation Department at Nirma University.
+
+        The event brings together creativity, innovation, and competition
+        through various events, workshops, and performances.
+
+        Each year Vaudeville transforms the campus into an arena of
+        exploration, collaboration, and discovery.
+      </p>
+
+    </PiratePageLayout>
   );
 }
