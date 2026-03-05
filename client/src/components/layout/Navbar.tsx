@@ -1,92 +1,91 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
+import { Link, useLocation } from "wouter";
 
 const navItems = [
+  { name: "About", path: "/about" },
   { name: "Events", path: "/events" },
   { name: "Timeline", path: "/timeline" },
   { name: "Sponsors", path: "/sponsors" },
   { name: "Merch", path: "/merch" },
-  { name: "Core", path: "/core" },
+  { name: "Crew", path: "/core" },
 ];
 
-export default function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
+export default function PirateNavbar() {
+
   const [location] = useLocation();
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 60);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   return (
     <motion.nav
-      initial={{ opacity: 0, y: -40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      className={`fixed top-0 w-full z-50 transition-all duration-500
-        ${
-          scrolled
-            ? "bg-black/80 backdrop-blur-lg shadow-lg border-b border-yellow-600/30"
-            : "bg-black/40 backdrop-blur-md"
-        }
-      `}
+      initial={{ y: -80, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="
+        fixed top-0 left-0 w-full z-50
+        backdrop-blur-md
+        bg-black/40
+        border-b border-[#d4af37]/20
+      "
     >
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-6 py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between px-8 py-4">
 
         {/* LOGO */}
         <Link href="/">
           <motion.div
             whileHover={{ scale: 1.1 }}
-            transition={{ type: "spring", stiffness: 300 }}
-            className="text-2xl font-pirata text-yellow-400 cursor-pointer text-glow"
+            className="text-2xl font-pirata text-[#d4af37] cursor-pointer"
           >
             Vaudeville
           </motion.div>
         </Link>
 
         {/* NAV LINKS */}
-        <ul className="flex items-center gap-8 font-cinzel text-sm tracking-wider">
+        <div className="flex items-center gap-8">
 
-          {navItems.map((item) => (
-            <motion.li
-              key={item.name}
-              whileHover={{
-                scale: 1.1,
-                textShadow: "0px 0px 10px rgba(212,175,55,0.8)",
-              }}
-              transition={{ type: "spring", stiffness: 300 }}
-              className="relative"
-            >
-              <Link href={item.path}>
-                <span
-                  className={`cursor-pointer transition-colors duration-300 ${
-                    location === item.path
-                      ? "text-yellow-400"
-                      : "text-white/80 hover:text-yellow-400"
-                  }`}
+          {navItems.map((item) => {
+
+            const isActive = location === item.path;
+
+            return (
+              <Link key={item.name} href={item.path}>
+                <motion.div
+                  whileHover={{ y: -2 }}
+                  className="relative font-cinzel text-sm tracking-wider cursor-pointer"
                 >
-                  {item.name}
-                </span>
+
+                  <span
+                    className={`
+                    transition-colors duration-300
+                    ${isActive ? "text-[#d4af37]" : "text-white/80"}
+                  `}
+                  >
+                    {item.name}
+                  </span>
+
+                  {/* Animated underline */}
+                  <motion.span
+                    layoutId="nav-underline"
+                    className="absolute left-0 -bottom-1 h-[2px] bg-[#d4af37]"
+                    style={{
+                      width: isActive ? "100%" : "0%"
+                    }}
+                  />
+
+                  {/* Hover glow */}
+                  <motion.span
+                    initial={{ width: 0 }}
+                    whileHover={{ width: "100%" }}
+                    className="
+                      absolute left-0 -bottom-1
+                      h-[2px] bg-[#d4af37]/50
+                    "
+                  />
+
+                </motion.div>
               </Link>
+            );
+          })}
 
-              {/* animated underline */}
-              <motion.div
-                layoutId="navbar-underline"
-                className={`absolute left-0 -bottom-2 h-[2px] bg-yellow-400 ${
-                  location === item.path ? "w-full" : "w-0"
-                }`}
-              />
-            </motion.li>
-          ))}
-
-        </ul>
-
+        </div>
       </div>
     </motion.nav>
   );
