@@ -1,4 +1,4 @@
-import PirateNavbar from "./PirateNavbar";
+import PirateNavbar from "./Navbar";
 
 interface Props {
   title: string;

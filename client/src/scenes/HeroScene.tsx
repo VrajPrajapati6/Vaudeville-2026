@@ -3,7 +3,7 @@ import heroBg from "@/assets/images/04.webp"; // Use your best wide fog skyline 
 
 export default function HeroScene() {
   return (
-    <section className="relative h-screen w-full snap-start overflow-hidden">
+    <section id="hero" className="relative h-screen w-full snap-start overflow-hidden">
 
       {/* Background Image */}
       <div
@@ -61,21 +61,44 @@ export default function HeroScene() {
           The campus will never be the same.
         </motion.p>
 
-        {/* CTA Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.3, duration: 0.8 }}
-          className="mt-10 flex flex-col sm:flex-row gap-4 sm:gap-6"
-        >
-          <button className="px-8 py-4 border border-[#d4af37] text-[#d4af37] font-cinzel tracking-widest text-sm hover:bg-[#d4af37]/10 transition-all duration-300">
-            DISCOVER EVENTS
-          </button>
+      {/* Scroll Indicator */}
+<motion.div
+  initial={{ opacity: 0 }}
+  animate={{ opacity: 0.7 }}
+  transition={{
+    delay: 1.5,
+    duration: 1,
+    repeat: Infinity,
+    repeatType: "reverse"
+  }}
+  onClick={() => {
+    window.scrollTo({
+      top: window.innerHeight,
+      behavior: "smooth"
+    });
+  }}
+  className="mt-16 flex flex-col items-center cursor-pointer"
+>
 
-          <button className="px-8 py-4 bg-[#d4af37] text-black font-cinzel tracking-widest text-sm hover:bg-[#c49b2e] transition-all duration-300">
-            ENLIST NOW
-          </button>
-        </motion.div>
+  <span className="font-cinzel text-[10px] tracking-[0.4em] uppercase text-[#d4af37]">
+    Scroll
+  </span>
+
+  <div className="mt-3 w-[2px] h-10 bg-[#d4af37]/60 relative overflow-hidden">
+
+    <motion.div
+      animate={{ y: [0, 20, 0] }}
+      transition={{
+        duration: 1.5,
+        repeat: Infinity,
+        ease: "easeInOut"
+      }}
+      className="absolute w-full h-3 bg-[#d4af37]"
+    />
+
+  </div>
+
+</motion.div>
 
         {/* Scroll Indicator */}
         <motion.div

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import CinematicScene from "@/components/CinematicScene"
-import PirateNavbar from "@/components/layout/PirateNavbar";
+import PirateNavbar from "@/components/layout/Navbar";
 import HeroScene from "@/scenes/HeroScene"; 
 import invasionBg from "@/assets/images/04.webp";
 import { motion, AnimatePresence, useSpring, useTransform, useScroll, useMotionValue } from "framer-motion";
@@ -343,59 +343,61 @@ const rotateY = useTransform(mouseX, [-300, 300], [-10, 10]);
 
         {/* ---------------- MAIN ---------------- */}
         {stage === "main" && (
-          <motion.div
-  key="main"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  className="relative z-20 bg-[#0a0a0a]"
->
+  <motion.div
+    key="main"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    className="relative z-20 bg-[#0a0a0a]"
+  >
 
-            {/* NAV */}
-           <PirateNavbar />
+    {/* NAVBAR ONLY IN MAIN */}
+    <PirateNavbar />
 
-           <div className="snap-y snap-mandatory">
-                <HeroScene />
-                <VoyageSection
-    image={aboutImg}
-    title="About Vaudeville"
-    subtitle="Discover the legend"
-    link="/about"
-  />
+    <div className="snap-y snap-mandatory">
 
-  <VoyageSection
-    image={eventsImg}
-    title="Events"
-    subtitle="Where adventure begins"
-    link="/events"
-  />
+      <HeroScene />
 
-  <VoyageSection
-    image={timelineImg}
-    title="Timeline"
-    subtitle="The chronicles unfold"
-    link="/timeline"
-  />
+      <VoyageSection
+        image={aboutImg}
+        title="About Vaudeville"
+        subtitle="Discover the legend"
+        link="/about"
+      />
 
-  <VoyageSection
-    image={sponsorsImg}
-    title="Sponsors"
-    subtitle="Our allies at sea"
-    link="/sponsors"
-  />
+      <VoyageSection
+        image={eventsImg}
+        title="Events"
+        subtitle="Where adventure begins"
+        link="/events"
+      />
 
-  <VoyageSection
-    image={merchImg}
-    title="Merch"
-    subtitle="Wear the legend"
-    link="/merch"
-  />
+      <VoyageSection
+        image={timelineImg}
+        title="Timeline"
+        subtitle="The chronicles unfold"
+        link="/timeline"
+      />
 
-  <VoyageSection
-    image={coreImg}
-    title="Core Crew"
-    subtitle="Meet the captains"
-    link="/core"
-  />
+      <VoyageSection
+        image={sponsorsImg}
+        title="Sponsors"
+        subtitle="Our allies at sea"
+        link="/sponsors"
+      />
+
+      <VoyageSection
+        image={merchImg}
+        title="Merch"
+        subtitle="Wear the legend"
+        link="/merch"
+      />
+
+      <VoyageSection
+        image={coreImg}
+        title="Core Crew"
+        subtitle="Meet the captains"
+        link="/core"
+      />
 
 </div>
 
