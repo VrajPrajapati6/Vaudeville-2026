@@ -25,7 +25,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center md:items-start justify-between gap-12 md:gap-8">
         
         {/* Left Section - Contact Us */}
-        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left">
+        <div className="flex-1 flex flex-col items-center md:items-start text-center md:text-left order-last md:order-1">
           <h3 className="font-cinzel text-xl text-[#d4af37] tracking-widest mb-6">Contact Us</h3>
           
           <div className="flex flex-col gap-4 font-cinzel text-sm text-[#e0e0e0]/80">
@@ -46,11 +46,11 @@ export default function Footer() {
         </div>
 
         {/* Center Section - Social Media */}
-        <div className="flex-1 flex flex-col items-center justify-center text-center">
+        <div className="flex-1 flex flex-col items-center justify-center text-center order-first md:order-2 mb-8 md:mb-0">
           <h3 className="font-cinzel text-xl text-[#d4af37] tracking-widest mb-6">Follow Us</h3>
           
           <a 
-            href="https://instagram.com/vaudeville" 
+            href="https://www.instagram.com/cultcomm.itnu?igsh=MTJuZXhmNXJ6czQycw==" 
             target="_blank" 
             rel="noreferrer"
             className="group flex flex-col items-center gap-3 hover:text-[#d4af37] transition-all duration-300"
@@ -60,9 +60,9 @@ export default function Footer() {
             </div>
           </a>
         </div>
-
+        
         {/* Right Section - Developed By */}
-        <div className="flex-1 flex flex-col items-center md:items-end text-center md:text-right">
+        <div className="flex-1 flex flex-col items-center md:items-end text-center md:text-right order-2 md:order-3 mb-8 md:mb-0">
           <h3 className="font-cinzel text-xl text-[#d4af37] tracking-widest mb-6">Developed By</h3>
           <div className="flex flex-col gap-4 font-cinzel text-sm">
             <p className="text-[#d4af37]/90 font-bold tracking-wider">Pal Patel</p>
@@ -71,6 +71,13 @@ export default function Footer() {
           </div>
         </div>
 
+      </div>
+
+      {/* Copyright Line */}
+      <div className="mt-16 max-w-7xl mx-auto border-t border-[#d4af37]/20 pt-6 flex justify-center items-center relative z-20">
+        <p className="font-cinzel text-xs text-[#d4af37]/70 tracking-widest flex items-center gap-2">
+          &copy; Vaudeville 2026 <span className="text-[#d4af37]/40">•</span> Nirma University
+        </p>
       </div>
 
     </footer>
