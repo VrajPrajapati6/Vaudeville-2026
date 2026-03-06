@@ -7,12 +7,12 @@ export default function HeroScene() {
 
       {/* Background Image */}
       <div
-        className="absolute inset-0 bg-cover bg-center will-change-transform"
+        className="absolute inset-0 bg-cover bg-center will-change-transform opacity-20 mix-blend-overlay"
         style={{ backgroundImage: `url(${heroBg})` }}
       />
 
       {/* Cinematic Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-black/85 via-black/60 to-black/90" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80 pointer-events-none" />
 
       {/* Subtle Fog Overlay (Lightweight CSS effect) */}
       <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_50%_30%,rgba(255,255,255,0.06),transparent_60%)]" />
@@ -61,44 +61,44 @@ export default function HeroScene() {
           The campus will never be the same.
         </motion.p>
 
-      {/* Scroll Indicator */}
-<motion.div
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 0.7 }}
-  transition={{
-    delay: 1.5,
-    duration: 1,
-    repeat: Infinity,
-    repeatType: "reverse"
-  }}
-  onClick={() => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: "smooth"
-    });
-  }}
-  className="mt-16 flex flex-col items-center cursor-pointer"
->
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.7 }}
+          transition={{
+            delay: 1.5,
+            duration: 1,
+            repeat: Infinity,
+            repeatType: "reverse"
+          }}
+          onClick={() => {
+            window.scrollTo({
+              top: window.innerHeight,
+              behavior: "smooth"
+            });
+          }}
+          className="mt-16 flex flex-col items-center cursor-pointer"
+        >
 
-  <span className="font-cinzel text-[10px] tracking-[0.4em] uppercase text-[#d4af37]">
-    Scroll
-  </span>
+          <span className="font-cinzel text-[10px] tracking-[0.4em] uppercase text-[#d4af37]">
+            Scroll
+          </span>
 
-  <div className="mt-3 w-[2px] h-10 bg-[#d4af37]/60 relative overflow-hidden">
+          <div className="mt-3 w-[2px] h-10 bg-[#d4af37]/60 relative overflow-hidden">
 
-    <motion.div
-      animate={{ y: [0, 20, 0] }}
-      transition={{
-        duration: 1.5,
-        repeat: Infinity,
-        ease: "easeInOut"
-      }}
-      className="absolute w-full h-3 bg-[#d4af37]"
-    />
+            <motion.div
+              animate={{ y: [0, 20, 0] }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              className="absolute w-full h-3 bg-[#d4af37]"
+            />
 
-  </div>
+          </div>
 
-</motion.div>
+        </motion.div>
 
         {/* Scroll Indicator */}
         <motion.div

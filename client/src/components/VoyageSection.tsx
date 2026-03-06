@@ -17,11 +17,11 @@ export default function VoyageSection({ image, title, subtitle, link }: Props) {
       {/* Background */}
       <img
         src={image}
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover opacity-15 mix-blend-overlay"
       />
 
       {/* Dark Overlay */}
-      <div className="absolute inset-0 bg-black/50" />
+      <div className="absolute inset-0 bg-transparent" />
 
       {/* Content */}
       <div className="relative z-10 flex flex-col items-center justify-center h-full text-center">
