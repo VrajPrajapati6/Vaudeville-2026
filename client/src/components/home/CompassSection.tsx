@@ -91,15 +91,21 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
                 {/* Compass */}
                 <motion.div
                     ref={compassRef}
-                    style={{ rotateX, rotateY }}
+                    style={{ rotateX, rotateY, willChange: "transform, opacity" }}
                     animate={
                         stage === "activating"
-                            ? { scale: 1.1 }
+                            ? { scale: 1.05, rotate: 360 }
                             : stage === "revealing"
-                                ? { scale: 4, opacity: 0 }
-                                : { scale: 1, opacity: 1 }
+                                ? { scale: 4, opacity: 0, rotate: 720 }
+                                : { scale: 1, opacity: 1, rotate: 0 }
                     }
-                    transition={{ duration: 0.8, ease: "easeInOut" }}
+                    transition={
+                        stage === "activating"
+                            ? { duration: 0.7, ease: "easeInOut" }
+                            : stage === "revealing"
+                                ? { duration: 1.0, ease: "easeInOut" }
+                                : { duration: 0.4 }
+                    }
                     className="
             relative
             w-[min(75vw,75vh)]

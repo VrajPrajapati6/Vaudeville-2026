@@ -28,7 +28,16 @@ const EVENTS = [
 export default function Home() {
   const [, navigate] = useLocation();
   const [stage, setStage] = useState<Stage>(() => {
-    return sessionStorage.getItem("hasSeenIntro") === "true" ? "main" : "loading";
+    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
+    const isReload = nav?.type === "reload";
+    // On hard reload: always clear the flag and show intro
+    if (isReload) {
+      sessionStorage.removeItem("hasSeenIntro");
+      return "loading";
+    }
+    // On back button / soft navigation: skip intro if already seen
+    if (sessionStorage.getItem("hasSeenIntro") === "true") return "main";
+    return "loading";
   });
   const [progress, setProgress] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<DashboardEvent | null>(null);
@@ -46,7 +55,10 @@ export default function Home() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
-          setTimeout(() => setStage("compass"), 500);
+          setTimeout(() => {
+            setStage("compass");
+            sessionStorage.setItem("hasSeenIntro", "true");
+          }, 500);
           return 100;
         }
         return prev + step;
@@ -65,7 +77,6 @@ export default function Home() {
 
     setTimeout(() => {
       setStage("main");
-      sessionStorage.setItem("hasSeenIntro", "true");
     }, 1700);
   };
 
