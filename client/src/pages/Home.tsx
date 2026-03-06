@@ -1,13 +1,13 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { motion, AnimatePresence, useTransform, useScroll } from "framer-motion";
-import StoryScene from "@/components/3d/StoryScene";
+import { motion, AnimatePresence, useScroll } from "framer-motion";
 import PirateNavbar from "@/components/layout/Navbar";
 import HeroScene from "@/scenes/HeroScene";
 import VoyageSection from "@/components/VoyageSection";
 import Preloader from "@/components/home/Preloader";
 import CompassSection from "@/components/home/CompassSection";
 import EventDialog, { DashboardEvent } from "@/components/home/EventDialog";
+import Footer from "@/components/layout/Footer";
 
 import aboutImg from "@/assets/images/05.webp";
 import eventsImg from "@/assets/images/06.webp";
@@ -28,21 +28,30 @@ const EVENTS = [
 export default function Home() {
   const [, navigate] = useLocation();
   const [stage, setStage] = useState<Stage>(() => {
-    const nav = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
-    const isReload = nav?.type === "reload";
-    // On hard reload: always clear the flag and show intro
-    if (isReload) {
-      sessionStorage.removeItem("hasSeenIntro");
-      return "loading";
+    // Check for hard refresh via our custom sessionStorage flag
+    if (sessionStorage.getItem("is_reloading") === "true") {
+      sessionStorage.removeItem("is_reloading");
+      sessionStorage.removeItem("visited");
     }
-    // On back button / soft navigation: skip intro if already seen
-    if (sessionStorage.getItem("hasSeenIntro") === "true") return "main";
+
+    // Check visited flag
+    if (sessionStorage.getItem("visited") === "true") {
+      return "main";
+    }
     return "loading";
   });
   const [progress, setProgress] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<DashboardEvent | null>(null);
 
   const { scrollYProgress } = useScroll();
+
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      sessionStorage.setItem("is_reloading", "true");
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, []);
 
   useEffect(() => {
     if (stage !== "loading") return;
@@ -57,7 +66,7 @@ export default function Home() {
           clearInterval(timer);
           setTimeout(() => {
             setStage("compass");
-            sessionStorage.setItem("hasSeenIntro", "true");
+            sessionStorage.setItem("visited", "true");
           }, 500);
           return 100;
         }
@@ -103,9 +112,6 @@ export default function Home() {
             animate={{ opacity: 1 }}
             className="relative z-20 bg-transparent"
           >
-
-            {/* 3D SCENE BACKGROUND */}
-            <StoryScene scrollYProgress={scrollYProgress} />
 
             {/* NAVBAR ONLY IN MAIN */}
             <PirateNavbar />
@@ -155,6 +161,10 @@ export default function Home() {
                 subtitle="Meet the captains"
                 link="/core"
               />
+
+              <div className="snap-start relative w-full pt-0">
+                <Footer />
+              </div>
 
             </div>
 

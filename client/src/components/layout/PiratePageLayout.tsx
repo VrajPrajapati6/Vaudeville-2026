@@ -37,6 +37,8 @@ export default function PiratePageLayout({ title, children }: Props) {
       {/* Page Content */}
       <section className="max-w-6xl mx-auto px-6 pb-20">
 
+        {children}
+
         {/* Back to Voyage Button */}
         <motion.button
           onClick={goBackToHero}
@@ -44,9 +46,10 @@ export default function PiratePageLayout({ title, children }: Props) {
           whileTap={{ scale: 0.95 }}
           className="
           group
-          mb-10
+          mt-12
           flex items-center gap-3
           px-6 py-3
+          w-fit
           border border-[#d4af37]
           text-[#d4af37]
           font-cinzel
@@ -85,8 +88,6 @@ export default function PiratePageLayout({ title, children }: Props) {
           />
 
         </motion.button>
-
-        {children}
       </section>
 
     </div>

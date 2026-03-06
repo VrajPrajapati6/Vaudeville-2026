@@ -77,7 +77,7 @@ export default function HeroScene() {
               behavior: "smooth"
             });
           }}
-          className="mt-16 flex flex-col items-center cursor-pointer"
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center cursor-pointer"
         >
 
           <span className="font-cinzel text-[10px] tracking-[0.4em] uppercase text-[#d4af37]">
@@ -98,24 +98,6 @@ export default function HeroScene() {
 
           </div>
 
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.5 }}
-          transition={{
-            delay: 2,
-            duration: 1,
-            repeat: Infinity,
-            repeatType: "reverse"
-          }}
-          className="absolute bottom-10 flex flex-col items-center text-[#d4af37]/60"
-        >
-          <span className="font-cinzel text-[9px] tracking-[0.4em] uppercase">
-            Scroll
-          </span>
-          <div className="w-[1px] h-6 bg-[#d4af37]/60 mt-2" />
         </motion.div>
 
       </div>

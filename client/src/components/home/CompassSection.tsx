@@ -94,9 +94,9 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
                     style={{ rotateX, rotateY, willChange: "transform, opacity" }}
                     animate={
                         stage === "activating"
-                            ? { scale: 1.05, rotate: 360 }
+                            ? { scale: 1.05 }
                             : stage === "revealing"
-                                ? { scale: 4, opacity: 0, rotate: 720 }
+                                ? { scale: 4, opacity: 0, rotate: 360 }
                                 : { scale: 1, opacity: 1, rotate: 0 }
                     }
                     transition={
