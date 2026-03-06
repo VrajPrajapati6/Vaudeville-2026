@@ -38,7 +38,7 @@ export default function Home() {
   useEffect(() => {
     if (stage !== "loading") return;
 
-    const duration = 3000;
+    const duration = 5000;
     const interval = 30;
     const step = 100 / (duration / interval);
 

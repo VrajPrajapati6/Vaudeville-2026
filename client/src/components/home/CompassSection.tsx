@@ -64,7 +64,7 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 flex flex-col items-center justify-center z-30"
+            className="fixed inset-0 flex flex-col items-center justify-center z-30"
         >
             {/* Background */}
             <motion.div
