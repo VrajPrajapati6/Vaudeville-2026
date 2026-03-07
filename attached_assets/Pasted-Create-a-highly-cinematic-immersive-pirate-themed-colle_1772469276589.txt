@@ -1,0 +1,76 @@
+Create a highly cinematic, immersive, pirate-themed college cultural fest website with a strong focus on motion, storytelling, and smooth transitions.
+The website must be fully responsive and adapt seamlessly to mobile, tablet, laptop, and desktop screens.
+
+LOADING / INTRO PAGE (MANDATORY)
+
+The website must start with a full-screen loading screen.
+
+Centered text: “VAUDEVILLE” in a bold, cinematic pirate-style typography.
+
+Below or around the text, show a percentage loader from 0% to 100% with a smooth animated progress effect.
+
+Background should be dark, atmospheric, and pirate-inspired (fog, subtle grain, ocean tones).
+
+When loading reaches 100%, smoothly fade out the loader elements.
+
+COMPASS REVEAL SCENE
+
+After loading completes, reveal a large, detailed pirate compass at the center of the screen.
+
+The background should be a high-quality Pirates of the Caribbean–inspired environment (stormy sea, old map texture, moonlight, fog, cinematic lighting).
+
+The compass should appear with a subtle zoom-in and glow animation.
+
+Place a clear “ENTER THE VOYAGE” button below the compass.
+
+The button should have a pirate-style hover animation (glow, pulse, or shimmer).
+
+ENTER INTERACTION (VERY IMPORTANT)
+
+When the user clicks the ENTER button:
+
+The compass should rotate smoothly (like a real compass reacting).
+
+After rotation, the compass should zoom out rapidly toward the screen center.
+
+During the zoom-out, apply a motion blur / depth transition to create a cinematic portal effect.
+
+This transition should seamlessly lead into the main homepage, without a hard cut.
+
+MAIN PAGE TRANSITION
+
+The main homepage should fade/slide in as the compass zooms away.
+
+Maintain the same pirate color palette and cinematic tone for continuity.
+
+Animations should feel smooth, premium, and story-driven — not flashy or random.
+
+ANIMATION & PERFORMANCE RULES
+
+Use smooth easing (cinematic, not bouncy).
+
+Heavy animations on desktop, optimized and lighter animations on mobile.
+
+Provide graceful fallbacks for low-end devices.
+
+No lag, no abrupt cuts.
+
+RESPONSIVENESS
+
+Mobile-first design.
+
+Compass and button must resize and reposition correctly on smaller screens.
+
+Touch-friendly interactions on mobile.
+
+No horizontal scrolling on any device.
+
+OVERALL FEEL
+
+The experience should feel like entering a pirate legend, not just loading a website.
+
+Dark, immersive, dramatic, premium.
+
+Inspired by Pirates of the Caribbean but not a visual copy of any existing website.
+
+Build this as a modern, animation-rich website experience suitable for a college cultural fest landing page.

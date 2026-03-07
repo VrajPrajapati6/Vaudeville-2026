@@ -1,54 +1,52 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
-import { motion, AnimatePresence, useScroll } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+
 import PirateNavbar from "@/components/layout/Navbar";
 import HeroScene from "@/scenes/HeroScene";
-import VoyageSection from "@/components/VoyageSection";
 import Preloader from "@/components/home/Preloader";
 import CompassSection from "@/components/home/CompassSection";
 import EventDialog, { DashboardEvent } from "@/components/home/EventDialog";
 import Footer from "@/components/layout/Footer";
 
-import aboutImg from "@/assets/images/05.webp";
-import eventsImg from "@/assets/images/06.webp";
-import timelineImg from "@/assets/images/07.webp";
-import sponsorsImg from "@/assets/images/08.webp";
-import merchImg from "@/assets/images/09.webp";
-import coreImg from "@/assets/images/10.webp";
+import mapImg from "@/assets/images/parchment.png";
 
 export type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 
-const EVENTS = [
-  { id: 1, name: "Treasure Hunt", chapter: "Chapter I", description: "Solve riddles to find the hidden chest.", x: "20%", y: "20%" },
-  { id: 2, name: "Sea Battle", chapter: "Chapter II", description: "Naval strategy game with miniature ships.", x: "40%", y: "50%" },
-  { id: 3, name: "Pirate Ball", chapter: "Chapter III", description: "A night of music and rum-inspired drinks.", x: "70%", y: "30%" },
-  { id: 4, name: "The Black Spot", chapter: "Chapter IV", description: "Elite coding competition for the bold.", x: "85%", y: "75%" },
+const STOPS = [
+  { title: "About Vaudeville", subtitle: "Discover the legend", link: "/about", align: "left", trigger: 0.12 },
+  { title: "Events", subtitle: "Where adventure begins", link: "/events", align: "right", trigger: 0.28 },
+  { title: "Timeline", subtitle: "The chronicles unfold", link: "/timeline", align: "left", trigger: 0.45 },
+  { title: "Sponsors", subtitle: "Our allies at sea", link: "/sponsors", align: "right", trigger: 0.58 },
+  { title: "Merch", subtitle: "Wear the legend", link: "/merch", align: "left", trigger: 0.70 },
+  { title: "Core Crew", subtitle: "Meet the captains", link: "/core", align: "right", trigger: 0.82 },
 ];
 
 export default function Home() {
   const [, navigate] = useLocation();
+
   const [stage, setStage] = useState<Stage>(() => {
-    // Check for hard refresh via our custom sessionStorage flag
     if (sessionStorage.getItem("is_reloading") === "true") {
       sessionStorage.removeItem("is_reloading");
       sessionStorage.removeItem("visited");
     }
 
-    // Check visited flag
-    if (sessionStorage.getItem("visited") === "true") {
-      return "main";
-    }
+    if (sessionStorage.getItem("visited") === "true") return "main";
+
     return "loading";
   });
+
   const [progress, setProgress] = useState(0);
   const [selectedEvent, setSelectedEvent] = useState<DashboardEvent | null>(null);
 
   const { scrollYProgress } = useScroll();
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1]);
 
   useEffect(() => {
     const handleBeforeUnload = () => {
       sessionStorage.setItem("is_reloading", "true");
     };
+
     window.addEventListener("beforeunload", handleBeforeUnload);
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
   }, []);
@@ -64,12 +62,15 @@ export default function Home() {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(timer);
+
           setTimeout(() => {
             setStage("compass");
             sessionStorage.setItem("visited", "true");
           }, 500);
+
           return 100;
         }
+
         return prev + step;
       });
     }, interval);
@@ -82,11 +83,12 @@ export default function Home() {
 
     setTimeout(() => {
       setStage("revealing");
-    }, 700);
+    }, 600);
 
     setTimeout(() => {
+      window.scrollTo(0, 0);
       setStage("main");
-    }, 1700);
+    }, 1600);
   };
 
   return (
@@ -96,79 +98,113 @@ export default function Home() {
 
       <AnimatePresence mode="wait">
 
-        {/* ---------------- PRELOADER ---------------- */}
-        {stage === "loading" && <Preloader progress={progress} />}
-
-        {/* ---------------- COMPASS ---------------- */}
-        {(stage === "compass" || stage === "activating" || stage === "revealing") && (
-          <CompassSection stage={stage} handleEnter={handleEnter} />
+        {stage === "loading" && (
+          <motion.div key="loading" exit={{ opacity: 0, transition: { duration: 0.5 } }}>
+            <Preloader progress={progress} />
+          </motion.div>
         )}
 
-        {/* ---------------- MAIN ---------------- */}
+        {(stage === "compass" || stage === "activating" || stage === "revealing") && (
+          <motion.div key="compass" exit={{ opacity: 0, transition: { duration: 0.5 } }}>
+            <CompassSection stage={stage} handleEnter={handleEnter} />
+          </motion.div>
+        )}
+
         {stage === "main" && (
           <motion.div
             key="main"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="relative z-20 bg-transparent"
+            transition={{ duration: 0.8 }}
+            className="relative z-20"
           >
 
-            {/* NAVBAR ONLY IN MAIN */}
             <PirateNavbar />
 
-            <div className="snap-y snap-mandatory relative z-10 w-full">
+            <HeroScene />
 
-              <HeroScene />
+            <section className="relative w-full py-[300px]">
 
-              <VoyageSection
-                image={aboutImg}
-                title="About Vaudeville"
-                subtitle="Discover the legend"
-                link="/about"
+              <img
+                src={mapImg}
+                className="absolute inset-0 w-full h-full object-cover opacity-90"
+                alt="map"
               />
 
-              <VoyageSection
-                image={eventsImg}
-                title="Events"
-                subtitle="Where adventure begins"
-                link="/events"
-              />
+              <svg
+                viewBox="0 0 1000 2000"
+                className="absolute left-0 top-0 w-full h-full pointer-events-none"
+                preserveAspectRatio="none"
+              >
+                <motion.path
+                  d="
+                  M500 50
+                  Q200 300 500 500
+                  Q800 700 500 900
+                  Q200 1100 500 1300
+                  Q800 1500 500 1700
+                  Q200 1850 500 1950
+                  "
+                  stroke="#5b3a1a"
+                  strokeWidth="8"
+                  fill="transparent"
+                  strokeDasharray="15 15"
+                  style={{ pathLength }}
+                />
+              </svg>
 
-              <VoyageSection
-                image={timelineImg}
-                title="Timeline"
-                subtitle="The chronicles unfold"
-                link="/timeline"
-              />
+              <div className="relative z-10 flex flex-col gap-40 sm:gap-64 max-w-6xl mx-auto">
 
-              <VoyageSection
-                image={sponsorsImg}
-                title="Sponsors"
-                subtitle="Our allies at sea"
-                link="/sponsors"
-              />
+                {STOPS.map((stop, i) => {
 
-              <VoyageSection
-                image={merchImg}
-                title="Merch"
-                subtitle="Wear the legend"
-                link="/merch"
-              />
+                  const opacity = useTransform(
+                    scrollYProgress,
+                    [stop.trigger - 0.02, stop.trigger + 0.03],
+                    [0, 1]
+                  );
 
-              <VoyageSection
-                image={coreImg}
-                title="Core Crew"
-                subtitle="Meet the captains"
-                link="/core"
-              />
+                  const y = useTransform(
+                    scrollYProgress,
+                    [stop.trigger - 0.02, stop.trigger + 0.03],
+                    [60, 0]
+                  );
 
-              <div className="snap-start relative w-full pt-0">
-                <Footer />
+                  return (
+                    <motion.div
+                      key={i}
+                      className={`flex w-full`}
+                      style={{ opacity, y }}
+                    >
+                      <div className={`w-1/2 flex ${stop.align === "left" ? "justify-end pr-4 sm:pr-8 md:pr-12 lg:pr-16" : "justify-start pl-4 sm:pl-8 md:pl-12 lg:pl-16 ml-auto"}`}>
+                        <div className="bg-black/70 backdrop-blur-md border border-amber-400 shadow-xl rounded-xl p-3 sm:p-4 md:p-6 w-[140px] sm:w-[200px] md:w-[280px] text-center shrink-0">
+                          
+                          <h2 className="text-base sm:text-xl md:text-2xl text-amber-300 font-bold mb-1 md:mb-2 leading-tight">
+                            {stop.title}
+                          </h2>
+
+                          <p className="text-gray-300 text-[10px] sm:text-xs md:text-sm mb-2 md:mb-4 leading-snug">
+                            {stop.subtitle}
+                          </p>
+
+                          <button
+                            onClick={() => navigate(stop.link)}
+                            className="px-3 py-1.5 sm:px-4 sm:py-2 md:px-5 md:py-2 border border-amber-400 text-amber-300 rounded hover:bg-amber-400 hover:text-black transition text-xs sm:text-sm md:text-base cursor-pointer"
+                          >
+                            Explore
+                          </button>
+
+                        </div>
+                      </div>
+                    </motion.div>
+                  );
+                })}
+
               </div>
 
-            </div>
+            </section>
 
-            {/* DIALOG */}
+            <Footer />
+
             <EventDialog
               selectedEvent={selectedEvent}
               onClose={() => setSelectedEvent(null)}
@@ -176,7 +212,9 @@ export default function Home() {
 
           </motion.div>
         )}
+
       </AnimatePresence>
+
     </div>
   );
 }
