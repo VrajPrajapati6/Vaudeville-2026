@@ -8,6 +8,7 @@ import Preloader from "@/components/home/Preloader";
 import CompassSection from "@/components/home/CompassSection";
 import EventDialog, { DashboardEvent } from "@/components/home/EventDialog";
 import Footer from "@/components/layout/Footer";
+import MapStop from "@/components/home/MapStop";
 
 import mapImg from "@/assets/images/parchment.png";
 
@@ -155,49 +156,14 @@ export default function Home() {
 
               <div className="relative z-10 flex flex-col gap-40 sm:gap-64 max-w-6xl mx-auto">
 
-                {STOPS.map((stop, i) => {
-
-                  const opacity = useTransform(
-                    scrollYProgress,
-                    [stop.trigger - 0.02, stop.trigger + 0.03],
-                    [0, 1]
-                  );
-
-                  const y = useTransform(
-                    scrollYProgress,
-                    [stop.trigger - 0.02, stop.trigger + 0.03],
-                    [60, 0]
-                  );
-
-                  return (
-                    <motion.div
-                      key={i}
-                      className={`flex w-full`}
-                      style={{ opacity, y }}
-                    >
-                      <div className={`w-1/2 flex ${stop.align === "left" ? "justify-end pr-4 sm:pr-8 md:pr-12 lg:pr-16" : "justify-start pl-4 sm:pl-8 md:pl-12 lg:pl-16 ml-auto"}`}>
-                        <div className="bg-black/70 backdrop-blur-md border border-amber-400 shadow-xl rounded-xl p-3 sm:p-4 md:p-6 w-[140px] sm:w-[200px] md:w-[280px] text-center shrink-0">
-                          
-                          <h2 className="text-base sm:text-xl md:text-2xl text-amber-300 font-bold mb-1 md:mb-2 leading-tight">
-                            {stop.title}
-                          </h2>
-
-                          <p className="text-gray-300 text-[10px] sm:text-xs md:text-sm mb-2 md:mb-4 leading-snug">
-                            {stop.subtitle}
-                          </p>
-
-                          <button
-                            onClick={() => navigate(stop.link)}
-                            className="px-3 py-1.5 sm:px-4 sm:py-2 md:px-5 md:py-2 border border-amber-400 text-amber-300 rounded hover:bg-amber-400 hover:text-black transition text-xs sm:text-sm md:text-base cursor-pointer"
-                          >
-                            Explore
-                          </button>
-
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
+                {STOPS.map((stop, i) => (
+                  <MapStop
+                    key={i}
+                    stop={stop}
+                    scrollYProgress={scrollYProgress}
+                    navigate={navigate}
+                  />
+                ))}
 
               </div>
 
