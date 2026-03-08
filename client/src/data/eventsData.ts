@@ -1,7 +1,7 @@
 export const events = [
     {
         slug: "escape-rooms",
-        title: "Escape Rooms",
+        title: "Escape the Black Pearl",
         desc: "Solve puzzles and find your way out of the room before time runs out.",
         description: "An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.",
         rules: ["Team size: 2-4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
@@ -13,7 +13,7 @@ export const events = [
     },
     {
         slug: "treasure-hunt",
-        title: "Treasure Hunt",
+        title: "The Lost Treasure",
         desc: "Navigate campus to find hidden clues and uncover the final treasure.",
         description: "Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.",
         rules: ["Team size: 2–4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
@@ -25,7 +25,7 @@ export const events = [
     },
     {
         slug: "dance",
-        title: "Dance",
+        title: "Kraken's da-da Dance",
         desc: "Solo (Classical, Non-Classical), Duet, Group, and Street dance styles.",
         description: "A comprehensive dance competition showcasing various styles from classical Indian to modern hip-hop street battles. Participants can enter in multiple categories.",
         rules: ["Solo: 3 mins max", "Duet/Group: 5-7 max", "Music tracks must be submitted beforehand", "Props allowed subject to approval"],
@@ -37,7 +37,7 @@ export const events = [
     },
     {
         slug: "music",
-        title: "Music",
+        title: "Harmony of the Seas",
         desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
         description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
         rules: ["Acoustic instruments preferred for instrumental", "No pre-recorded vocals allowed", "Time limit: 4-6 minutes per performance"],
@@ -49,7 +49,7 @@ export const events = [
     },
     {
         slug: "e-sports",
-        title: "E-Sports",
+        title: "Shipwreck Showdown",
         desc: "Valorant, BGMI, FIFA, Clash Royale competitive brackets.",
         description: "Battle it out in our grand E-Sports arena. Featuring knockout tournaments for the most popular multiplayer titles. Bring your A-game.",
         rules: ["BYOD for mobile games", "Standard competitive rules apply per game", "Toxic behavior leads to disqualification"],
@@ -61,7 +61,7 @@ export const events = [
     },
     {
         slug: "gully-cricket",
-        title: "Gully Cricket",
+        title: "The Seven-Seas Cricket League",
         desc: "A fast-paced, high-energy adaptation of real-world street cricket.",
         description: "Experience the thrill of traditional street cricket with quick matches, specialized gully rules, and pure fun. Knockouts leading to the grand final.",
         rules: ["Team size: 6 players on field", "Tennis ball usage", "Specific 'out' zones depending on venue"],
@@ -73,7 +73,7 @@ export const events = [
     },
     {
         slug: "fashion-walk",
-        title: "Fashion Walk & Cosplay",
+        title: "Sailor's Disguise",
         desc: "Strut the runway in spectacular fashion or cosplay your favorite character.",
         description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
         rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
@@ -85,7 +85,7 @@ export const events = [
     },
     {
         slug: "literary",
-        title: "Literary",
+        title: "Pirate's Parley",
         desc: "Debate and Elocution competitions for the eloquent minds.",
         description: "Engage in wordplay, structured arguments, and articulate speeches. Challenge prevailing ideas in debate or enchant the crowd in elocution.",
         rules: ["Topics provided 24 hours prior", "Strict adherence to time limits", "Use of unparliamentary language leads to disqualification"],
@@ -97,7 +97,7 @@ export const events = [
     },
     {
         slug: "open-mic",
-        title: "Open Mic",
+        title: "Voices of the Voyage",
         desc: "Poetry, Shayari, Comedy, Storytelling, and Mimicry.",
         description: "The stage is yours. Share a poem, deliver a stand-up set, or narrate a captivating story. The mic is open to all forms of expression.",
         rules: ["Time Limit: 5 minutes", "Original content strongly preferred", "Respectful content guidelines must be followed"],
@@ -109,7 +109,7 @@ export const events = [
     },
     {
         slug: "fine-arts",
-        title: "Fine Arts",
+        title: "Art of the Tides",
         desc: "Tote Bag painting and traditional Mehendi competitions.",
         description: "Unleash your creativity on unconventional canvases. Decorate tote bags with beautiful artwork or paint intricate Mehendi patterns.",
         rules: ["Basic materials provided; participants may bring specific colors/brushes", "Time limit: 2 hours", "Evaluation based on creativity and intricacy"],
@@ -121,7 +121,7 @@ export const events = [
     },
     {
         slug: "fireless-cooking",
-        title: "Fireless Cooking",
+        title: "Captain's Kitchen",
         desc: "Whip up delicious cuisine without the use of a stove or oven.",
         description: "A test of taste and presentation. Create mocktails, salads, sandwiches, and desserts strictly without fire. Let your culinary skills shine.",
         rules: ["No pre-cooked items allowed (except basic bread/biscuits)", "Time limit: 60 minutes", "Must prepare at least two distinct dishes"],

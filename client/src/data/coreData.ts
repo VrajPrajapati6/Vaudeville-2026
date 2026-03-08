@@ -2,7 +2,7 @@ export const coreMembers = [
 
 {
 name: "Sarabjeet Singh",
-image: "/crew/sarabjeet.jpg",
+image: "/crew/sarabjeets.png",
 },
 
 {
@@ -77,7 +77,7 @@ image: "/crew/Sanchita Pathak.jpg",
 
 {
 name: "Sarabjeet Singh",
-image: "/crew/Sarabjeet singh.jpg",
+image: "/crew/Sarabjeet singh.png",
 },
 
 {
