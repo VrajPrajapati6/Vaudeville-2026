@@ -19,8 +19,10 @@ const STOPS = [
   { title: "Events", subtitle: "Where adventure begins", link: "/events", align: "right", trigger: 0.28 },
   { title: "Timeline", subtitle: "The chronicles unfold", link: "/timeline", align: "left", trigger: 0.45 },
   { title: "Sponsors", subtitle: "Our allies at sea", link: "/sponsors", align: "right", trigger: 0.58 },
-  { title: "Merch", subtitle: "Wear the legend", link: "/merch", align: "left", trigger: 0.70 },
-  { title: "Core Crew", subtitle: "Meet the captains", link: "/core", align: "right", trigger: 0.82 },
+
+  // adjusted slightly so they appear earlier and centered
+  { title: "Merch", subtitle: "Wear the legend", link: "/merch", align: "left", trigger: 0.68 },
+  { title: "Core Crew", subtitle: "Meet the captains", link: "/core", align: "right", trigger: 0.80 },
 ];
 
 export default function Home() {
@@ -124,7 +126,7 @@ export default function Home() {
 
             <HeroScene />
 
-            <section className="relative w-full py-[300px]">
+            <section className="relative w-full py-[400px]">
 
               <img
                 src={mapImg}
@@ -154,7 +156,7 @@ export default function Home() {
                 />
               </svg>
 
-              <div className="relative z-10 flex flex-col gap-40 sm:gap-64 max-w-6xl mx-auto">
+              <div className="relative z-10 flex flex-col gap-52 sm:gap-64 max-w-6xl mx-auto px-4">
 
                 {STOPS.map((stop, i) => (
                   <MapStop
