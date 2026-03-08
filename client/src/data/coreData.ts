@@ -22,7 +22,7 @@ image: "/crew/Akshay Rabari_.png",
 
 {
 name: "Siddharth Desai",
-image: "/crew/Desai Siddharth.png",
+image: "/crew/Desai Siddharth .png",
 },
 
 {
