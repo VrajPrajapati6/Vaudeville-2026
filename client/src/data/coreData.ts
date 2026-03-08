@@ -1,11 +1,6 @@
 export const coreMembers = [
 
 {
-name: "Sarabjeet Singh",
-image: "/crew/sarabjeets.jpg",
-},
-
-{
 name: "Aagam Gandhi",
 image: "/crew/Aagam Gandhi.png",
 },
@@ -18,11 +13,6 @@ image: "/crew/Abhinav Verma.jpg",
 {
 name: "Akshay Rabari",
 image: "/crew/Akshay Rabari_.png",
-},
-
-{
-name: "Siddharth Desai",
-image: "/crew/Desai Siddharth .png",
 },
 
 {
@@ -77,6 +67,11 @@ image: "/crew/Sanchita Pathak.jpg",
 
 {
 name: "Sarabjeet Singh",
+image: "/crew/sarabjeets.jpg",
+},
+
+{
+name: "Sarabjeet Singh",
 image: "/crew/Sarabjeet singh.png",
 },
 
@@ -93,6 +88,11 @@ image: "/crew/SHREYA PAREEK.jpg",
 {
 name: "Shreyarth Chaudhari",
 image: "/crew/Shreyarth chaudhari.jpg",
+},
+
+{
+name: "Siddharth Desai",
+image: "/crew/Desai Siddharth .png",
 },
 
 {
