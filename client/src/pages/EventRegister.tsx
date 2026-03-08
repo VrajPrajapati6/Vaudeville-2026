@@ -110,7 +110,7 @@ export default function EventRegister() {
 
       <div className="max-w-3xl mx-auto bg-black/60 border border-[#d4af37]/40 p-8 rounded-lg mt-8 mb-16 shadow-[0_0_30px_rgba(212,175,55,0.1)]">
 
-        <h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center tracking-wider">Join the Crew</h2>
+        <h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center tracking-wider">Register Now</h2>
         <p className="font-cinzel text-gray-300 mb-8 text-center text-sm md:text-base">
           Fill in the details below to secure your spot in {event.title}.
           {!isSolo && <span className="block mt-2 text-yellow-500/80">Maximum {maxMembers} members allowed.</span>}

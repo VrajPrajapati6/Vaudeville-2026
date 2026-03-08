@@ -51,11 +51,11 @@ Team Size
 <div>
 
 <h4 className="font-pirata text-xl text-[#d4af37]">
-Prize Pool
+Event Name
 </h4>
 
 <p className="font-cinzel text-gray-300">
-{event.prize}
+{event.title}
 </p>
 
 </div>

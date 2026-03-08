@@ -9,7 +9,6 @@ export const events = [
       "No external help allowed",
       "Decision of judges is final"
     ],
-    prize: "₹20,000",
     venue: "Central Auditorium",
     date: "20 March 2026",
     coordinator: "John Doe",

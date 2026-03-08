@@ -56,7 +56,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
                                 Team Size: {event.teamSize}
                             </span>
                             <span className="bg-black/50 text-[#d4af37] px-3 py-1 rounded-sm text-sm border border-[#d4af37]/30">
-                                Prize: {event.prize}
+                                {event.shortTitle || event.title}
                             </span>
                         </div>
 
@@ -80,7 +80,7 @@ export default function EventModal({ event, onClose }: EventModalProps) {
                                 onClick={() => navigate(`/register/${event.slug}`)}
                                 className="w-full md:w-auto bg-transparent border border-[#d4af37] hover:bg-[#d4af37] hover:text-black text-[#d4af37] px-10 py-3 rounded-sm text-lg font-bold tracking-widest transition-colors shadow-[0_0_15px_rgba(212,175,55,0.2)]"
                             >
-                                JOIN THE CREW
+                                REGISTER NOW
                             </button>
                         </div>
                     </div>

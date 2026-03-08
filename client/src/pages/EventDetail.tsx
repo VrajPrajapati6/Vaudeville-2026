@@ -55,45 +55,31 @@ export default function EventDetail() {
         </div>
 
 
-        {/* RULES */}
-
-        <div>
-
-          <h2 className="font-cinzel text-lg text-[#d4af37] uppercase tracking-widest">
-            Rules
-          </h2>
-
-          <ul className="mt-4 space-y-2 text-gray-300 font-cinzel">
-
-            {event.rules.map((rule, index) => (
-              <li key={index}>• {rule}</li>
-            ))}
-
-          </ul>
-
-        </div>
-
-
         {/* EVENT DETAILS */}
 
         <div className="grid md:grid-cols-2 gap-6 border border-[#d4af37]/20 p-8 rounded-xl bg-black/40">
 
           <p className="font-cinzel text-gray-300">
-            <span className="text-[#d4af37]">Prize Pool:</span> {event.prize}
+            <span className="text-[#d4af37]">Team Size:</span> {event.teamSize}
           </p>
 
           <p className="font-cinzel text-gray-300">
-            <span className="text-[#d4af37]">Date:</span> {event.date}
+            <span className="text-[#d4af37]">Event Name:</span> {event.title}
           </p>
 
-          <p className="font-cinzel text-gray-300">
-            <span className="text-[#d4af37]">Venue:</span> {event.venue}
-          </p>
+        </div>
 
-          <p className="font-cinzel text-gray-300">
-            <span className="text-[#d4af37]">Coordinator:</span> {event.coordinator}
-          </p>
+        {/* RULES */}
 
+        <div>
+          <h2 className="font-cinzel text-lg text-[#d4af37] uppercase tracking-widest">
+            Rules
+          </h2>
+          <ul className="mt-4 space-y-2 text-gray-300 font-cinzel">
+            {event.rules.map((rule, index) => (
+              <li key={index}>• {rule}</li>
+            ))}
+          </ul>
         </div>
 
 
