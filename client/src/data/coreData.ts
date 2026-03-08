@@ -2,7 +2,7 @@ export const coreMembers = [
 
 {
 name: "Sarabjeet Singh",
-image: "/crew/sarabjeets.png",
+image: "/crew/sarabjeets.jpg",
 },
 
 {
