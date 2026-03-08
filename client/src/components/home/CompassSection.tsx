@@ -58,43 +58,48 @@ export default function CompassSection({
 
   useEffect(() => {
 
-    if (stage !== "compass") return;
+  if (stage !== "compass") return;
 
-    const touchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
+  let lastY: number | null = null;
 
-    const touchMove = (e: TouchEvent) => {
+  const touchMove = (e: TouchEvent) => {
 
-      if (touchStartY.current === null) return;
+    const currentY = e.touches[0].clientY;
 
-      const currentY = e.touches[0].clientY;
+    if (lastY === null) {
+      lastY = currentY;
+      return;
+    }
 
-      const delta = touchStartY.current - currentY;
+    const delta = lastY - currentY;
 
-      setWheelRotation((prev) => {
+    setWheelRotation((prev) => {
 
-        const newRotation = prev + delta * 0.4;
+      const newRotation = prev + delta * 0.6;
 
-        if (newRotation > 180) {
-          handleEnter();
-        }
+      if (newRotation > 160) {
+        handleEnter();
+      }
 
-        return newRotation;
-      });
+      return newRotation;
+    });
 
-      touchStartY.current = currentY;
-    };
+    lastY = currentY;
+  };
 
-    window.addEventListener("touchstart", touchStart);
-    window.addEventListener("touchmove", touchMove);
+  const touchEnd = () => {
+    lastY = null;
+  };
 
-    return () => {
-      window.removeEventListener("touchstart", touchStart);
-      window.removeEventListener("touchmove", touchMove);
-    };
+  window.addEventListener("touchmove", touchMove, { passive: true });
+  window.addEventListener("touchend", touchEnd);
 
-  }, [stage, handleEnter]);
+  return () => {
+    window.removeEventListener("touchmove", touchMove);
+    window.removeEventListener("touchend", touchEnd);
+  };
+
+}, [stage, handleEnter]);
 
   /* ------------------ PARALLAX EFFECT ------------------ */
 
