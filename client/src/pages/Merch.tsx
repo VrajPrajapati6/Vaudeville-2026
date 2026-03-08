@@ -2,7 +2,7 @@ import { useState } from "react"
 import { useLocation } from "wouter"
 import PiratePageLayout from "@/components/layout/PiratePageLayout"
 import tshirt from "@/assets/images/merch-tshirt.png"
-import sizeChart from "@/assets/images/sizechart.webp"
+import sizeChart from "@/assets/images/t-shirt.jpeg"
 
 export default function Merch() {
 const [showSizeChart, setShowSizeChart] = useState(false)
