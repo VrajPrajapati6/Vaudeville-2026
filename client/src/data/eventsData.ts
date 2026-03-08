@@ -37,7 +37,7 @@ export const events = [
     },
     {
         slug: "music",
-        title: "Harmony of the Seas",
+        title: "Harmony of the Season",
         shortTitle: "Music",
         desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
         description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
@@ -49,7 +49,7 @@ export const events = [
     },
     {
         slug: "e-sports",
-        title: "Shipwreck Showdown",
+        title: "Deadman's Arena",
         shortTitle: "E-Sports",
         desc: "Valorant, BGMI, FIFA, Clash Royale competitive brackets.",
         description: "Battle it out in our grand E-Sports arena. Featuring knockout tournaments for the most popular multiplayer titles. Bring your A-game.",
@@ -66,7 +66,7 @@ export const events = [
         desc: "A fast-paced, high-energy adaptation of real-world street cricket.",
         description: "Experience the thrill of traditional street cricket with quick matches, specialized gully rules, and pure fun. Knockouts leading to the grand final.",
         rules: ["Team size: 6 players on field", "Tennis ball usage", "Specific 'out' zones depending on venue"],
-        teamSize: "6-8",
+        teamSize: "6",
         registrationLink: "#",
         image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&q=80&w=1000",
         category: "Sports"
@@ -130,5 +130,29 @@ export const events = [
         registrationLink: "#",
         image: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1000",
         category: "Culinary"
+    },
+    {
+        slug: "instrumental-solo",
+        title: "The Coral Riff",
+        shortTitle: "Instrumental",
+        desc: "Showcase your mastery over musical instruments in a solo performance.",
+        description: "A solo instrumental competition where participants can perform using acoustic or electric instruments. Let the melody of the sea speak through your fingers.",
+        rules: ["Time limit: 3-5 minutes", "No backing tracks with pre-recorded instruments", "Bring your own instruments (basic drum kit provided)"],
+        teamSize: "Solo",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&q=80&w=1000",
+        category: "Performing Arts"
+    },
+    {
+        slug: "street-dance",
+        title: "Street Dance",
+        shortTitle: "Street Dance",
+        desc: "Bring the rhythm of the streets to the pirate's deck in this solo dance battle.",
+        description: "An energetic solo street dance competition featuring hip-hop, breaking, popping, and locking. Show us your best freestyle moves or choreographed routine.",
+        rules: ["Time limit: 2-4 minutes", "Music tracks must be submitted 24 hours prior", "Props allowed subject to safety checks"],
+        teamSize: "Solo",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80&w=1000",
+        category: "Performing Arts"
     }
 ];

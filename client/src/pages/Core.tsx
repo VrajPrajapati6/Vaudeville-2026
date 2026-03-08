@@ -31,6 +31,11 @@ image: "/crew/Archit Thakker.jpg",
 {
 name: "Het Dalal",
 image: "/crew/Het Dalal.jpg",
+},
+
+{
+name: "Aman Chaudhary",
+image: "/crew/Aman.jpg",
 }
 
 ]

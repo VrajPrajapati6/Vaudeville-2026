@@ -24,7 +24,7 @@ export default function EventRegister() {
   const { toast } = useToast();
 
   const event = events.find((e) => e.slug === params?.slug);
-  const isSolo = event?.teamSize.toLowerCase() === "solo";
+  const isSolo = event?.teamSize.toLowerCase().includes("solo") || event?.teamSize === "1";
 
   const { register, control, handleSubmit, reset, getValues, formState: { errors } } = useForm<FormData>({
     mode: "onTouched",

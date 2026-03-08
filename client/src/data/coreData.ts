@@ -14,6 +14,7 @@ image: "/crew/Abhinav Verma.jpg",
 name: "Akshay Rabari",
 image: "/crew/Akshay Rabari_.png",
 },
+
 {
 name: "Dev Dobariya",
 image: "/crew/Dev Dobariya.jpg",
@@ -40,11 +41,6 @@ image: "/crew/Jatin.jpg",
 },
 
 {
-name: "Nisarg Shah",
-image: "/crew/Nisarg Shah_.jpg",
-},
-
-{
 name: "Pratham Shah",
 image: "/crew/Pratham Shah.jpg",
 }
@@ -52,6 +48,12 @@ image: "/crew/Pratham Shah.jpg",
 {
 name: "Pratham Shah",
 image: "/crew/Pratham-Shah.jpg",
+},
+
+
+{
+name: "Revaant Parikh",
+image: "/crew/revaant.png",
 },
 
 {
@@ -72,11 +74,6 @@ image: "/crew/Sanchita Pathak.jpg",
 {
 name: "Sarabjeet Singh",
 image: "/crew/sarabjeets.jpg",
-},
-
-{
-name: "Sarabjeet Singh",
-image: "/crew/Sarabjeet singh.png",
 },
 
 {name: "Shaan Bhuva",
@@ -119,7 +116,7 @@ image: "/crew/TISHA SHAH.jpg",
 },
 
 {
-name: "Urjha Jain",
+name: "Urjah Jain",
 image: "/crew/Urjha Jain.jpg",
 },
 
