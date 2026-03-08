@@ -11,7 +11,7 @@ import Home from "@/pages/Home";
 // Import pages
 import About from "@/pages/About";
 import Events from "@/pages/Events";
-import EventDetails from "@/pages/EventDetails";
+import EventDetails from "@/pages/EventDetail";
 import EventRegister from "@/pages/EventRegister";
 import Timeline from "@/pages/Timeline";
 import Sponsors from "@/pages/Sponsors";

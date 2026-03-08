@@ -1,224 +1,134 @@
 export const events = [
-{
-slug: "treasure-hunt",
-title: "Treasure Hunt",
-desc: "Solve riddles hidden across the campus and uncover the lost treasure.",
-
-description:
-"Teams must follow clues spread across the campus. Each clue leads to another location. The fastest team to reach the final treasure wins.",
-
-rules: [
-"Team size: 2–4 members",
-"Follow clues across campus",
-"No external help allowed",
-"Decision of judges is final"
-],
-
-teamSize: "2–4",
-prize: "₹10,000",
-registrationLink: "#"
-},
-
-{
-slug: "code-arena",
-title: "Code Arena",
-desc: "Battle with logic and algorithms in an intense coding duel.",
-
-description:
-"Participants solve algorithmic problems under time pressure. The highest score wins.",
-
-rules: [
-"Individual participation",
-"Languages allowed: C, C++, Java, Python",
-"3 rounds of coding"
-],
-
-teamSize: "Solo",
-prize: "₹15,000",
-registrationLink: "#"
-},
-
-{
-slug: "circuit-clash",
-title: "Circuit Clash",
-desc: "Design and debug electronic circuits before time runs out.",
-
-description:
-"Participants must build and troubleshoot circuits using provided components.",
-
-rules: [
-"Team of 2 allowed",
-"Components provided on spot",
-"Working circuit required"
-],
-
-teamSize: "2",
-prize: "₹8,000",
-registrationLink: "#"
-},
-
-{
-slug: "robo-wars",
-title: "Robo Wars",
-desc: "Bring your robot and battle in the arena.",
-
-description:
-"Robots compete in a controlled arena where the last robot standing wins.",
-
-rules: [
-"Max weight 15kg",
-"No destructive weapons",
-"Remote controlled robots allowed"
-],
-
-teamSize: "2–5",
-prize: "₹20,000",
-registrationLink: "#"
-},
-
-{
-slug: "tech-quiz",
-title: "Tech Quiz",
-desc: "Test your knowledge across multiple technical domains.",
-
-description:
-"A quiz competition covering technology, engineering, and science.",
-
-rules: [
-"Teams of 2",
-"Multiple rounds",
-"Rapid fire included"
-],
-
-teamSize: "2",
-prize: "₹5,000",
-registrationLink: "#"
-},
-
-{
-slug: "hackathon",
-title: "Hackathon",
-desc: "24 hour coding marathon to build innovative solutions.",
-
-description:
-"Participants build projects within 24 hours and present them to judges.",
-
-rules: [
-"Teams of 2–4",
-"Prototype required",
-"Presentation required"
-],
-
-teamSize: "2–4",
-prize: "₹50,000",
-registrationLink: "#"
-},
-
-{
-slug: "design-duel",
-title: "Design Duel",
-desc: "Compete in UI/UX and graphic design challenges.",
-
-description:
-"Participants design creative UI/UX interfaces within a limited time.",
-
-rules: [
-"Individual participation",
-"Tools allowed: Figma, Adobe XD"
-],
-
-teamSize: "Solo",
-prize: "₹7,000",
-registrationLink: "#"
-},
-
-{
-slug: "gaming-arena",
-title: "Gaming Arena",
-desc: "Compete in esports tournaments with fellow gamers.",
-
-description:
-"Multiplayer gaming competition featuring popular esports titles.",
-
-rules: [
-"Team based tournament",
-"Knockout rounds"
-],
-
-teamSize: "5",
-prize: "₹12,000",
-registrationLink: "#"
-},
-
-{
-slug: "project-expo",
-title: "Project Expo",
-desc: "Showcase innovative engineering projects.",
-
-description:
-"Students present their technical projects to judges.",
-
-rules: [
-"Project demonstration required",
-"Evaluation based on innovation"
-],
-
-teamSize: "1–4",
-prize: "₹10,000",
-registrationLink: "#"
-},
-
-{
-slug: "ai-challenge",
-title: "AI Challenge",
-desc: "Solve machine learning challenges.",
-
-description:
-"Participants build AI models to solve real-world datasets.",
-
-rules: [
-"Python recommended",
-"Dataset provided"
-],
-
-teamSize: "1–3",
-prize: "₹18,000",
-registrationLink: "#"
-},
-
-{
-slug: "debugging-contest",
-title: "Debugging Contest",
-desc: "Find and fix bugs in complex codebases.",
-
-description:
-"Participants must debug faulty programs within a time limit.",
-
-rules: [
-"Individual participation",
-"Multiple bug levels"
-],
-
-teamSize: "Solo",
-prize: "₹6,000",
-registrationLink: "#"
-},
-
-{
-slug: "startup-pitch",
-title: "Startup Pitch",
-desc: "Pitch your startup idea to expert judges.",
-
-description:
-"Teams present innovative startup ideas and business models.",
-
-rules: [
-"Presentation required",
-"Pitch time: 5 minutes"
-],
-
-teamSize: "2–4",
-prize: "₹25,000",
-registrationLink: "#"
-}
-]
+    {
+        slug: "escape-rooms",
+        title: "Escape Rooms",
+        desc: "Solve puzzles and find your way out of the room before time runs out.",
+        description: "An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.",
+        rules: ["Team size: 2-4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
+        teamSize: "2-4",
+        prize: "₹10,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000",
+        category: "Mystery"
+    },
+    {
+        slug: "treasure-hunt",
+        title: "Treasure Hunt",
+        desc: "Navigate campus to find hidden clues and uncover the final treasure.",
+        description: "Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.",
+        rules: ["Team size: 2–4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
+        teamSize: "2–4",
+        prize: "₹15,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1533558701576-23c65e0272fb?auto=format&fit=crop&q=80&w=1000",
+        category: "Adventure"
+    },
+    {
+        slug: "dance",
+        title: "Dance",
+        desc: "Solo (Classical, Non-Classical), Duet, Group, and Street dance styles.",
+        description: "A comprehensive dance competition showcasing various styles from classical Indian to modern hip-hop street battles. Participants can enter in multiple categories.",
+        rules: ["Solo: 3 mins max", "Duet/Group: 5-7 max", "Music tracks must be submitted beforehand", "Props allowed subject to approval"],
+        teamSize: "1-10",
+        prize: "₹20,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=1000",
+        category: "Performing Arts"
+    },
+    {
+        slug: "music",
+        title: "Music",
+        desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
+        description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
+        rules: ["Acoustic instruments preferred for instrumental", "No pre-recorded vocals allowed", "Time limit: 4-6 minutes per performance"],
+        teamSize: "1-8",
+        prize: "₹15,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1000",
+        category: "Performing Arts"
+    },
+    {
+        slug: "e-sports",
+        title: "E-Sports",
+        desc: "Valorant, BGMI, FIFA, Clash Royale competitive brackets.",
+        description: "Battle it out in our grand E-Sports arena. Featuring knockout tournaments for the most popular multiplayer titles. Bring your A-game.",
+        rules: ["BYOD for mobile games", "Standard competitive rules apply per game", "Toxic behavior leads to disqualification"],
+        teamSize: "Solo to 5",
+        prize: "₹25,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000",
+        category: "Gaming"
+    },
+    {
+        slug: "gully-cricket",
+        title: "Gully Cricket",
+        desc: "A fast-paced, high-energy adaptation of real-world street cricket.",
+        description: "Experience the thrill of traditional street cricket with quick matches, specialized gully rules, and pure fun. Knockouts leading to the grand final.",
+        rules: ["Team size: 6 players on field", "Tennis ball usage", "Specific 'out' zones depending on venue"],
+        teamSize: "6-8",
+        prize: "₹12,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&q=80&w=1000",
+        category: "Sports"
+    },
+    {
+        slug: "fashion-walk",
+        title: "Fashion Walk & Cosplay",
+        desc: "Strut the runway in spectacular fashion or cosplay your favorite character.",
+        description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
+        rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
+        teamSize: "Solo / Group",
+        prize: "₹15,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1000",
+        category: "Fashion"
+    },
+    {
+        slug: "literary",
+        title: "Literary",
+        desc: "Debate and Elocution competitions for the eloquent minds.",
+        description: "Engage in wordplay, structured arguments, and articulate speeches. Challenge prevailing ideas in debate or enchant the crowd in elocution.",
+        rules: ["Topics provided 24 hours prior", "Strict adherence to time limits", "Use of unparliamentary language leads to disqualification"],
+        teamSize: "Solo / Duet",
+        prize: "₹8,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&q=80&w=1000",
+        category: "Speaking"
+    },
+    {
+        slug: "open-mic",
+        title: "Open Mic",
+        desc: "Poetry, Shayari, Comedy, Storytelling, and Mimicry.",
+        description: "The stage is yours. Share a poem, deliver a stand-up set, or narrate a captivating story. The mic is open to all forms of expression.",
+        rules: ["Time Limit: 5 minutes", "Original content strongly preferred", "Respectful content guidelines must be followed"],
+        teamSize: "Solo",
+        prize: "₹5,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1516280440502-628d052ce525?auto=format&fit=crop&q=80&w=1000",
+        category: "Entertainment"
+    },
+    {
+        slug: "fine-arts",
+        title: "Fine Arts",
+        desc: "Tote Bag painting and traditional Mehendi competitions.",
+        description: "Unleash your creativity on unconventional canvases. Decorate tote bags with beautiful artwork or paint intricate Mehendi patterns.",
+        rules: ["Basic materials provided; participants may bring specific colors/brushes", "Time limit: 2 hours", "Evaluation based on creativity and intricacy"],
+        teamSize: "Solo / Pair",
+        prize: "₹6,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=1000",
+        category: "Art"
+    },
+    {
+        slug: "fireless-cooking",
+        title: "Fireless Cooking",
+        desc: "Whip up delicious cuisine without the use of a stove or oven.",
+        description: "A test of taste and presentation. Create mocktails, salads, sandwiches, and desserts strictly without fire. Let your culinary skills shine.",
+        rules: ["No pre-cooked items allowed (except basic bread/biscuits)", "Time limit: 60 minutes", "Must prepare at least two distinct dishes"],
+        teamSize: "2",
+        prize: "₹7,000",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1000",
+        category: "Culinary"
+    }
+];
