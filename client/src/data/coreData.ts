@@ -2,146 +2,127 @@ export const coreMembers = [
 
 {
 name: "Sarabjeet Singh",
-image: "/public/crew/sarabjeet.jpg",
-
+image: "/crew/sarabjeet.jpg",
 },
 
 {
 name: "Aagam Gandhi",
-image: "/public/crew/Aagam Gandhi.png",
+image: "/crew/Aagam Gandhi.png",
 },
 
 {
 name: "Abhinav Verma",
-image: "/public/crew/Abhinav Verma.jpg",
+image: "/crew/Abhinav Verma.jpg",
 },
 
 {
-name: "Akshay rabari",
-image: "/public/crew/Akshay Rabari_.png",
+name: "Akshay Rabari",
+image: "/crew/Akshay Rabari_.png",
 },
 
 {
 name: "Siddharth Desai",
-image: "/public/crew/Desai Siddharth.png",
+image: "/crew/Desai Siddharth.png",
 },
 
 {
 name: "Dev Dobariya",
-image: "/public/crew/Dev Dobariya.jpg",
+image: "/crew/Dev Dobariya.jpg",
 },
 
 {
 name: "Diya Dangaria",
-image: "/public/crew/Diya dangaria.jpg",
-
+image: "/crew/Diya dangaria.jpg",
 },
 
 {
 name: "Het Shah",
-image: "/public/crew/HET SHAH.jpg",
-
+image: "/crew/HET SHAH.jpg",
 },
 
 {
 name: "Himani",
-image: "/public/crew/Himani.jpg",
-
+image: "/crew/Himani.jpg",
 },
 
 {
 name: "Jatin",
-image: "/public/crew/Jatin.jpg",
-
+image: "/crew/Jatin.jpg",
 },
 
 {
 name: "Nisarg Shah",
-image: "/public/crew/Nisarg Shah_.jpg",
-
+image: "/crew/Nisarg Shah_.jpg",
 },
 
 {
 name: "Pratham Shah",
-image: "/public/crew/Pratham Shah.jpg",
-
+image: "/crew/Pratham Shah.jpg",
 },
 
 {
 name: "Rutvij Borisagar",
-image: "/public/crew/Rutvij Borisagar.jpg",
-
+image: "/crew/Rutvij Borisagar.jpg",
 },
 
 {
 name: "Samiya Ayachit",
-image: "/public/crew/Samiya Ayachit.jpg",
-
+image: "/crew/Samiya Ayachit.jpg",
 },
 
 {
-name: "sanchita Pathak",
-image: "/public/crew/Sanchita Pathak.jpg",
-
+name: "Sanchita Pathak",
+image: "/crew/Sanchita Pathak.jpg",
 },
 
 {
 name: "Sarabjeet Singh",
-image: "/public/crew/Sarabjeet singh.jpg",
-
+image: "/crew/Sarabjeet singh.jpg",
 },
 
 {
 name: "Shlok Kansara",
-image: "/public/crew/SHLOK KANSARA.jpg",
-
+image: "/crew/SHLOK KANSARA.jpg",
 },
 
 {
 name: "Shreya Pareek",
-image: "/public/crew/SHREYA PAREEK.jpg",
-
+image: "/crew/SHREYA PAREEK.jpg",
 },
 
 {
 name: "Shreyarth Chaudhari",
-image: "/public/Shreyarth chaudhari.jpg",
-
+image: "/crew/Shreyarth chaudhari.jpg",
 },
 
 {
 name: "Siya",
-image: "/public/crew/Siya.jpg",
-
+image: "/crew/Siya.jpg",
 },
 
 {
-name: "soham Suthar",
-image: "/public/crew/SOHAM SUTHAR.jpg",
-
+name: "Soham Suthar",
+image: "/crew/SOHAM SUTHAR.jpg",
 },
 
 {
 name: "Tisha Shah",
-image: "/public/crew/TISHA SHAH.jpg",
-
+image: "/crew/TISHA SHAH.jpg",
 },
 
 {
 name: "Urjha Jain",
-image: "/public/crew/Urjha Jain.jpg",
-
+image: "/crew/Urjha Jain.jpg",
 },
 
 {
 name: "Vidhi Bhandari",
-image: "/public/crew/Vidhi Bhandari.jpg",
-
+image: "/crew/Vidhi Bhandari.jpg",
 },
 
 {
 name: "Yashvi Bardoliya",
-image: "/public/crew/YASHVI BARDOLIYA.jpg",
+image: "/crew/YASHVI BARDOLIYA.jpg",
+}
 
-},
 ]
