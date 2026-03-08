@@ -58,7 +58,7 @@ image: "/crew/revaant.png",
 
 {
 name: "Rutvij Borisagar",
-image: "/crew/Rutvij Borisagar.jpg",
+image: "/crew/Rutvij Borisagar.png",
 },
 
 {
