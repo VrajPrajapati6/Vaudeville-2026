@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { useState } from "react";
+import { useTransition } from "@/context/TransitionContext";
 
 const navItems = [
   { name: "About", path: "/about" },
@@ -15,6 +16,7 @@ export default function PirateNavbar() {
 
   const [location] = useLocation();
   const [menuOpen, setMenuOpen] = useState(false);
+  const { navigateWithTransition } = useTransition();
 
   return (
     <motion.nav
@@ -31,14 +33,20 @@ export default function PirateNavbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-8 py-4">
 
         {/* LOGO */}
-        <Link href="/">
+        <a 
+          href="/"
+          onClick={(e) => {
+            e.preventDefault();
+            if (location !== "/") navigateWithTransition("/");
+          }}
+        >
           <motion.div
             whileHover={{ scale: 1.1 }}
             className="text-2xl font-pirata text-[#d4af37] cursor-pointer"
           >
             Vaudeville
           </motion.div>
-        </Link>
+        </a>
 
         {/* DESKTOP NAV */}
         <div className="hidden md:flex items-center gap-8">
@@ -48,7 +56,14 @@ export default function PirateNavbar() {
             const isActive = location === item.path;
 
             return (
-              <Link key={item.name} href={item.path}>
+              <a 
+                key={item.name} 
+                href={item.path}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!isActive) navigateWithTransition(item.path);
+                }}
+              >
                 <motion.div
                   whileHover={{ y: -2 }}
                   className="relative font-cinzel text-sm tracking-wider cursor-pointer"
@@ -83,7 +98,7 @@ export default function PirateNavbar() {
                   />
 
                 </motion.div>
-              </Link>
+              </a>
             );
           })}
 
@@ -138,7 +153,15 @@ export default function PirateNavbar() {
                 const isActive = location === item.path;
 
                 return (
-                  <Link key={item.name} href={item.path}>
+                  <a 
+                    key={item.name} 
+                    href={item.path}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setMenuOpen(false);
+                      if (!isActive) navigateWithTransition(item.path);
+                    }}
+                  >
 
                     <motion.div
                       whileTap={{ scale: 0.95 }}
@@ -157,7 +180,7 @@ export default function PirateNavbar() {
 
                     </motion.div>
 
-                  </Link>
+                  </a>
                 );
               })}
 

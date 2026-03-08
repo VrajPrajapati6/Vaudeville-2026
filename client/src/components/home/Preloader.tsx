@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
 import introVideo from "@/assets/intro.mp4";
+import wheelImage from "@/assets/images/wheel.png";
 
 interface PreloaderProps {
   progress: number;
@@ -8,9 +9,10 @@ interface PreloaderProps {
 
 export default function Preloader({ progress }: PreloaderProps) {
 
-  // Background asset loading while animation runs
   useEffect(() => {
     const preloadAssets = () => {
+
+      // Preload images marked with data-preload
       const images = document.querySelectorAll("img[data-preload]");
       images.forEach((img) => {
         const src = img.getAttribute("src");
@@ -18,6 +20,12 @@ export default function Preloader({ progress }: PreloaderProps) {
         const preload = new Image();
         preload.src = src;
       });
+
+      // ✅ Preload wheel image manually
+      const wheel = new Image();
+      wheel.src = wheelImage; 
+      // Change path if your wheel image location is different
+
     };
 
     if ("requestIdleCallback" in window) {
@@ -39,7 +47,7 @@ export default function Preloader({ progress }: PreloaderProps) {
         transform: "translateZ(0)"
       }}
     >
-      {/* Cinematic Video Background */}
+      {/* Video Background */}
       <div
         className="absolute inset-0 w-full h-full flex items-center justify-center bg-black"
         style={{
@@ -57,7 +65,7 @@ export default function Preloader({ progress }: PreloaderProps) {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          className="w-full h-full object-cover md:object-cover sm:aspect-video pointer-events-none"
+          className="w-full h-full object-cover pointer-events-none"
           style={{
             objectPosition: "center",
             willChange: "opacity, transform",
@@ -70,7 +78,7 @@ export default function Preloader({ progress }: PreloaderProps) {
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
-      {/* Subtle Noise */}
+      {/* Noise */}
       <div className="absolute inset-0 opacity-20 bg-noise mix-blend-overlay pointer-events-none" />
 
       {/* Lightning Flash */}
@@ -81,7 +89,6 @@ export default function Preloader({ progress }: PreloaderProps) {
         }}
         transition={{ duration: 0.25 }}
         className="absolute inset-0 bg-white pointer-events-none"
-        style={{ willChange: "opacity" }}
       />
 
       {/* Dark Dip */}
@@ -92,20 +99,15 @@ export default function Preloader({ progress }: PreloaderProps) {
         }}
         transition={{ duration: 0.4 }}
         className="absolute inset-0 bg-black pointer-events-none"
-        style={{ willChange: "opacity" }}
       />
 
       {/* Content */}
-      <div
-        className="relative z-10 flex flex-col items-center justify-end h-full text-center px-4 pb-20 sm:pb-32"
-        style={{
-          willChange: "transform",
-          transform: "translateZ(0)"
-        }}
-      >
+      <div className="relative z-10 flex flex-col items-center justify-end h-full text-center px-4 pb-20 sm:pb-32">
+
         {/* Title */}
         <div className="flex items-end justify-center font-pirata text-4xl sm:text-6xl md:text-8xl text-[#d4af37]">
           {"VAUDEVILLE".split("").map((letter, i) => {
+
             const threshold = 15 + (i / 9) * 65;
             const visible = progress >= threshold;
 
@@ -123,10 +125,7 @@ export default function Preloader({ progress }: PreloaderProps) {
                     : { opacity: 0, y: 28 }
                 }
                 transition={{ duration: 0.45, ease: "easeOut" }}
-                style={{
-                  display: "inline-block",
-                  willChange: "transform, opacity"
-                }}
+                style={{ display: "inline-block" }}
               >
                 {letter}
               </motion.span>
@@ -143,8 +142,9 @@ export default function Preloader({ progress }: PreloaderProps) {
           The Fog Descends...
         </motion.p>
 
-        {/* Progress Section */}
+        {/* Progress */}
         <div className="mt-8 mb-4 w-44 sm:w-72">
+
           <motion.div
             animate={{
               textShadow: [
@@ -159,29 +159,24 @@ export default function Preloader({ progress }: PreloaderProps) {
             {Math.round(progress)}%
           </motion.div>
 
-          <div className="mt-4 h-[4px] bg-black/50 border border-[#d4af37]/30 rounded-full overflow-hidden relative backdrop-blur-sm">
+          <div className="mt-4 h-[4px] bg-black/50 border border-[#d4af37]/30 rounded-full overflow-hidden relative">
 
             <motion.div
               className="h-full bg-gradient-to-r from-[#d4af37]/50 via-[#d4af37] to-[#ffe58f] shadow-[0_0_15px_#d4af37]"
-              style={{
-                width: `${progress}%`,
-                willChange: "width"
-              }}
+              style={{ width: `${progress}%` }}
             />
 
             {/* Shimmer */}
             <motion.div
               className="absolute top-0 bottom-0 w-20 bg-gradient-to-r from-transparent via-white/50 to-transparent"
-              animate={{
-                x: ['-100%', '400%'],
-              }}
+              animate={{ x: ['-100%', '400%'] }}
               transition={{
                 duration: 1.5,
                 repeat: Infinity,
                 ease: "linear"
               }}
-              style={{ willChange: "transform" }}
             />
+
           </div>
         </div>
 

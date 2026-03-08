@@ -11,6 +11,7 @@ import Footer from "@/components/layout/Footer";
 import MapStop from "@/components/home/MapStop";
 
 import mapImg from "@/assets/images/parchment.png";
+import { useTransition } from "@/context/TransitionContext";
 
 export type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 
@@ -26,7 +27,8 @@ const STOPS = [
 ];
 
 export default function Home() {
-  const [, navigate] = useLocation();
+  const [, setLocation] = useLocation();
+  const { navigateWithTransition: navigate } = useTransition();
 
   const [stage, setStage] = useState<Stage>(() => {
     if (sessionStorage.getItem("is_reloading") === "true") {

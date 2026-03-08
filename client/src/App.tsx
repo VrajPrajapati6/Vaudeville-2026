@@ -20,6 +20,7 @@ import Core from "@/pages/Core";
 
 // Import navbar
 import Navbar from "./components/layout/Navbar";
+import { TransitionProvider } from "./context/TransitionContext";
 
 function Router() {
   return (
@@ -43,7 +44,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <TransitionProvider>
+          <Router />
+        </TransitionProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
