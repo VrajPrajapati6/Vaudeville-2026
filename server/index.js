@@ -254,6 +254,17 @@ app.post('/api/register', async (req, res) => {
     const newRegistration = new RegModel({ teamName, members: normalizedMembers });
     await newRegistration.save();
 
+    // ── Append to Google Sheet ──
+    // We pass the eventId, teamName and members array. 
+    // The Apps Script will handle creating rows for each member.
+    await appendToGoogleSheet({
+      type: 'registration',
+      eventId,
+      teamName: teamName || 'N/A',
+      members: normalizedMembers,
+      registeredAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    });
+
     res.status(201).json({ message: 'Registration successful!', registration: newRegistration });
   } catch (error) {
     console.error('Registration API Error:', error);
