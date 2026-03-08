@@ -10,7 +10,10 @@ interface CompassSectionProps {
   handleEnter: () => void;
 }
 
-export default function CompassSection({ stage, handleEnter }: CompassSectionProps) {
+export default function CompassSection({
+  stage,
+  handleEnter,
+}: CompassSectionProps) {
 
   const wheelRef = useRef<HTMLDivElement>(null);
 
@@ -22,104 +25,76 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
 
   const [wheelRotation, setWheelRotation] = useState(0);
 
-  const dragging = useRef(false);
-  const lastAngle = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
 
-  /* ------------------ CALCULATE ANGLE ------------------ */
-
-  const getAngle = (x: number, y: number) => {
-    if (!wheelRef.current) return 0;
-
-    const rect = wheelRef.current.getBoundingClientRect();
-
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-
-    const dx = x - centerX;
-    const dy = y - centerY;
-
-    return Math.atan2(dy, dx) * (180 / Math.PI);
-  };
-
-  /* ------------------ START DRAG ------------------ */
-
-  const startDrag = (x: number, y: number) => {
-    dragging.current = true;
-    lastAngle.current = getAngle(x, y);
-  };
-
-  /* ------------------ DRAG MOVE ------------------ */
-
-  const dragMove = (x: number, y: number) => {
-    if (!dragging.current || lastAngle.current === null) return;
-
-    const angle = getAngle(x, y);
-
-    let delta = angle - lastAngle.current;
-
-    if (delta > 180) delta -= 360;
-    if (delta < -180) delta += 360;
-
-    setWheelRotation((prev) => {
-      const newRotation = prev + delta;
-
-      if (Math.abs(newRotation) > 160) {
-        handleEnter();
-      }
-
-      return newRotation;
-    });
-
-    lastAngle.current = angle;
-  };
-
-  /* ------------------ END DRAG ------------------ */
-
-  const endDrag = () => {
-    dragging.current = false;
-    lastAngle.current = null;
-  };
-
-  /* ------------------ MOUSE EVENTS ------------------ */
+  /* ------------------ DESKTOP SCROLL ------------------ */
 
   useEffect(() => {
 
-    const mouseMove = (e: MouseEvent) => {
-      dragMove(e.clientX, e.clientY);
+    if (stage !== "compass") return;
+
+    const handleWheel = (e: WheelEvent) => {
+
+      setWheelRotation((prev) => {
+
+        const newRotation = prev + e.deltaY * 0.2;
+
+        if (newRotation > 180) {
+          handleEnter();
+        }
+
+        return newRotation;
+      });
+
     };
 
-    const mouseUp = () => endDrag();
+    window.addEventListener("wheel", handleWheel, { passive: true });
 
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mouseup", mouseUp);
+    return () => window.removeEventListener("wheel", handleWheel);
 
-    return () => {
-      window.removeEventListener("mousemove", mouseMove);
-      window.removeEventListener("mouseup", mouseUp);
-    };
+  }, [stage, handleEnter]);
 
-  }, []);
-
-  /* ------------------ TOUCH EVENTS ------------------ */
+  /* ------------------ MOBILE TOUCH SCROLL ------------------ */
 
   useEffect(() => {
+
+    if (stage !== "compass") return;
+
+    const touchStart = (e: TouchEvent) => {
+      touchStartY.current = e.touches[0].clientY;
+    };
 
     const touchMove = (e: TouchEvent) => {
-      const t = e.touches[0];
-      dragMove(t.clientX, t.clientY);
+
+      if (touchStartY.current === null) return;
+
+      const currentY = e.touches[0].clientY;
+
+      const delta = touchStartY.current - currentY;
+
+      setWheelRotation((prev) => {
+
+        const newRotation = prev + delta * 0.4;
+
+        if (newRotation > 180) {
+          handleEnter();
+        }
+
+        return newRotation;
+      });
+
+      touchStartY.current = currentY;
     };
 
-    const touchEnd = () => endDrag();
-
+    window.addEventListener("touchstart", touchStart);
     window.addEventListener("touchmove", touchMove);
-    window.addEventListener("touchend", touchEnd);
 
     return () => {
+      window.removeEventListener("touchstart", touchStart);
       window.removeEventListener("touchmove", touchMove);
-      window.removeEventListener("touchend", touchEnd);
     };
 
-  }, []);
+  }, [stage, handleEnter]);
 
   /* ------------------ PARALLAX EFFECT ------------------ */
 
@@ -134,6 +109,7 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
 
       mouseX.set(x - centerX);
       mouseY.set(y - centerY);
+
     };
 
     const mouseMove = (e: MouseEvent) => pointerMove(e.clientX, e.clientY);
@@ -213,27 +189,19 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
             max-h-[620px]
             md:w-[min(60vw,60vh)]
             md:h-[min(60vw,60vh)]
-            cursor-grab active:cursor-grabbing
           "
-          onMouseDown={(e) => startDrag(e.clientX, e.clientY)}
-          onTouchStart={(e) => {
-            const t = e.touches[0];
-            startDrag(t.clientX, t.clientY);
-          }}
         >
 
-          {/* ROTATING GUIDE RING */}
+          {/* GUIDE RING */}
 
           {stage === "compass" && (
-            <motion.div
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
-            >
+            <motion.div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <motion.div
                 animate={{ rotate: 360 }}
                 transition={{
                   repeat: Infinity,
                   duration: 6,
-                  ease: "linear"
+                  ease: "linear",
                 }}
                 className="border border-[#d4af37]/40 rounded-full w-[110%] h-[110%]"
               />
@@ -263,7 +231,7 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
 
         </motion.div>
 
-        {/* Instruction Text */}
+        {/* Instruction */}
 
         {stage === "compass" && (
           <motion.p
@@ -272,7 +240,7 @@ export default function CompassSection({ stage, handleEnter }: CompassSectionPro
             transition={{ delay: 0.6 }}
             className="mt-10 text-[#d4af37] font-cinzel tracking-[0.3em] text-sm sm:text-lg text-center"
           >
-            DRAG & ROTATE THE WHEEL
+            SCROLL TO STEER THE SHIP
           </motion.p>
         )}
 
