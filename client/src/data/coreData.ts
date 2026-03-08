@@ -32,7 +32,7 @@ image: "/crew/HET SHAH.jpg",
 
 {
 name: "Himani",
-image: "/crew/Himani.jpg",
+image: "/crew/Himani.JPG",
 },
 
 {

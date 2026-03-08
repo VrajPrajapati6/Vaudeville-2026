@@ -6,10 +6,10 @@ import { useTransition } from "@/context/TransitionContext";
 const navItems = [
   { name: "About", path: "/about" },
   { name: "Events", path: "/events" },
-  { name: "Timeline", path: "/timeline" },
+  { name: "Itinerary", path: "/timeline" },
   { name: "Sponsors", path: "/sponsors" },
   { name: "Merch", path: "/merch" },
-  { name: "Crew", path: "/core" },
+  { name: "Core", path: "/core" },
 ];
 
 export default function PirateNavbar() {
