@@ -24,7 +24,16 @@ export default function EventRegister() {
   const { toast } = useToast();
 
   const event = events.find((e) => e.slug === params?.slug);
-  const isSolo = event?.teamSize.toLowerCase().includes("solo") || event?.teamSize === "1";
+
+  // --- NEW ROBUST TEAM SIZE LOGIC ---
+  const teamSizeStr = event?.teamSize || "1";
+  const numbers = teamSizeStr.match(/\d+/g)?.map(Number) || [1];
+  const maxMembers = Math.max(...numbers);
+  const minMembers = teamSizeStr.toLowerCase().includes("solo") ? 1 : Math.min(...numbers);
+  
+  // An event is strictly solo ONLY if max size is 1
+  const isStrictlySolo = maxMembers === 1;
+  // ----------------------------------
 
   const { register, control, handleSubmit, reset, getValues, formState: { errors } } = useForm<FormData>({
     mode: "onTouched",
@@ -41,16 +50,15 @@ export default function EventRegister() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Set initial max team size based on data
-  let maxMembers = 1;
-  if (!isSolo && event?.teamSize) {
-    const parts = event.teamSize.match(/\d+/g);
-    if (parts && parts.length > 0) {
-      maxMembers = parseInt(parts[parts.length - 1], 10);
-    }
-  }
-
   const onSubmit = async (data: FormData) => {
+    if (data.members.length < minMembers) {
+      toast({
+        title: "Incomplete Crew",
+        description: `This event requires at least ${minMembers} members.`,
+        variant: "destructive"
+      });
+      return;
+    }
     setIsSubmitting(true);
     try {
       const API_URL = import.meta.env.VITE_API_URL || "";
@@ -59,10 +67,10 @@ export default function EventRegister() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           eventId: event?.slug,
-          teamName: isSolo ? undefined : data.teamName,
+          teamName: isStrictlySolo ? undefined : (data.teamName || `Solo_${data.members[0].name}`),
           members: data.members.map(member => ({
             ...member,
-            rollNo: member.rollNo.toLowerCase() // Always convert to lowercase
+            rollNo: member.rollNo.toLowerCase()
           })),
         }),
       });
@@ -113,17 +121,27 @@ export default function EventRegister() {
         <h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center tracking-wider">Register Now</h2>
         <p className="font-cinzel text-gray-300 mb-8 text-center text-sm md:text-base">
           Fill in the details below to secure your spot in {event.title}.
-          {!isSolo && <span className="block mt-2 text-yellow-500/80">Maximum {maxMembers} members allowed.</span>}
+          {!isStrictlySolo && (
+            <span className="block mt-2 text-yellow-500/80">
+              {minMembers === maxMembers 
+                ? `Required: ${maxMembers} members.` 
+                : `Allowed: ${minMembers} to ${maxMembers} members.`}
+            </span>
+          )}
         </p>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 font-cinzel">
 
           {/* Team Details Block */}
-          {!isSolo && (
+          {!isStrictlySolo && (
             <div className="space-y-2">
-              <label className="text-[#d4af37] block font-bold tracking-wider text-sm">Team Name</label>
+              <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
+                Team Name {fields.length === 1 && minMembers === 1 ? "(Optional for Solo)" : ""}
+              </label>
               <input
-                {...register("teamName", { required: "Team name is required for team events" })}
+                {...register("teamName", { 
+                  required: fields.length > 1 || minMembers > 1 ? "Team name is required" : false 
+                })}
                 className={`w-full bg-black/40 border text-white p-3 rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors ${errors.teamName ? "border-red-500" : "border-[#d4af37]/50"
                   }`}
                 placeholder="The Black Pearl"
@@ -139,10 +157,10 @@ export default function EventRegister() {
 
                 <div className="flex justify-between items-center mb-6 border-b border-[#d4af37]/20 pb-2">
                   <h3 className="text-[#d4af37] font-pirata text-2xl tracking-wide">
-                    {isSolo ? "Player Details" : index === 0 ? "Captain (Team Leader)" : `Crew Member ${index + 1}`}
+                    {isStrictlySolo ? "Player Details" : index === 0 ? "Captain (Team Leader)" : `Crew Member ${index + 1}`}
                   </h3>
 
-                  {!isSolo && index > 0 && (
+                  {!isStrictlySolo && index > 0 && (
                     <button
                       type="button"
                       onClick={() => remove(index)}
@@ -239,7 +257,7 @@ export default function EventRegister() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 pt-6 border-t border-[#d4af37]/20">
-            {!isSolo && fields.length < maxMembers ? (
+            {!isStrictlySolo && fields.length < maxMembers ? (
               <button
                 type="button"
                 onClick={() => append({ name: "", rollNo: "", year: "", branch: "", institute: "" })}
