@@ -86,7 +86,7 @@ export const events = [
         rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
         teamSize: "Solo",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/FW.png",
         category: "Fashion"
     },
     {
