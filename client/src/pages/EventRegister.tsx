@@ -113,6 +113,13 @@ export default function EventRegister() {
     }
   }
 
+  // Fine Arts Dynamic Logic
+  if (event?.slug === "fine-arts") {
+    minMembers = 1;
+    maxMembers = 1;
+    isFixedSize = true;
+  }
+
   // An event is strictly solo ONLY if max size is 1
   const isStrictlySolo = maxMembers === 1;
   // ----------------------------------
@@ -281,10 +288,10 @@ export default function EventRegister() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 font-cinzel">
 
           {/* Category/Game Selection */}
-          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music") && (
+          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts") && (
             <div className="space-y-2">
               <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
-                {event.slug === "dance" || event.slug === "music" ? "Select Category" : "Select Game"}
+                {event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" ? "Select Category" : "Select Game"}
               </label>
               <select
                 {...register("game", { required: "Please select a category" })}
@@ -305,6 +312,12 @@ export default function EventRegister() {
                     <option value="Solo-Western">Solo-Western</option>
                     <option value="Duet">Duet</option>
                     <option value="Group">Group</option>
+                  </>
+                ) : event.slug === "fine-arts" ? (
+                  <>
+                    <option value="Tote-bag">Tote-bag (Solo - ITNU only)</option>
+                    <option value="Mehendi">Mehendi (Solo)</option>
+                    <option value="Rangoli">Rangoli (Solo)</option>
                   </>
                 ) : (
                   <>
@@ -398,44 +411,41 @@ export default function EventRegister() {
                       )}
                     </div>
 
-                    {event.slug !== "literary" && (event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (event.slug !== 'music' || selectedGame !== 'Group' || index === 0) && (
-                      <div className="space-y-1">
-                        <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Institute</label>
-                        {(event.slug === 'cosplay' || event.slug === 'dance' || event.slug === 'music') ? (
-                          <select
-                            {...register(`members.${index}.institute` as const, { required: isOptional ? false : "Please select Institute" })}
-                            className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
-                              }`}
-                          >
-                            <option value="">Select Institute</option>
-                            <option value="ITNU">ITNU</option>
-                            <option value="IMNU">IMNU</option>
-                            <option value="IAPNU">IAPNU</option>
-                            <option value="ILNU">ILNU</option>
-                            <option value="IPNU">IPNU</option>
-                            <option value="ICNU">ICNU</option>
-                            <option value="ISNU">ISNU</option>
-                            <option value="IDNU">IDNU</option>
-                          </select>
-                        ) : (
-                          <input
-                            {...register(`members.${index}.institute` as const, { required: isOptional ? false : "Institute is required" })}
-                            className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
-                              }`}
-                            placeholder="School of Navigation..."
-                          />
-                        )}
-                        {errors.members?.[index]?.institute && (
-                          <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.institute?.message}</span>
-                        )}
-                      </div>
-                    )}
+                    <div className="space-y-1">
+                      <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Institute</label>
+                      <select
+                        {...register(`members.${index}.institute` as const, {
+                          required: isOptional ? false : "Please select Institute",
+                          validate: (val) => {
+                            if (event.slug === 'fine-arts' && selectedGame === 'Tote-bag' && val !== 'ITNU') {
+                              return "Tote-bag event is only for ITNU Participants";
+                            }
+                            return true;
+                          }
+                        })}
+                        className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
+                          }`}
+                      >
+                        <option value="">Select Institute</option>
+                        <option value="ITNU">ITNU</option>
+                        <option value="ILNU">ILNU</option>
+                        <option value="IPNU">IPNU</option>
+                        <option value="ICNU">ICNU</option>
+                        <option value="IMNU">IMNU</option>
+                        <option value="ISNU">ISNU</option>
+                        <option value="IDNU">IDNU</option>
+                        <option value="IAPNU">IAPNU</option>
+                      </select>
+                      {errors.members?.[index]?.institute && (
+                        <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.institute?.message}</span>
+                      )}
+                    </div>
 
-                    {(event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (event.slug !== 'music' || selectedGame !== 'Group' || index === 0) && (
+                    {watch(`members.${index}.institute`) === 'ITNU' && (
                       <div className="space-y-1">
                         <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Branch</label>
                         <input
-                          {...register(`members.${index}.branch` as const, { required: isOptional ? false : "Branch is required" })}
+                          {...register(`members.${index}.branch` as const, { required: "Branch is required" })}
                           className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.branch ? "border-red-500" : "border-gray-600"
                             }`}
                           placeholder="CSE / ECE / Mechanical..."

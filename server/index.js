@@ -29,7 +29,7 @@ app.use((err, req, res, next) => {
 // ── Cloudinary config ─────────────────────────────────────────────────────────
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key:    process.env.CLOUDINARY_API_KEY,
+  api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
@@ -173,8 +173,8 @@ const EVENT_CATALOGUE = [
   },
   {
     slug: 'fine-arts', title: 'Art of the Tides',
-    desc: 'Tote Bag painting and traditional Mehendi competitions.',
-    teamSize: 'Solo / Pair', prize: '₹5,000',
+    desc: 'Tote Bag painting, traditional Mehendi, and Rangoli competitions.',
+    teamSize: 'Solo', prize: '₹5,000',
   },
   {
     slug: 'fireless-cooking', title: 'Captain\'s Kitchen',

@@ -4,7 +4,7 @@ const MemberSchema = new mongoose.Schema({
   name: { type: String, required: true },
   rollNo: { type: String, required: true },
   institute: { type: String }, // Optional for some events
-  branch: { type: String, required: true },
+  branch: { type: String, required: false },
   ugPg: { type: String, required: true },
   gender: { type: String, required: true },
   studentFaculty: { type: String, required: true },

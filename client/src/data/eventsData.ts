@@ -117,10 +117,10 @@ export const events = [
         slug: "fine-arts",
         title: "Art of the Tides",
         shortTitle: "Fine Arts",
-        desc: "Tote Bag painting and traditional Mehendi competitions.",
-        description: "Unleash your creativity on unconventional canvases. Decorate tote bags with beautiful artwork or paint intricate Mehendi patterns.",
+        desc: "Tote Bag painting, traditional Mehendi, and Rangoli competitions.",
+        description: "Unleash your creativity on unconventional canvases. Decorate tote bags with beautiful artwork, paint intricate Mehendi patterns, or create vibrant Rangoli designs.",
         rules: ["Basic materials provided; participants may bring specific colors/brushes", "Time limit: 2 hours", "Evaluation based on creativity and intricacy"],
-        teamSize: "Solo / Pair",
+        teamSize: "Solo",
         registrationLink: "#",
         image: "/event/FA.png",
         category: "Art"
