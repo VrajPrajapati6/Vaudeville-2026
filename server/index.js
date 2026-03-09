@@ -17,6 +17,15 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+// Global error handler for JSON parsing errors
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.error('Invalid JSON received:', err.message);
+    return res.status(400).json({ error: 'Malformed JSON in request body.' });
+  }
+  next();
+});
+
 // ── Cloudinary config ─────────────────────────────────────────────────────────
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -112,88 +121,80 @@ function appendToGoogleSheet(data) {
 // ── Static event catalogue (mirrors client/src/data/eventsData.ts) ────────────
 const EVENT_CATALOGUE = [
   {
+    slug: 'escape-rooms', title: 'Escape the Black Pearl',
+    desc: 'Solve puzzles and find your way out of the room before time runs out.',
+    description: 'An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.',
+    rules: ['Team size: 4 members', 'Time limit: 60 minutes', 'No personal electronic devices allowed inside'],
+    teamSize: '4', prize: '₹10,000',
+  },
+  {
     slug: 'treasure-hunt', title: 'Treasure Hunt',
     desc: 'Solve riddles hidden across the campus and uncover the lost treasure.',
     description: 'Teams must follow clues spread across the campus. Each clue leads to another location. The fastest team to reach the final treasure wins.',
-    rules: ['Team size: 2–4 members', 'Follow clues across campus', 'No external help allowed', 'Decision of judges is final'],
-    teamSize: '2–4', prize: '₹10,000',
+    rules: ['Team size: 3–4 members', 'Follow clues across campus', 'No external help allowed', 'Decision of judges is final'],
+    teamSize: '3–4', prize: '₹10,000',
   },
   {
-    slug: 'code-arena', title: 'Code Arena',
-    desc: 'Battle with logic and algorithms in an intense coding duel.',
-    description: 'Participants solve algorithmic problems under time pressure. The highest score wins.',
-    rules: ['Individual participation', 'Languages allowed: C, C++, Java, Python', '3 rounds of coding'],
-    teamSize: 'Solo', prize: '₹15,000',
+    slug: 'gully-cricket', title: 'The Seven-Seas Cricket League',
+    desc: 'A fast-paced, high-energy adaptation of real-world street cricket.',
+    description: 'Experience the thrill of traditional street cricket with quick matches, specialized gully rules, and pure fun. Knockouts leading to the grand final.',
+    rules: ['Team size: 6 players on field', 'Tennis ball usage', 'Specific "out" zones depending on venue'],
+    teamSize: '6', prize: '₹10,000',
   },
   {
-    slug: 'circuit-clash', title: 'Circuit Clash',
-    desc: 'Design and debug electronic circuits before time runs out.',
-    description: 'Participants must build and troubleshoot circuits using provided components.',
-    rules: ['Team of 2 allowed', 'Components provided on spot', 'Working circuit required'],
-    teamSize: '2', prize: '₹8,000',
+    slug: 'dance', title: 'Kraken\'s da-da Dance',
+    desc: 'Solo-Classical, Solo-Western, Duet, and Group dance styles.',
+    teamSize: '1-10', prize: '₹10,000',
   },
   {
-    slug: 'robo-wars', title: 'Robo Wars',
-    desc: 'Bring your robot and battle in the arena.',
-    description: 'Robots compete in a controlled arena where the last robot standing wins.',
-    rules: ['Max weight 15kg', 'No destructive weapons', 'Remote controlled robots allowed'],
-    teamSize: '2–5', prize: '₹20,000',
+    slug: 'music', title: 'Harmony of the Season',
+    desc: 'Singing and Instrumental music competition.',
+    teamSize: '1-8', prize: '₹10,000',
   },
   {
-    slug: 'tech-quiz', title: 'Tech Quiz',
-    desc: 'Test your knowledge across multiple technical domains.',
-    description: 'A quiz competition covering technology, engineering, and science.',
-    rules: ['Teams of 2', 'Multiple rounds', 'Rapid fire included'],
-    teamSize: '2', prize: '₹5,000',
+    slug: 'e-sports', title: 'Deadman\'s Arena',
+    desc: 'Valorant, BGMI, FIFA, Clash Royale competitive brackets.',
+    teamSize: 'Solo to 6', prize: '₹12,000',
   },
   {
-    slug: 'hackathon', title: 'Hackathon',
-    desc: '24 hour coding marathon to build innovative solutions.',
-    description: 'Participants build projects within 24 hours and present them to judges.',
-    rules: ['Teams of 2–4', 'Prototype required', 'Presentation required'],
-    teamSize: '2–4', prize: '₹50,000',
+    slug: 'fashion-walk', title: 'Sailor\'s Disguise',
+    desc: 'Strut the runway in spectacular fashion or cosplay.',
+    teamSize: 'Solo / Group', prize: '₹15,000',
   },
   {
-    slug: 'design-duel', title: 'Design Duel',
-    desc: 'Compete in UI/UX and graphic design challenges.',
-    description: 'Participants design creative UI/UX interfaces within a limited time.',
-    rules: ['Individual participation', 'Tools allowed: Figma, Adobe XD'],
-    teamSize: 'Solo', prize: '₹7,000',
+    slug: 'literary', title: 'Pirate\'s Parliament',
+    desc: 'Debate and Elocution competitions for the eloquent minds.',
+    teamSize: 'Solo / Duet', prize: '₹5,000',
   },
   {
-    slug: 'gaming-arena', title: 'Gaming Arena',
-    desc: 'Compete in esports tournaments with fellow gamers.',
-    description: 'Multiplayer gaming competition featuring popular esports titles.',
-    rules: ['Team based tournament', 'Knockout rounds'],
-    teamSize: '5', prize: '₹12,000',
+    slug: 'open-mic', title: 'Voices of the Voyage',
+    desc: 'Poetry, Shayari, Comedy, Storytelling, and Mimicry.',
+    teamSize: 'Solo', prize: '₹5,000',
   },
   {
-    slug: 'project-expo', title: 'Project Expo',
-    desc: 'Showcase innovative engineering projects.',
-    description: 'Students present their technical projects to judges.',
-    rules: ['Project demonstration required', 'Evaluation based on innovation'],
-    teamSize: '1–4', prize: '₹10,000',
+    slug: 'fine-arts', title: 'Art of the Tides',
+    desc: 'Tote Bag painting and traditional Mehendi competitions.',
+    teamSize: 'Solo / Pair', prize: '₹5,000',
   },
   {
-    slug: 'ai-challenge', title: 'AI Challenge',
-    desc: 'Solve machine learning challenges.',
-    description: 'Participants build AI models to solve real-world datasets.',
-    rules: ['Python recommended', 'Dataset provided'],
-    teamSize: '1–3', prize: '₹18,000',
+    slug: 'fireless-cooking', title: 'Captain\'s Kitchen',
+    desc: 'Whip up delicious cuisine without the use of a stove or oven.',
+    teamSize: '2-4', prize: '₹5,000',
   },
   {
-    slug: 'debugging-contest', title: 'Debugging Contest',
-    desc: 'Find and fix bugs in complex codebases.',
-    description: 'Participants must debug faulty programs within a time limit.',
-    rules: ['Individual participation', 'Multiple bug levels'],
-    teamSize: 'Solo', prize: '₹6,000',
+    slug: 'instrumental-solo', title: 'The Coral Riff',
+    desc: 'Showcase your mastery over musical instruments.',
+    teamSize: 'Solo', prize: '₹5,000',
   },
   {
-    slug: 'startup-pitch', title: 'Startup Pitch',
-    desc: 'Pitch your startup idea to expert judges.',
-    description: 'Teams present innovative startup ideas and business models.',
-    rules: ['Presentation required', 'Pitch time: 5 minutes'],
-    teamSize: '2–4', prize: '₹25,000',
+    slug: 'street-dance', title: 'Street Dance',
+    desc: 'Bring the rhythm of the streets to the pirate\'s deck.',
+    teamSize: 'Solo', prize: '₹5,000',
+  },
+  {
+    slug: 'cosplay', title: 'The Abyss Walker',
+    desc: 'Showcase your pirate-themed costume on the grand stage.',
+    teamSize: 'Solo', prize: '₹10,000',
   },
 ];
 
@@ -218,7 +219,7 @@ mongoose.connect(process.env.MONGODB_URI)
 // POST /api/register  →  saves into per-event collection  reg_<slug>
 app.post('/api/register', async (req, res) => {
   try {
-    const { eventId, teamName, members } = req.body;
+    const { eventId, game, ingredients, teamName, members } = req.body;
 
     // Basic validation
     if (!eventId || !members || members.length === 0) {
@@ -251,15 +252,17 @@ app.post('/api/register', async (req, res) => {
 
     // Save to the event-specific collection
     const normalizedMembers = members.map(m => ({ ...m, rollNo: m.rollNo.toLowerCase() }));
-    const newRegistration = new RegModel({ teamName, members: normalizedMembers });
+    const newRegistration = new RegModel({ game, ingredients, teamName, members: normalizedMembers });
     await newRegistration.save();
 
     // ── Append to Google Sheet ──
-    // We pass the eventId, teamName and members array. 
+    // We pass the eventId, game, teamName and members array. 
     // The Apps Script will handle creating rows for each member.
     await appendToGoogleSheet({
       type: 'registration',
       eventId,
+      game: game || 'N/A',
+      ingredients: ingredients || 'N/A',
       teamName: teamName || 'N/A',
       members: normalizedMembers,
       registeredAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })

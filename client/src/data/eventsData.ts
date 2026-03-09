@@ -5,8 +5,8 @@ export const events = [
         shortTitle: "Escape Room",
         desc: "Solve puzzles and find your way out of the room before time runs out.",
         description: "An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.",
-        rules: ["Team size: 2-4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
-        teamSize: "2-4",
+        rules: ["Team size: 4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
+        teamSize: "4",
         registrationLink: "#",
         image: "/event/ER.png",
         category: "Mystery"
@@ -17,22 +17,28 @@ export const events = [
         shortTitle: "Treasure Hunt",
         desc: "Navigate campus to find hidden clues and uncover the final treasure.",
         description: "Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.",
-        rules: ["Team size: 2–4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
-        teamSize: "2–4",
+        rules: ["Team size: 3-4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
+        teamSize: "3–4",
         registrationLink: "#",
-        image: "/public/event/TH.png",
+        image: "/event/TH.png",
         category: "Adventure"
     },
     {
         slug: "dance",
         title: "Kraken's da-da Dance",
         shortTitle: "Dance",
-        desc: "Solo (Classical, Non-Classical), Duet, Group, and Street dance styles.",
-        description: "A comprehensive dance competition showcasing various styles from classical Indian to modern hip-hop street battles. Participants can enter in multiple categories.",
-        rules: ["Solo: 3 mins max", "Duet/Group: 5-7 max", "Music tracks must be submitted beforehand", "Props allowed subject to approval"],
+        desc: "Solo-Classical, Solo-Western, Duet, and Group dance styles.",
+        description: "A comprehensive dance competition showcasing various styles from classical Indian to modern western dance. Categories include Solo-Classical, Solo-Western, Duet, and Group (5-10 members).",
+        rules: [
+            "Solo/Duet: 3 mins max",
+            "Group: 5-7 mins max",
+            "For group dance, all members must be from the same branch.",
+            "Music tracks must be submitted beforehand",
+            "Props allowed subject to approval"
+        ],
         teamSize: "1-10",
         registrationLink: "#",
-        image: "/public/event/GD.png",
+        image: "/event/GD.png",
         category: "Performing Arts"
     },
     {
@@ -54,7 +60,7 @@ export const events = [
         desc: "Valorant, BGMI, FIFA, Clash Royale competitive brackets.",
         description: "Battle it out in our grand E-Sports arena. Featuring knockout tournaments for the most popular multiplayer titles. Bring your A-game.",
         rules: ["BYOD for mobile games", "Standard competitive rules apply per game", "Toxic behavior leads to disqualification"],
-        teamSize: "Solo to 5",
+        teamSize: "Solo to 6",
         registrationLink: "#",
         image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000",
         category: "Gaming"
@@ -78,14 +84,14 @@ export const events = [
         desc: "Strut the runway in spectacular fashion or cosplay your favorite character.",
         description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
         rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
-        teamSize: "Solo / Group",
+        teamSize: "Solo",
         registrationLink: "#",
         image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80&w=1000",
         category: "Fashion"
     },
     {
         slug: "literary",
-        title: "Pirate's Parley",
+        title: "Pirate's Parliament",
         shortTitle: "Literary",
         desc: "Debate and Elocution competitions for the eloquent minds.",
         description: "Engage in wordplay, structured arguments, and articulate speeches. Challenge prevailing ideas in debate or enchant the crowd in elocution.",
@@ -126,7 +132,7 @@ export const events = [
         desc: "Whip up delicious cuisine without the use of a stove or oven.",
         description: "A test of taste and presentation. Create mocktails, salads, sandwiches, and desserts strictly without fire. Let your culinary skills shine.",
         rules: ["No pre-cooked items allowed (except basic bread/biscuits)", "Time limit: 60 minutes", "Must prepare at least two distinct dishes"],
-        teamSize: "2",
+        teamSize: "2-4",
         registrationLink: "#",
         image: "/event/FC.png",
         category: "Culinary"
@@ -154,5 +160,17 @@ export const events = [
         registrationLink: "#",
         image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80&w=1000",
         category: "Performing Arts"
+    },
+    {
+        slug: "cosplay",
+        title: "The Abyss Walker",
+        shortTitle: "Cosplay",
+        desc: "Showcase your pirate-themed costume on the grand stage.",
+        description: "Step into the shoes of a legendary pirate or a mythical sea creature. Showcase your craftsmanship and character portrayal in this solo cosplay event.",
+        rules: ["Solo performance", "Time limit: 2 minutes", "Costume must follow the theme: Pirates and the Sea", "No dangerous props allowed"],
+        teamSize: "Solo",
+        registrationLink: "#",
+        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000",
+        category: "Creative"
     }
 ];

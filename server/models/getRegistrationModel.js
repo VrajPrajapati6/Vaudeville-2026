@@ -3,14 +3,20 @@ const mongoose = require('mongoose');
 const MemberSchema = new mongoose.Schema({
   name: { type: String, required: true },
   rollNo: { type: String, required: true },
-  institute: { type: String, required: true },
+  institute: { type: String }, // Optional for some events
+  branch: { type: String, required: true },
+  year: { type: String, required: true },
   ugPg: { type: String, required: true },
   gender: { type: String, required: true },
   studentFaculty: { type: String, required: true },
   mobileNo: { type: String, required: true },
+  preference: { type: String }, // For Cosplay
+  habit: { type: String }, // For Fashion Walk
 });
 
 const RegistrationSchema = new mongoose.Schema({
+  game: { type: String }, // Optional, for E-Sports
+  ingredients: { type: String }, // For Captain's Kitchen
   teamName: { type: String }, // Optional, only for team events
   members: {
     type: [MemberSchema],

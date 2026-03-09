@@ -3,9 +3,11 @@ const mongoose = require('mongoose');
 const MemberSchema = new mongoose.Schema({
   name: { type: String, required: true },
   rollNo: { type: String, required: true },
-  year: { type: String, required: true },
+  institute: { type: String }, // Optional
   branch: { type: String, required: true },
-  institute: { type: String, required: true }
+  year: { type: String, required: true },
+  preference: { type: String },
+  habit: { type: String }
 });
 
 const RegistrationSchema = new mongoose.Schema({
