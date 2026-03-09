@@ -128,10 +128,10 @@ const EVENT_CATALOGUE = [
     teamSize: '4', prize: '₹10,000',
   },
   {
-    slug: 'treasure-hunt', title: 'Treasure Hunt',
-    desc: 'Solve riddles hidden across the campus and uncover the lost treasure.',
-    description: 'Teams must follow clues spread across the campus. Each clue leads to another location. The fastest team to reach the final treasure wins.',
-    rules: ['Team size: 3–4 members', 'Follow clues across campus', 'No external help allowed', 'Decision of judges is final'],
+    slug: 'treasure-hunt', title: 'The Lost Treasure',
+    desc: 'Navigate campus to find hidden clues and uncover the final treasure.',
+    description: 'Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.',
+    rules: ['Team size: 3-4 members', 'Follow clues across campus strictly', 'No external help or vehicles allowed'],
     teamSize: '3–4', prize: '₹10,000',
   },
   {
@@ -147,8 +147,8 @@ const EVENT_CATALOGUE = [
     teamSize: '1-10', prize: '₹10,000',
   },
   {
-    slug: 'music', title: 'Harmony of the Season',
-    desc: 'Singing and Instrumental music competition.',
+    slug: 'music', title: 'Harmony of the Seas',
+    desc: 'Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).',
     teamSize: '1-10', prize: '₹10,000',
   },
   {
@@ -187,8 +187,8 @@ const EVENT_CATALOGUE = [
     teamSize: 'Solo', prize: '₹5,000',
   },
   {
-    slug: 'street-dance', title: 'Street Dance',
-    desc: 'Bring the rhythm of the streets to the pirate\'s deck.',
+    slug: 'street-dance', title: 'Raider\'s Duel',
+    desc: 'Bring the rhythm of the streets to the pirate\'s deck in this solo dance battle.',
     teamSize: 'Solo', prize: '₹5,000',
   },
   {
@@ -251,20 +251,36 @@ app.post('/api/register', async (req, res) => {
     }
 
     // Save to the event-specific collection
-    const normalizedMembers = members.map(m => ({ ...m, rollNo: m.rollNo.toLowerCase() }));
+    const leaderInstitute = members[0].institute;
+    const normalizedMembers = members.map((m, idx) => ({ 
+      ...m, 
+      institute: (eventId === 'gully-cricket' || idx === 0) ? m.institute : leaderInstitute,
+      rollNo: m.rollNo.toLowerCase() 
+    }));
     const newRegistration = new RegModel({ game, ingredients, teamName, members: normalizedMembers });
     await newRegistration.save();
 
     // ── Append to Google Sheet ──
-    // We pass the eventId, game, teamName and members array. 
-    // The Apps Script will handle creating rows for each member.
+    const sheetMembers = normalizedMembers.map(m => ({
+      name: m.name,
+      rollNumber: m.rollNo,
+      mobileNumber: m.mobileNo, // Standardized key
+      institute: m.institute,
+      branch: m.branch,
+      ugPg: m.ugPg,
+      gender: m.gender,
+      studentFaculty: m.studentFaculty,
+      preference: m.preference || 'N/A',
+      habit: m.habit || 'N/A'
+    }));
+
     await appendToGoogleSheet({
       type: 'registration',
       eventId,
       game: game || 'N/A',
       ingredients: ingredients || 'N/A',
       teamName: teamName || 'N/A',
-      members: normalizedMembers,
+      members: sheetMembers,
       registeredAt: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
     });
 

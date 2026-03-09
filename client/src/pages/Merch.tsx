@@ -123,10 +123,10 @@ XL
         {/* Buy Button */}
 
         <button
-          onClick={() => setLocation("/merch/payment")}
-          className="px-8 py-4 bg-[#d4af37] text-black font-cinzel font-bold text-lg hover:bg-yellow-500 transition-all uppercase tracking-wider"
+          disabled
+          className="px-8 py-4 bg-gray-500/50 text-gray-400 font-cinzel font-bold text-lg cursor-not-allowed uppercase tracking-wider border border-gray-500/30"
         >
-          Buy Now
+          Coming Soon
         </button>
 
       </div>

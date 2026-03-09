@@ -154,20 +154,20 @@ export default function EventRegister() {
       }
     } else if (isFixedSize && fields.length !== maxMembers) {
       setValue("members", Array(maxMembers).fill(null).map(() => ({ ...emptyMember })));
+    } else if (fields.length < minMembers) {
+      // Force minimum fields for all events
+      const currentMembers = getValues("members");
+      const newMembers = Array(minMembers).fill(null).map((_, i) => currentMembers[i] || { ...emptyMember });
+      setValue("members", newMembers);
     }
   }, [selectedGame, maxMembers, minMembers, isFixedSize, event?.slug]);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const onSubmit = async (data: FormData) => {
-    // Filter out optional members if they are incomplete
-    const submittedMembers = data.members.filter((m, i) => {
-      if (event?.slug === "e-sports") {
-        if (selectedGame === "Bgmi" && i === 4) return m.name && m.rollNo; // 5th is optional
-        if (selectedGame === "Valorant" && i === 5) return m.name && m.rollNo; // 6th is optional
-      }
-      return true;
-    });
+    // Every member box present on the form must now be fully filled. 
+    // If a box is added, validation will catch empty fields before reach here.
+    const submittedMembers = data.members;
 
     if (submittedMembers.length < minMembers) {
       toast({
@@ -178,8 +178,26 @@ export default function EventRegister() {
       return;
     }
 
+    // Dance Group same branch validation (ITNU only)
+    if (event?.slug === "dance" && data.game === "Group") {
+      const itnuMembers = submittedMembers.filter(m => m.institute === "ITNU" && m.branch);
+      if (itnuMembers.length > 1) {
+        const firstBranch = itnuMembers[0].branch.toLowerCase().trim();
+        const mismatch = itnuMembers.some(m => m.branch.toLowerCase().trim() !== firstBranch);
+        if (mismatch) {
+          toast({
+            title: "Branch Mismatch",
+            description: "For group dance, all ITNU members must be from the same branch.",
+            variant: "destructive"
+          });
+          return;
+        }
+      }
+    }
+
     setIsSubmitting(true);
     try {
+      const teamLeaderInstitute = data.members[0].institute;
       const API_URL = import.meta.env.VITE_API_URL || "";
       const response = await fetch(`${API_URL}/api/register`, {
         method: "POST",
@@ -189,8 +207,10 @@ export default function EventRegister() {
           game: data.game,
           ingredients: data.ingredients,
           teamName: isStrictlySolo ? undefined : (data.teamName || `Solo_${data.members[0].name}`),
-          members: submittedMembers.map(member => ({
+          members: submittedMembers.map((member, idx) => ({
             ...member,
+            institute: (event?.slug === 'gully-cricket' || idx === 0) ? member.institute : teamLeaderInstitute,
+            branch: member.institute === 'ITNU' ? member.branch : 'N/A',
             rollNo: member.rollNo.toLowerCase()
           })),
         }),
@@ -375,12 +395,8 @@ export default function EventRegister() {
           {/* Members Mapping */}
           <div className="space-y-6">
             {fields.map((item, index) => {
-              // Conditional requirement for optional E-Sports members
-              let isOptional = false;
-              if (event.slug === "e-sports") {
-                if (selectedGame === "Bgmi" && index === 4) isOptional = true;
-                if (selectedGame === "Valorant" && index === 5) isOptional = true;
-              }
+              // Generalized requirement for optional members
+              const isOptional = index >= minMembers;
 
               return (
                 <div key={item.id} className="p-6 border border-[#d4af37]/20 rounded-sm bg-black/30 relative shadow-inner">
@@ -391,7 +407,7 @@ export default function EventRegister() {
                       {isOptional && <span className="text-yellow-500/60 text-sm ml-2">(Optional)</span>}
                     </h3>
 
-                    {!isStrictlySolo && !isFixedSize && index > 0 && (
+                    {!isStrictlySolo && !isFixedSize && index >= minMembers && (
                       <button
                         type="button"
                         onClick={() => remove(index)}
@@ -406,7 +422,7 @@ export default function EventRegister() {
                     <div className="space-y-1">
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Name</label>
                       <input
-                        {...register(`members.${index}.name` as const, { required: isOptional ? false : "Name is required" })}
+                        {...register(`members.${index}.name` as const, { required: "Name is required" })}
                         className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.name ? "border-red-500" : "border-gray-600"
                           }`}
                         placeholder="Jack Sparrow"
@@ -416,37 +432,39 @@ export default function EventRegister() {
                       )}
                     </div>
 
-                    <div className="space-y-1">
-                      <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Institute</label>
-                      <select
-                        {...register(`members.${index}.institute` as const, {
-                          required: isOptional ? false : "Please select Institute",
-                          validate: (val) => {
-                            if (event.slug === 'fine-arts' && selectedGame === 'Tote-bag' && val !== 'ITNU') {
-                              return "Tote-bag event is only for ITNU Participants";
+                    {(event.slug === 'gully-cricket' || index === 0) && (
+                      <div className="space-y-1">
+                        <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Institute</label>
+                        <select
+                          {...register(`members.${index}.institute` as const, {
+                            required: "Please select Institute",
+                            validate: (val) => {
+                              if (event.slug === 'fine-arts' && selectedGame === 'Tote-bag' && val !== 'ITNU') {
+                                return "Tote-bag event is only for ITNU Participants";
+                              }
+                              return true;
                             }
-                            return true;
-                          }
-                        })}
-                        className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
-                          }`}
-                      >
-                        <option value="">Select Institute</option>
-                        <option value="ITNU">ITNU</option>
-                        <option value="ILNU">ILNU</option>
-                        <option value="IPNU">IPNU</option>
-                        <option value="ICNU">ICNU</option>
-                        <option value="IMNU">IMNU</option>
-                        <option value="ISNU">ISNU</option>
-                        <option value="IDNU">IDNU</option>
-                        <option value="IAPNU">IAPNU</option>
-                      </select>
-                      {errors.members?.[index]?.institute && (
-                        <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.institute?.message}</span>
-                      )}
-                    </div>
+                          })}
+                          className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
+                            }`}
+                        >
+                          <option value="">Select Institute</option>
+                          <option value="ITNU">ITNU</option>
+                          <option value="ILNU">ILNU</option>
+                          <option value="IPNU">IPNU</option>
+                          <option value="ICNU">ICNU</option>
+                          <option value="IMNU">IMNU</option>
+                          <option value="ISNU">ISNU</option>
+                          <option value="IDNU">IDNU</option>
+                          <option value="IAPNU">IAPNU</option>
+                        </select>
+                        {errors.members?.[index]?.institute && (
+                          <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.institute?.message}</span>
+                        )}
+                      </div>
+                    )}
 
-                    {watch(`members.${index}.institute`) === 'ITNU' && (
+                    {(event.slug === 'gully-cricket' || index === 0 ? watch(`members.${index}.institute`) === 'ITNU' : watch(`members.0.institute`) === 'ITNU') && (
                       <div className="space-y-1">
                         <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Branch</label>
                         <input
@@ -465,7 +483,7 @@ export default function EventRegister() {
                     <div className="space-y-1">
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">UG/PG</label>
                       <select
-                        {...register(`members.${index}.ugPg` as const, { required: isOptional ? false : "Please select UG/PG" })}
+                        {...register(`members.${index}.ugPg` as const, { required: "Please select UG/PG" })}
                         className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.ugPg ? "border-red-500" : "border-gray-600"
                           }`}
                       >
@@ -481,7 +499,7 @@ export default function EventRegister() {
                     <div className="space-y-1">
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Gender</label>
                       <select
-                        {...register(`members.${index}.gender` as const, { required: isOptional ? false : "Please select Gender" })}
+                        {...register(`members.${index}.gender` as const, { required: "Please select Gender" })}
                         className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.gender ? "border-red-500" : "border-gray-600"
                           }`}
                       >
@@ -499,7 +517,7 @@ export default function EventRegister() {
                     <div className="space-y-1">
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Student / Faculty</label>
                       <select
-                        {...register(`members.${index}.studentFaculty` as const, { required: isOptional ? false : "Please select Role" })}
+                        {...register(`members.${index}.studentFaculty` as const, { required: "Please select Role" })}
                         className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.studentFaculty ? "border-red-500" : "border-gray-600"
                           }`}
                       >
@@ -516,7 +534,7 @@ export default function EventRegister() {
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Mobile No.</label>
                       <input
                         {...register(`members.${index}.mobileNo` as const, {
-                          required: isOptional ? false : "Mobile number is required",
+                          required: "Mobile number is required",
                           pattern: {
                             value: /^\d{10}$/,
                             message: "Please enter a valid 10-digit mobile number"
@@ -535,9 +553,8 @@ export default function EventRegister() {
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Roll No (Unique Flag)</label>
                       <input
                         {...register(`members.${index}.rollNo` as const, {
-                          required: isOptional ? false : "Roll number is required",
+                          required: "Roll number is required",
                           validate: (value) => {
-                            if (isOptional && !value) return true;
                             const allMembers = getValues("members");
                             const normalized = (value || "").toLowerCase().trim();
                             const duplicates = allMembers.filter(
@@ -595,7 +612,7 @@ export default function EventRegister() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-center mt-10 pt-6 border-t border-[#d4af37]/20">
-            {!isStrictlySolo && !isFixedSize && event.slug !== "e-sports" && fields.length < maxMembers ? (
+            {!isStrictlySolo && !isFixedSize && fields.length < maxMembers ? (
               <button
                 type="button"
                 onClick={() => append({ ...emptyMember })}
