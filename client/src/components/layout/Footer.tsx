@@ -51,13 +51,6 @@ export default function Footer() {
                 +91 9408226804
               </a>
             </div>
-            
-            <div>
-              <p className="text-[#d4af37]/90 font-bold tracking-wider">Samiya Ayachit</p>
-              <a href="tel:+917898091733" className="hover:text-[#d4af37] transition-colors duration-300">
-                +91 7898091733
-              </a>
-            </div>
           </div>
         </div>
 

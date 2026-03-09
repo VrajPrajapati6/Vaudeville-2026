@@ -4,10 +4,11 @@ export const timeline = [
 day: "Day 1",
 date: "20 March",
 events: [
-{ time: "10:00 AM", event: "Opening Ceremony", venue: "Main Auditorium" },
-{ time: "11:30 AM", event: "Treasure Hunt", venue: "Campus Grounds" },
-{ time: "2:00 PM", event: "Coding Battle", venue: "Computer Lab 1" },
-{ time: "4:30 PM", event: "Pirate Quiz", venue: "Seminar Hall" }
+{ time: "11:00 AM - 1:00 PM", event: "Inauguration", venue: "C-Audi" },
+{ time: "4:00 PM - 7:00 PM", event: "Fine Arts", venue: "A-Block" },
+{ time: "4:00 PM - 7:00 PM", event: "Gully Cricket", venue: "Dome Ground" },
+{ time: "6:00 PM - 7:30 PM", event: "Street Dance", venue: "Stall" },
+{ time: "8:00 PM onwards", event: "Sufi Night", venue: "Dome" }
 ]
 },
 
@@ -15,10 +16,13 @@ events: [
 day: "Day 2",
 date: "21 March",
 events: [
-{ time: "10:30 AM", event: "Hackathon", venue: "Innovation Lab" },
-{ time: "1:00 PM", event: "Robotics Challenge", venue: "Engineering Block" },
-{ time: "3:00 PM", event: "Gaming Arena", venue: "Student Center" },
-{ time: "6:00 PM", event: "DJ Night", venue: "Open Ground" }
+{ time: "7:30 AM onwards", event: "Gully Cricket", venue: "Dome Ground" },
+{ time: "9:00 AM - 1:00 PM", event: "Treasure Hunt", venue: "Nirma" },
+{ time: "10:00 AM - 4:00 PM", event: "E-Sports", venue: "N-Block, N-Common" },
+{ time: "1:00 PM - 3:00 PM", event: "Fashion Walk / Cosplay", venue: "NIM Audi" },
+{ time: "3:00 PM - 5:00 PM", event: "Dance", venue: "NIM" },
+{ time: "5:00 PM - 7:00 PM", event: "Group Dance", venue: "NIM Audi" },
+{ time: "8:00 PM onwards", event: "Concert Night", venue: "Dome" }
 ]
 },
 
@@ -26,10 +30,15 @@ events: [
 day: "Day 3",
 date: "22 March",
 events: [
-{ time: "11:00 AM", event: "Startup Pitch", venue: "Seminar Hall" },
-{ time: "2:30 PM", event: "Final Coding Round", venue: "Computer Lab 2" },
-{ time: "5:00 PM", event: "Prize Distribution", venue: "Main Stage" }
+{ time: "7:30 AM onwards", event: "Gully Cricket", venue: "Dome Ground" },
+{ time: "9:00 AM - 1:00 PM", event: "E-Sports", venue: "N Block" },
+{ time: "9:00 AM - 1:00 PM", event: "Literary", venue: "A-101" },
+{ time: "9:00 AM - 2:00 PM", event: "Singing and Instrumental", venue: "C-Audi" },
+{ time: "1:00 PM - 4:00 PM", event: "Escape Room", venue: "A-Block" },
+{ time: "3:00 PM - 5:00 PM", event: "Open Mic", venue: "C-Audi" },
+{ time: "4:00 PM - 6:00 PM", event: "Fireless Cooking", venue: "A-Corridor" },
+{ time: "7:00 PM onwards", event: "Artist Night", venue: "Dome" }
 ]
 }
 
-]
+];
