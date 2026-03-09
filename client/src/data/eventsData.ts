@@ -8,7 +8,7 @@ export const events = [
         rules: ["Team size: 2-4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
         teamSize: "2-4",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/ER.png",
         category: "Mystery"
     },
     {
@@ -20,7 +20,7 @@ export const events = [
         rules: ["Team size: 2–4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
         teamSize: "2–4",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1533558701576-23c65e0272fb?auto=format&fit=crop&q=80&w=1000",
+        image: "/public/event/TH.png",
         category: "Adventure"
     },
     {
@@ -32,7 +32,7 @@ export const events = [
         rules: ["Solo: 3 mins max", "Duet/Group: 5-7 max", "Music tracks must be submitted beforehand", "Props allowed subject to approval"],
         teamSize: "1-10",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?auto=format&fit=crop&q=80&w=1000",
+        image: "/public/event/GD.png",
         category: "Performing Arts"
     },
     {
@@ -44,7 +44,7 @@ export const events = [
         rules: ["Acoustic instruments preferred for instrumental", "No pre-recorded vocals allowed", "Time limit: 4-6 minutes per performance"],
         teamSize: "1-8",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/Sing.jpg",
         category: "Performing Arts"
     },
     {
@@ -68,7 +68,7 @@ export const events = [
         rules: ["Team size: 6 players on field", "Tennis ball usage", "Specific 'out' zones depending on venue"],
         teamSize: "6",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1531415074968-036ba1b575da?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/GC.png",
         category: "Sports"
     },
     {
@@ -92,7 +92,7 @@ export const events = [
         rules: ["Topics provided 24 hours prior", "Strict adherence to time limits", "Use of unparliamentary language leads to disqualification"],
         teamSize: "Solo / Duet",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/Lit.png",
         category: "Speaking"
     },
     {
@@ -116,7 +116,7 @@ export const events = [
         rules: ["Basic materials provided; participants may bring specific colors/brushes", "Time limit: 2 hours", "Evaluation based on creativity and intricacy"],
         teamSize: "Solo / Pair",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/FA.png",
         category: "Art"
     },
     {
@@ -128,7 +128,7 @@ export const events = [
         rules: ["No pre-cooked items allowed (except basic bread/biscuits)", "Time limit: 60 minutes", "Must prepare at least two distinct dishes"],
         teamSize: "2",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1495521821757-a1efb6729352?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/FC.png",
         category: "Culinary"
     },
     {
@@ -140,7 +140,7 @@ export const events = [
         rules: ["Time limit: 3-5 minutes", "No backing tracks with pre-recorded instruments", "Bring your own instruments (basic drum kit provided)"],
         teamSize: "Solo",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1511192336575-5a79af67a629?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/Inst.png",
         category: "Performing Arts"
     },
     {

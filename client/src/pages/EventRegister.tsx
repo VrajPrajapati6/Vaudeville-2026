@@ -8,9 +8,11 @@ import { useToast } from "@/hooks/use-toast";
 type MemberData = {
   name: string;
   rollNo: string;
-  year: string;
-  branch: string;
   institute: string;
+  ugPg: string;
+  gender: string;
+  studentFaculty: string;
+  mobileNo: string;
 };
 
 type FormData = {
@@ -30,7 +32,7 @@ export default function EventRegister() {
   const numbers = teamSizeStr.match(/\d+/g)?.map(Number) || [1];
   const maxMembers = Math.max(...numbers);
   const minMembers = teamSizeStr.toLowerCase().includes("solo") ? 1 : Math.min(...numbers);
-  
+
   // An event is strictly solo ONLY if max size is 1
   const isStrictlySolo = maxMembers === 1;
   // ----------------------------------
@@ -39,7 +41,7 @@ export default function EventRegister() {
     mode: "onTouched",
     defaultValues: {
       teamName: "",
-      members: [{ name: "", rollNo: "", year: "", branch: "", institute: "" }],
+      members: [{ name: "", rollNo: "", institute: "", ugPg: "", gender: "", studentFaculty: "", mobileNo: "" }],
     },
   });
 
@@ -116,15 +118,25 @@ export default function EventRegister() {
   return (
     <PiratePageLayout title={`Register: ${event.title}`}>
 
-      <div className="max-w-3xl mx-auto bg-black/60 border border-[#d4af37]/40 p-8 rounded-lg mt-8 mb-16 shadow-[0_0_30px_rgba(212,175,55,0.1)]">
+      <div className="relative max-w-3xl mx-auto bg-black/60 border border-[#d4af37]/40 p-8 rounded-lg mt-8 mb-16 shadow-[0_0_30px_rgba(212,175,55,0.1)]">
+        <button
+          type="button"
+          onClick={() => setLocation('/events')}
+          className="absolute top-4 right-4 text-[#d4af37]/70 hover:text-white transition-colors z-10"
+          aria-label="Go back"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
 
         <h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center tracking-wider">Register Now</h2>
         <p className="font-cinzel text-gray-300 mb-8 text-center text-sm md:text-base">
           Fill in the details below to secure your spot in {event.title}.
           {!isStrictlySolo && (
             <span className="block mt-2 text-yellow-500/80">
-              {minMembers === maxMembers 
-                ? `Required: ${maxMembers} members.` 
+              {minMembers === maxMembers
+                ? `Required: ${maxMembers} members.`
                 : `Allowed: ${minMembers} to ${maxMembers} members.`}
             </span>
           )}
@@ -139,8 +151,8 @@ export default function EventRegister() {
                 Team Name {fields.length === 1 && minMembers === 1 ? "(Optional for Solo)" : ""}
               </label>
               <input
-                {...register("teamName", { 
-                  required: fields.length > 1 || minMembers > 1 ? "Team name is required" : false 
+                {...register("teamName", {
+                  required: fields.length > 1 || minMembers > 1 ? "Team name is required" : false
                 })}
                 className={`w-full bg-black/40 border text-white p-3 rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors ${errors.teamName ? "border-red-500" : "border-[#d4af37]/50"
                   }`}
@@ -199,33 +211,71 @@ export default function EventRegister() {
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Year of Study</label>
+                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">UG/PG</label>
                     <select
-                      {...register(`members.${index}.year` as const, { required: "Please select a year" })}
-                      className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.year ? "border-red-500" : "border-gray-600"
+                      {...register(`members.${index}.ugPg` as const, { required: "Please select UG/PG" })}
+                      className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.ugPg ? "border-red-500" : "border-gray-600"
                         }`}
                     >
-                      <option value="">Select Year</option>
-                      <option value="1">1st Year</option>
-                      <option value="2">2nd Year</option>
-                      <option value="3">3rd Year</option>
-                      <option value="4">4th Year</option>
+                      <option value="">Select Level</option>
+                      <option value="UG">Undergraduate (UG)</option>
+                      <option value="PG">Postgraduate (PG)</option>
                     </select>
-                    {errors.members?.[index]?.year && (
-                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.year?.message}</span>
+                    {errors.members?.[index]?.ugPg && (
+                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.ugPg?.message}</span>
                     )}
                   </div>
 
                   <div className="space-y-1">
-                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Branch</label>
-                    <input
-                      {...register(`members.${index}.branch` as const, { required: "Branch is required" })}
-                      className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.branch ? "border-red-500" : "border-gray-600"
+                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Gender</label>
+                    <select
+                      {...register(`members.${index}.gender` as const, { required: "Please select Gender" })}
+                      className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.gender ? "border-red-500" : "border-gray-600"
                         }`}
-                      placeholder="e.g. CSE"
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="Male">Male</option>
+                      <option value="Female">Female</option>
+                      <option value="Other">Other</option>
+                      <option value="Prefer not to say">Prefer not to say</option>
+                    </select>
+                    {errors.members?.[index]?.gender && (
+                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.gender?.message}</span>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Student / Faculty</label>
+                    <select
+                      {...register(`members.${index}.studentFaculty` as const, { required: "Please select Role" })}
+                      className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.studentFaculty ? "border-red-500" : "border-gray-600"
+                        }`}
+                    >
+                      <option value="">Select Role</option>
+                      <option value="Student">Student</option>
+                      <option value="Faculty">Faculty</option>
+                    </select>
+                    {errors.members?.[index]?.studentFaculty && (
+                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.studentFaculty?.message}</span>
+                    )}
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Mobile No.</label>
+                    <input
+                      {...register(`members.${index}.mobileNo` as const, {
+                        required: "Mobile number is required",
+                        pattern: {
+                          value: /^\d{10}$/,
+                          message: "Please enter a valid 10-digit mobile number"
+                        }
+                      })}
+                      className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.mobileNo ? "border-red-500" : "border-gray-600"
+                        }`}
+                      placeholder="9876543210"
                     />
-                    {errors.members?.[index]?.branch && (
-                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.branch?.message}</span>
+                    {errors.members?.[index]?.mobileNo && (
+                      <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.mobileNo?.message}</span>
                     )}
                   </div>
 
@@ -260,10 +310,10 @@ export default function EventRegister() {
             {!isStrictlySolo && fields.length < maxMembers ? (
               <button
                 type="button"
-                onClick={() => append({ name: "", rollNo: "", year: "", branch: "", institute: "" })}
+                onClick={() => append({ name: "", rollNo: "", institute: "", ugPg: "", gender: "", studentFaculty: "", mobileNo: "" })}
                 className="border border-[#d4af37] text-[#d4af37] px-6 py-2.5 hover:bg-[#d4af37] hover:text-black transition-all flex-1 sm:flex-none uppercase tracking-widest text-xs font-bold w-full sm:w-auto text-center"
               >
-                + Enlist New Crew
+                + Add Member
               </button>
             ) : (
               <div className="flex-1 sm:flex-none hidden sm:block"></div>

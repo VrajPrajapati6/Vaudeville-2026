@@ -1,15 +1,17 @@
 const mongoose = require('mongoose');
 
 const MemberSchema = new mongoose.Schema({
-  name:      { type: String, required: true },
-  rollNo:    { type: String, required: true },
-  year:      { type: String, required: true },
-  branch:    { type: String, required: true },
+  name: { type: String, required: true },
+  rollNo: { type: String, required: true },
   institute: { type: String, required: true },
+  ugPg: { type: String, required: true },
+  gender: { type: String, required: true },
+  studentFaculty: { type: String, required: true },
+  mobileNo: { type: String, required: true },
 });
 
 const RegistrationSchema = new mongoose.Schema({
-  teamName:     { type: String }, // Optional, only for team events
+  teamName: { type: String }, // Optional, only for team events
   members: {
     type: [MemberSchema],
     required: true,
