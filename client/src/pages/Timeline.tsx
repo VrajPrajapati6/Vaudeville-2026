@@ -1,61 +1,90 @@
+import { useState } from "react"
+import { MapPin, Clock } from "lucide-react"
 import PiratePageLayout from "@/components/layout/PiratePageLayout"
 import { timeline } from "@/data/timelineData"
 
 export default function Timeline() {
+    const [activeTab, setActiveTab] = useState(0)
 
-return (
+    // Map "Day 1", "Day 2", "Day 3" from the data to the correct format
+    const tabs = timeline.map(t => ({
+        label: t.day.toUpperCase(), // "DAY 1"
+        date: t.date // "20 March"
+    }))
 
-<PiratePageLayout title="Event Timeline">
+    return (
+        <PiratePageLayout title="Event Itinerary">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-20">
 
-<p className="font-cinzel text-gray-300 text-center max-w-xl mx-auto mb-16">
-Plan your journey through Vaudeville. Explore events across three days of adventure.
-</p>
+                {/* Tabs section */}
+                <div className="flex flex-wrap justify-center gap-4 mb-16">
+                    {tabs.map((tab, idx) => {
+                        const isActive = activeTab === idx
+                        return (
+                            <button
+                                key={idx}
+                                onClick={() => setActiveTab(idx)}
+                                className={`flex flex-col items-center justify-center px-8 py-4 rounded-xl transition-all duration-300 min-w-[160px]
+                  ${isActive
+                                        ? "bg-[#d4af37] text-[#2c1d11] shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                                        : "bg-[#3e2723] text-[#d4af37]/80 hover:bg-[#4e342e] border border-[#d4af37]/20"
+                                    }`}
+                            >
+                                <span className={`text-lg font-cinzel font-bold mb-1 ${isActive ? "text-[#2c1d11]" : "text-white"}`}>
+                                    {tab.label}
+                                </span>
+                                <span className={`text-sm tracking-wide ${isActive ? "text-[#5e4021] font-semibold" : "text-gray-400"}`}>
+                                    {tab.date}
+                                </span>
+                            </button>
+                        )
+                    })}
+                </div>
 
-<div className="space-y-16">
+                {/* Timeline Events for the active tab */}
+                <div className="relative pl-6 sm:pl-10">
+                    {/* Vertical line connecting events */}
+                    <div className="absolute left-0 top-6 bottom-0 w-[1px] bg-[#d4af37]/30"></div>
 
-{timeline.map((day, index) => (
+                    <div className="space-y-12">
+                        {timeline[activeTab].events.map((event, i) => (
+                            <div key={i} className="relative group">
+                                {/* Dot marker */}
+                                <div className="absolute -left-[27px] sm:-left-[43px] top-6 w-3 h-3 rounded-full bg-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.8)] z-10 transition-transform group-hover:scale-150"></div>
 
-<div key={index}>
+                                {/* Event Card */}
+                                <div className="bg-[#1a120e]/80 border border-[#d4af37]/20 rounded-xl p-6 sm:p-8 hover:border-[#d4af37]/50 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
 
-<h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center">
-{day.day} • {day.date}
-</h2>
+                                    {/* Time and Location header */}
+                                    <div className="flex flex-wrap items-center gap-6 text-[#d4af37] mb-4 text-sm sm:text-base font-cinzel">
+                                        <div className="flex items-center gap-2">
+                                            <Clock size={16} />
+                                            <span className="tracking-wide">{event.time}</span>
+                                        </div>
+                                        {event.venue && (
+                                            <div className="flex items-center gap-2">
+                                                <MapPin size={16} />
+                                                <span className="tracking-wide">{event.venue}</span>
+                                            </div>
+                                        )}
+                                    </div>
 
-<div className="space-y-6 max-w-3xl mx-auto">
+                                    {/* Title */}
+                                    <h3 className="text-2xl sm:text-3xl font-pirata text-white tracking-widest mb-3 uppercase">
+                                        {event.event}
+                                    </h3>
 
-{day.events.map((event, i) => (
+                                    {/* Optional sub-description (currently not in timelineData but styled just in case) */}
+                                    <p className="text-gray-400 font-cinzel text-sm sm:text-base hidden">
+                                        {/* Placeholder for future descriptions */}
+                                    </p>
 
-<div
-key={i}
-className="grid grid-cols-[1.3fr_1fr_1fr] items-center border border-[#d4af37]/30 bg-black/40 p-4 rounded-lg"
->
-
-<div className="font-cinzel text-[#d4af37] text-lg">
-{event.time}
-</div>
-
-<div className="font-pirata text-xl text-white text-center">
-{event.event}
-</div>
-
-<div className="font-cinzel text-gray-300 text-right">
-{event.venue}
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</div>
-
-))}
-
-</div>
-
-</PiratePageLayout>
-
-)
-
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+        </PiratePageLayout>
+    )
 }
