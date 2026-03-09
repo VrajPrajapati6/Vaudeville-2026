@@ -27,18 +27,18 @@ Plan your journey through Vaudeville. Explore events across three days of advent
 
 <div
 key={i}
-className="flex justify-between items-center border border-[#d4af37]/30 bg-black/40 p-4 rounded-lg"
+className="grid grid-cols-[1.3fr_1fr_1fr] items-center border border-[#d4af37]/30 bg-black/40 p-4 rounded-lg"
 >
 
 <div className="font-cinzel text-[#d4af37] text-lg">
 {event.time}
 </div>
 
-<div className="font-pirata text-xl text-white">
+<div className="font-pirata text-xl text-white text-center">
 {event.event}
 </div>
 
-<div className="font-cinzel text-gray-300">
+<div className="font-cinzel text-gray-300 text-right">
 {event.venue}
 </div>
 
