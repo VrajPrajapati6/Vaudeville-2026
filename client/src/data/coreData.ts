@@ -37,11 +37,15 @@ image: "/crew/Himani.JPG",
 
 {
 name: "Jatin",
-image: "/crew/Jatin.jpg",
+image: "/crew/Jatin.png",
 },
 {
 name : "Khushi Trivedi",
 image : "/crew/Khushi Trivedi.jpeg",
+},
+{
+name : "Namra Shah",
+image : "/crew/Namra Shah.jpg",
 },
 
 {
@@ -72,7 +76,7 @@ image: "/crew/Rutvij Borisagar.png",
 
 {
 name: "Samiya Ayachit",
-image: "/crew/Samiya Ayachit.jpg",
+image: "/crew/Samiya Ayachit.jpeg",
 },
 
 {
@@ -128,7 +132,10 @@ image: "/crew/TISHA SHAH.jpg",
 name: "Urjah Jain",
 image: "/crew/Urjha Jain.jpg",
 },
-
+{
+name : "Varun Bulani",
+image : "/crew/Varun.png",
+},
 {
 name: "Vidhi Bhandari",
 image: "/crew/Vidhi Bhandari.jpg",
