@@ -46,7 +46,13 @@ export default function Footer() {
           
           <div className="flex flex-col gap-4 font-cinzel text-sm text-[#e0e0e0]/80">
             <div>
-              <p className="text-[#d4af37]/90 font-bold tracking-wider">Rutvij Borisagar</p>
+              <a 
+                href="https://www.linkedin.com/in/rutvij-borisagar-154717288/" 
+                target="_blank" 
+                rel="noreferrer"
+              >
+                <p className="text-[#d4af37]/90 font-bold tracking-wider">Rutvij Borisagar</p>
+              </a>
               <a href="tel:+919408226804" className="hover:text-[#d4af37] transition-colors duration-300">
                 +91 9408226804
               </a>
