@@ -3,7 +3,7 @@ import { coreMembers } from "@/data/coreData"
 
 export default function Core() {
 
-const totalCards = 27
+const totalCards = 28
 
 const members = Array.from({ length: totalCards }, (_, index) => {
   return coreMembers[index] || {

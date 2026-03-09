@@ -43,6 +43,12 @@ image: "/crew/Jatin.jpg",
 name : "Khushi Trivedi",
 image : "/crew/Khushi Trivedi.jpeg",
 },
+
+{
+name : "Nitya Gandhi",
+image : "/crew/Nitya Gandhi.jpg",
+},
+
 {
 name: "Pratham Shah",
 image: "/crew/Pratham Shah.jpg",
