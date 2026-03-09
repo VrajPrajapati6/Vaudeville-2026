@@ -10,7 +10,6 @@ type MemberData = {
   rollNo: string;
   institute: string;
   branch: string;
-  year: string;
   ugPg: string;
   gender: string;
   studentFaculty: string;
@@ -39,15 +38,14 @@ export default function EventRegister() {
       game: "",
       ingredients: "",
       teamName: "",
-      members: [{ 
-        name: "", 
-        rollNo: "", 
-        institute: "", 
+      members: [{
+        name: "",
+        rollNo: "",
+        institute: "",
         branch: "",
-        year: "",
-        ugPg: "", 
-        gender: "", 
-        studentFaculty: "", 
+        ugPg: "",
+        gender: "",
+        studentFaculty: "",
         mobileNo: "",
         preference: "",
         habit: ""
@@ -98,19 +96,35 @@ export default function EventRegister() {
     }
   }
 
+  // Music Dynamic Logic
+  if (event?.slug === "music" && selectedGame) {
+    if (selectedGame.startsWith("Solo")) {
+      minMembers = 1;
+      maxMembers = 1;
+      isFixedSize = true;
+    } else if (selectedGame === "Duet") {
+      minMembers = 2;
+      maxMembers = 2;
+      isFixedSize = true;
+    } else if (selectedGame === "Group") {
+      minMembers = 3;
+      maxMembers = 8;
+      isFixedSize = false;
+    }
+  }
+
   // An event is strictly solo ONLY if max size is 1
   const isStrictlySolo = maxMembers === 1;
   // ----------------------------------
 
-  const emptyMember: MemberData = { 
-    name: "", 
-    rollNo: "", 
-    institute: "", 
+  const emptyMember: MemberData = {
+    name: "",
+    rollNo: "",
+    institute: "",
     branch: "",
-    year: "",
-    ugPg: "", 
-    gender: "", 
-    studentFaculty: "", 
+    ugPg: "",
+    gender: "",
+    studentFaculty: "",
     mobileNo: "",
     preference: "",
     habit: ""
@@ -122,17 +136,17 @@ export default function EventRegister() {
   });
 
   useEffect(() => {
-    if ((event?.slug === "e-sports" || event?.slug === "dance") && selectedGame) {
+    if ((event?.slug === "e-sports" || event?.slug === "dance" || event?.slug === "music") && selectedGame) {
       const currentMembers = getValues("members");
       // For fixed size or minimum initial setup
       const targetCount = isFixedSize ? maxMembers : Math.max(currentMembers.length, minMembers);
-      
+
       if (currentMembers.length !== targetCount) {
         const newMembers = Array(targetCount).fill(null).map((_, i) => currentMembers[i] || { ...emptyMember });
         setValue("members", newMembers);
       }
     } else if (isFixedSize && fields.length !== maxMembers) {
-       setValue("members", Array(maxMembers).fill(null).map(() => ({ ...emptyMember })));
+      setValue("members", Array(maxMembers).fill(null).map(() => ({ ...emptyMember })));
     }
   }, [selectedGame, maxMembers, minMembers, isFixedSize, event?.slug]);
 
@@ -267,10 +281,10 @@ export default function EventRegister() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 font-cinzel">
 
           {/* Category/Game Selection */}
-          {(event.slug === "e-sports" || event.slug === "dance") && (
+          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music") && (
             <div className="space-y-2">
               <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
-                {event.slug === "dance" ? "Select Category" : "Select Game"}
+                {event.slug === "dance" || event.slug === "music" ? "Select Category" : "Select Game"}
               </label>
               <select
                 {...register("game", { required: "Please select a category" })}
@@ -284,6 +298,13 @@ export default function EventRegister() {
                     <option value="Bgmi">Bgmi</option>
                     <option value="Valorant">Valorant</option>
                     <option value="Clash Royale">Clash Royale</option>
+                  </>
+                ) : event.slug === "music" ? (
+                  <>
+                    <option value="Solo-Indian">Solo-Indian</option>
+                    <option value="Solo-Western">Solo-Western</option>
+                    <option value="Duet">Duet</option>
+                    <option value="Group">Group</option>
                   </>
                 ) : (
                   <>
@@ -377,10 +398,10 @@ export default function EventRegister() {
                       )}
                     </div>
 
-                    {event.slug !== "literary" && (event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (
+                    {event.slug !== "literary" && (event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (event.slug !== 'music' || selectedGame !== 'Group' || index === 0) && (
                       <div className="space-y-1">
                         <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Institute</label>
-                        {(event.slug === 'cosplay' || event.slug === 'dance') ? (
+                        {(event.slug === 'cosplay' || event.slug === 'dance' || event.slug === 'music') ? (
                           <select
                             {...register(`members.${index}.institute` as const, { required: isOptional ? false : "Please select Institute" })}
                             className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.institute ? "border-red-500" : "border-gray-600"
@@ -410,7 +431,7 @@ export default function EventRegister() {
                       </div>
                     )}
 
-                    {(event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (
+                    {(event.slug !== 'dance' || selectedGame !== 'Group' || index === 0) && (event.slug !== 'music' || selectedGame !== 'Group' || index === 0) && (
                       <div className="space-y-1">
                         <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Branch</label>
                         <input
@@ -425,27 +446,6 @@ export default function EventRegister() {
                       </div>
                     )}
 
-                    <div className="space-y-1">
-                      <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Year</label>
-                      <select
-                        {...register(`members.${index}.year` as const, { required: isOptional ? false : "Please select Year" })}
-                        className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.year ? "border-red-500" : "border-gray-600"
-                          }`}
-                      >
-                        <option value="">Select Year</option>
-                        <option value="1st Year">1st Year</option>
-                        <option value="2nd Year">2nd Year</option>
-                        <option value="3rd Year">3rd Year</option>
-                        <option value="4th Year">4th Year</option>
-                        <option value="5th Year">5th Year</option>
-                        <option value="PG-1">PG Year 1</option>
-                        <option value="PG-2">PG Year 2</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      {errors.members?.[index]?.year && (
-                        <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.year?.message}</span>
-                      )}
-                    </div>
 
                     <div className="space-y-1">
                       <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">UG/PG</label>

@@ -43,7 +43,7 @@ export const events = [
     },
     {
         slug: "music",
-        title: "Harmony of the Season",
+        title: "Harmony of the Seas",
         shortTitle: "Music",
         desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
         description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
@@ -62,7 +62,7 @@ export const events = [
         rules: ["BYOD for mobile games", "Standard competitive rules apply per game", "Toxic behavior leads to disqualification"],
         teamSize: "Solo to 6",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/ES.jpg",
         category: "Gaming"
     },
     {
@@ -110,7 +110,7 @@ export const events = [
         rules: ["Time Limit: 5 minutes", "Original content strongly preferred", "Respectful content guidelines must be followed"],
         teamSize: "Solo",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1516280440502-628d052ce525?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/VV.jpg",
         category: "Entertainment"
     },
     {
@@ -151,14 +151,14 @@ export const events = [
     },
     {
         slug: "street-dance",
-        title: "Street Dance",
+        title: "Raider's Duel",
         shortTitle: "Street Dance",
         desc: "Bring the rhythm of the streets to the pirate's deck in this solo dance battle.",
         description: "An energetic solo street dance competition featuring hip-hop, breaking, popping, and locking. Show us your best freestyle moves or choreographed routine.",
         rules: ["Time limit: 2-4 minutes", "Music tracks must be submitted 24 hours prior", "Props allowed subject to safety checks"],
         teamSize: "Solo",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1547153760-18fc86324498?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/SD.jpg",
         category: "Performing Arts"
     },
     {

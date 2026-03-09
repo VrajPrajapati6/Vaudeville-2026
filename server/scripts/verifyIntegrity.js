@@ -39,7 +39,7 @@ async function testRegistrationRoute(payload) {
 
 async function verifyIntegrity() {
   console.log('🔍 Starting Deep Integrity Verification...');
-  
+
   try {
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('📡 Connected to MongoDB');
@@ -51,12 +51,11 @@ async function verifyIntegrity() {
       members: [{
         name: 'Solo Warrior',
         rollNo: 'SOLO' + Date.now(),
-        year: '3',
         branch: 'CSE',
         institute: 'Technology'
       }]
     };
-    
+
     const soloRes = await testRegistrationRoute(soloPayload);
     console.log('API Status:', soloRes.status);
     console.log('API Response:', soloRes.body.message || soloRes.body.error);
@@ -73,8 +72,8 @@ async function verifyIntegrity() {
       eventId: 'escape-rooms',
       teamName: 'The Puzzle Solvers',
       members: [
-        { name: 'Captain Hook', rollNo: 'CAP' + Date.now(), year: '2', branch: 'ECE', institute: 'Technology' },
-        { name: 'Peter Pan', rollNo: 'PET' + Date.now(), year: '2', branch: 'ECE', institute: 'Technology' }
+        { name: 'Captain Hook', rollNo: 'CAP' + Date.now(), branch: 'ECE', institute: 'Technology' },
+        { name: 'Peter Pan', rollNo: 'PET' + Date.now(), branch: 'ECE', institute: 'Technology' }
       ]
     };
 
