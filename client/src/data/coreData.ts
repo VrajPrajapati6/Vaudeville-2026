@@ -46,7 +46,7 @@ image : "/crew/Khushi Trivedi.jpeg",
 
 {
 name : "Nitya Gandhi",
-image : "/crew/Nitya Gandhi.jpg",
+image : "/crew/Nitya gandhi.jpg",
 },
 
 {

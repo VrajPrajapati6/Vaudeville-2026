@@ -170,7 +170,7 @@ export const events = [
         rules: ["Solo performance", "Time limit: 2 minutes", "Costume must follow the theme: Pirates and the Sea", "No dangerous props allowed"],
         teamSize: "Solo",
         registrationLink: "#",
-        image: "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000",
+        image: "/event/CS.jpg",
         category: "Creative"
     }
 ];
