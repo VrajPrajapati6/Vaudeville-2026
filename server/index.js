@@ -149,7 +149,7 @@ const EVENT_CATALOGUE = [
   {
     slug: 'music', title: 'Harmony of the Season',
     desc: 'Singing and Instrumental music competition.',
-    teamSize: '1-8', prize: '₹10,000',
+    teamSize: '1-10', prize: '₹10,000',
   },
   {
     slug: 'e-sports', title: 'Deadman\'s Arena',

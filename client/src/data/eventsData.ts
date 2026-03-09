@@ -48,7 +48,7 @@ export const events = [
         desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
         description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
         rules: ["Acoustic instruments preferred for instrumental", "No pre-recorded vocals allowed", "Time limit: 4-6 minutes per performance"],
-        teamSize: "1-8",
+        teamSize: "1-10",
         registrationLink: "#",
         image: "/event/Sing.jpg",
         category: "Performing Arts"

@@ -107,8 +107,8 @@ export default function EventRegister() {
       maxMembers = 2;
       isFixedSize = true;
     } else if (selectedGame === "Group") {
-      minMembers = 3;
-      maxMembers = 8;
+      minMembers = 4;
+      maxMembers = 10;
       isFixedSize = false;
     }
   }
@@ -288,10 +288,10 @@ export default function EventRegister() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 font-cinzel">
 
           {/* Category/Game Selection */}
-          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts") && (
+          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo") && (
             <div className="space-y-2">
               <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
-                {event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" ? "Select Category" : "Select Game"}
+                {event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo" ? "Select Category" : "Select Game"}
               </label>
               <select
                 {...register("game", { required: "Please select a category" })}
@@ -318,6 +318,11 @@ export default function EventRegister() {
                     <option value="Tote-bag">Tote-bag (Solo - ITNU only)</option>
                     <option value="Mehendi">Mehendi (Solo)</option>
                     <option value="Rangoli">Rangoli (Solo)</option>
+                  </>
+                ) : event.slug === "instrumental-solo" ? (
+                  <>
+                    <option value="Solo Classical">Solo Classical</option>
+                    <option value="Solo Non-Classical">Solo Non-Classical</option>
                   </>
                 ) : (
                   <>
@@ -350,7 +355,7 @@ export default function EventRegister() {
           )}
 
           {/* Team Details Block */}
-          {!isStrictlySolo && (
+          {!isStrictlySolo && (event.slug !== "music" || selectedGame === "Group") && (
             <div className="space-y-2">
               <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
                 Team Name {fields.length === 1 && minMembers === 1 ? "(Optional for Solo)" : ""}
