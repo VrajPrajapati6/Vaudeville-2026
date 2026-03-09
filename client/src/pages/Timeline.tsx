@@ -2,6 +2,7 @@ import { useState } from "react"
 import { MapPin, Clock } from "lucide-react"
 import PiratePageLayout from "@/components/layout/PiratePageLayout"
 import { timeline } from "@/data/timelineData"
+import bg10 from "@/assets/images/10.webp";
 
 export default function Timeline() {
     const [activeTab, setActiveTab] = useState(0)
@@ -13,7 +14,7 @@ export default function Timeline() {
     }))
 
     return (
-        <PiratePageLayout title="Event Itinerary">
+        <PiratePageLayout title="Event Itinerary" bgImage={bg10}>
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-20">
 
                 {/* Tabs section */}

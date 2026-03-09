@@ -386,7 +386,6 @@ export default function EventRegister() {
                 })}
                 className={`w-full bg-black/40 border text-white p-3 rounded-sm focus:outline-none focus:border-[#d4af37] transition-colors ${errors.teamName ? "border-red-500" : "border-[#d4af37]/50"
                   }`}
-                placeholder="The Black Pearl"
               />
               {errors.teamName && <span className="text-red-500 text-xs mt-1 block tracking-widest">{errors.teamName.message}</span>}
             </div>
@@ -425,7 +424,6 @@ export default function EventRegister() {
                         {...register(`members.${index}.name` as const, { required: "Name is required" })}
                         className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.name ? "border-red-500" : "border-gray-600"
                           }`}
-                        placeholder="Jack Sparrow"
                       />
                       {errors.members?.[index]?.name && (
                         <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.name?.message}</span>
@@ -542,7 +540,6 @@ export default function EventRegister() {
                         })}
                         className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.mobileNo ? "border-red-500" : "border-gray-600"
                           }`}
-                        placeholder="9876543210"
                       />
                       {errors.members?.[index]?.mobileNo && (
                         <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.mobileNo?.message}</span>
@@ -565,7 +562,6 @@ export default function EventRegister() {
                         })}
                         className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.rollNo ? "border-red-500" : "border-gray-600"
                           }`}
-                        placeholder="24BCE..."
                       />
                       {errors.members?.[index]?.rollNo && (
                         <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.rollNo?.message}</span>

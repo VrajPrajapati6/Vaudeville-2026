@@ -33,7 +33,7 @@ export default function PirateNavbar() {
       <div className="max-w-7xl mx-auto flex items-center justify-between px-6 md:px-8 py-4">
 
         {/* LOGO */}
-        <a 
+        <a
           href="/"
           onClick={(e) => {
             e.preventDefault();
@@ -56,8 +56,8 @@ export default function PirateNavbar() {
             const isActive = location === item.path;
 
             return (
-              <a 
-                key={item.name} 
+              <a
+                key={item.name}
                 href={item.path}
                 onClick={(e) => {
                   e.preventDefault();
@@ -153,8 +153,8 @@ export default function PirateNavbar() {
                 const isActive = location === item.path;
 
                 return (
-                  <a 
-                    key={item.name} 
+                  <a
+                    key={item.name}
                     href={item.path}
                     onClick={(e) => {
                       e.preventDefault();

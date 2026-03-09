@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PiratePageLayout from "@/components/layout/PiratePageLayout";
 import { events } from "@/data/eventsData";
 import EventModal from "@/components/events/EventModal";
+import bg09 from "@/assets/images/09.webp";
 
 export default function Events() {
   const [selectedEvent, setSelectedEvent] = useState<typeof events[0] | null>(null);
@@ -11,7 +12,7 @@ export default function Events() {
   }, []);
 
   return (
-    <PiratePageLayout title="Events">
+    <PiratePageLayout title="Events" bgImage={bg09}>
       {/* Events Grid */}
       <section className="w-full py-4">
 

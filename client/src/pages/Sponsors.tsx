@@ -1,5 +1,6 @@
 import PiratePageLayout from "@/components/layout/PiratePageLayout"
 import { sponsors } from "@/data/sponsorsData"
+import bg14 from "@/assets/images/14.webp"
 
 function SponsorRow({ title, items }) {
 
@@ -42,7 +43,7 @@ export default function Sponsors() {
 
 return (
 
-<PiratePageLayout title="Sponsors">
+<PiratePageLayout title="Sponsors" bgImage={bg14}>
 
 <p className="font-cinzel text-gray-300 text-center max-w-xl mx-auto mb-16">
 Vaudeville is made possible with the support of our amazing partners and sponsors.

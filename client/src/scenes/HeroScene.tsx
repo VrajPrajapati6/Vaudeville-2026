@@ -49,6 +49,8 @@ export default function HeroScene() {
           The Fog Descends
         </motion.h1>
 
+
+
         {/* Description */}
         <motion.p
           initial={{ opacity: 0 }}
@@ -59,6 +61,17 @@ export default function HeroScene() {
           A supernatural fleet rises beyond the horizon.
           <br />
           The campus will never be the same.
+        </motion.p>
+
+        {/* Event Dates */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.9 }}
+          transition={{ delay: 1.2, duration: 1 }}
+          className="mt-20 font-pirata text-xl sm:text-2xl text-[#d4af37] drop-shadow-[0_0_10px_rgba(212,175,55,0.3)] uppercase flex justify-center items-center gap-6"
+        >
+          <span className="tracking-[0.1em]">20 - 21 - 22</span>
+          <span className="text-[#d4af37] tracking-[0.4em]">March</span>
         </motion.p>
 
         {/* Scroll Indicator */}
