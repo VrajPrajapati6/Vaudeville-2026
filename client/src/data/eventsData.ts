@@ -1,29 +1,5 @@
 export const events = [
     {
-        slug: "escape-rooms",
-        title: "Escape the Black Pearl",
-        shortTitle: "Escape Room",
-        desc: "Solve puzzles and find your way out of the room before time runs out.",
-        description: "An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.",
-        rules: ["Team size: 4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
-        teamSize: "4",
-        registrationLink: "#",
-        image: "/event/ER.png",
-        category: "Mystery"
-    },
-    {
-        slug: "treasure-hunt",
-        title: "The Lost Treasure",
-        shortTitle: "Treasure Hunt",
-        desc: "Navigate campus to find hidden clues and uncover the final treasure.",
-        description: "Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.",
-        rules: ["Team size: 3-4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
-        teamSize: "3–4",
-        registrationLink: "#",
-        image: "/event/TH.png",
-        category: "Adventure"
-    },
-    {
         slug: "dance",
         title: "Kraken's da-da Dance",
         shortTitle: "Dance",
@@ -42,15 +18,39 @@ export const events = [
         category: "Performing Arts"
     },
     {
+        slug: "street-dance",
+        title: "Raider's Duel",
+        shortTitle: "Street Dance",
+        desc: "Bring the rhythm of the streets to the pirate's deck in this solo dance battle.",
+        description: "An energetic solo street dance competition featuring hip-hop, breaking, popping, and locking. Show us your best freestyle moves or choreographed routine.",
+        rules: ["Time limit: 2-4 minutes", "Music tracks must be submitted 24 hours prior", "Props allowed subject to safety checks"],
+        teamSize: "Solo",
+        registrationLink: "#",
+        image: "/event/SD.jpg",
+        category: "Performing Arts"
+    },
+    {
         slug: "music",
         title: "Harmony of the Seas",
-        shortTitle: "Music",
+        shortTitle: "Singing",
         desc: "Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).",
-        description: "Show off your vocal and instrumental talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
+        description: "Show off your vocal talents. Open to Indian/Western styles, both classical and non-classical. Let the melody take center stage.",
         rules: ["Acoustic instruments preferred for instrumental", "No pre-recorded vocals allowed", "Time limit: 4-6 minutes per performance"],
         teamSize: "1-10",
         registrationLink: "#",
         image: "/event/Sing.jpg",
+        category: "Performing Arts"
+    },
+    {
+        slug: "instrumental-solo",
+        title: "The Coral Riff",
+        shortTitle: "Instrumental",
+        desc: "Showcase your mastery over musical instruments in a solo performance.",
+        description: "A solo instrumental competition where participants can perform using acoustic or electric instruments. Let the melody of the sea speak through your fingers.",
+        rules: ["Time limit: 3-5 minutes", "No backing tracks with pre-recorded instruments", "Bring your own instruments (basic drum kit provided)"],
+        teamSize: "Solo",
+        registrationLink: "#",
+        image: "/event/Inst.png",
         category: "Performing Arts"
     },
     {
@@ -76,6 +76,30 @@ export const events = [
         registrationLink: "#",
         image: "/event/GC.png",
         category: "Sports"
+    },
+    {
+        slug: "escape-rooms",
+        title: "Escape the Black Pearl",
+        shortTitle: "Escape Room",
+        desc: "Solve puzzles and find your way out of the room before time runs out.",
+        description: "An immersive experience where teams are locked in a room and must solve a series of themed puzzles, riddles, and clues to escape within the time limit. Teamwork and quick thinking are essential.",
+        rules: ["Team size: 4 members", "Time limit: 60 minutes", "No personal electronic devices allowed inside"],
+        teamSize: "4",
+        registrationLink: "#",
+        image: "/event/ER.png",
+        category: "Mystery"
+    },
+    {
+        slug: "treasure-hunt",
+        title: "The Lost Treasure",
+        shortTitle: "Treasure Hunt",
+        desc: "Navigate campus to find hidden clues and uncover the final treasure.",
+        description: "Teams must decode clues spread across the entire campus. Each clue leads to the next location. The team to reach the final treasure point first claims the prize.",
+        rules: ["Team size: 3-4 members", "Follow clues across campus strictly", "No external help or vehicles allowed"],
+        teamSize: "3–4",
+        registrationLink: "#",
+        image: "/event/TH.png",
+        category: "Adventure"
     },
     {
         slug: "fashion-walk",
@@ -136,30 +160,6 @@ export const events = [
         registrationLink: "#",
         image: "/event/FC.png",
         category: "Culinary"
-    },
-    {
-        slug: "instrumental-solo",
-        title: "The Coral Riff",
-        shortTitle: "Instrumental",
-        desc: "Showcase your mastery over musical instruments in a solo performance.",
-        description: "A solo instrumental competition where participants can perform using acoustic or electric instruments. Let the melody of the sea speak through your fingers.",
-        rules: ["Time limit: 3-5 minutes", "No backing tracks with pre-recorded instruments", "Bring your own instruments (basic drum kit provided)"],
-        teamSize: "Solo",
-        registrationLink: "#",
-        image: "/event/Inst.png",
-        category: "Performing Arts"
-    },
-    {
-        slug: "street-dance",
-        title: "Raider's Duel",
-        shortTitle: "Street Dance",
-        desc: "Bring the rhythm of the streets to the pirate's deck in this solo dance battle.",
-        description: "An energetic solo street dance competition featuring hip-hop, breaking, popping, and locking. Show us your best freestyle moves or choreographed routine.",
-        rules: ["Time limit: 2-4 minutes", "Music tracks must be submitted 24 hours prior", "Props allowed subject to safety checks"],
-        teamSize: "Solo",
-        registrationLink: "#",
-        image: "/event/SD.jpg",
-        category: "Performing Arts"
     },
     {
         slug: "cosplay",

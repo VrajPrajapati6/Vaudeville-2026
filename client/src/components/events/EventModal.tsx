@@ -64,16 +64,6 @@ export default function EventModal({ event, onClose }: EventModalProps) {
                             {event.description}
                         </p>
 
-                        <div className="mb-8 font-sans">
-                            <h3 className="text-xl font-pirata text-[#d4af37] mb-4 text-2xl tracking-wide border-b border-[#d4af37]/30 pb-2 inline-block">
-                                Rules & Guidelines
-                            </h3>
-                            <ul className="list-disc list-inside text-gray-400 space-y-2">
-                                {event.rules?.map((rule: string, idx: number) => (
-                                    <li key={idx}>{rule}</li>
-                                ))}
-                            </ul>
-                        </div>
 
                         <div className="pt-4 pb-2">
                             <button
