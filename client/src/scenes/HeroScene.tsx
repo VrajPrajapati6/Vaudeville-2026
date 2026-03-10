@@ -29,39 +29,29 @@ export default function HeroScene() {
           style={{ background: "linear-gradient(90deg, transparent, #d4af37, transparent)" }}
         />
 
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.7 }}
+        {/* Logo Subtitle */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4, duration: 1 }}
-          className="font-cinzel text-[10px] sm:text-xs uppercase tracking-[0.4em] text-[#8ab4d4] mb-4"
+          className="mb-4"
         >
-          Vaudeville 2026
-        </motion.p>
+          <img 
+            src="/Logo.png" 
+            alt="Vaudeville Logo" 
+            className="h-32 sm:h-40 md:h-52 w-auto object-contain drop-shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+          />
+        </motion.div>
 
         {/* Main Title */}
         <motion.h1
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 1 }}
-          className="font-pirata text-5xl sm:text-7xl md:text-8xl text-[#d4af37] drop-shadow-[0_0_35px_rgba(212,175,55,0.6)] leading-tight"
+          className="font-pirata text-4xl sm:text-5xl md:text-6xl text-[#d4af37] drop-shadow-[0_0_35px_rgba(212,175,55,0.6)] leading-tight"
         >
           The Fog Descends
         </motion.h1>
-
-
-
-        {/* Description */}
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.8 }}
-          transition={{ delay: 1, duration: 1 }}
-          className="mt-6 max-w-lg text-sm sm:text-base text-white/70 font-cinzel leading-relaxed"
-        >
-          A supernatural fleet rises beyond the horizon.
-          <br />
-          The campus will never be the same.
-        </motion.p>
 
         {/* Event Dates */}
         <motion.p

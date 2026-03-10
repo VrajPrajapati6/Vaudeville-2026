@@ -129,7 +129,7 @@ export default function Home() {
 
               <img
                 src={mapImg}
-                className="absolute inset-0 w-full h-full object-cover opacity-90"
+                className="absolute inset-0 w-full h-full object-cover opacity-60"
                 alt="map"
               />
 

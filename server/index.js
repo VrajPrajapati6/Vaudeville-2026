@@ -148,7 +148,7 @@ const EVENT_CATALOGUE = [
   },
   {
     slug: 'music', title: 'Harmony of the Seas',
-    desc: 'Singing (Solo, Duet, Group) and Instrumental (Classical, Non-Classical).',
+    desc: 'Singing (Solo, Duet, Group).',
     teamSize: '1-10', prize: '₹10,000',
   },
   {
