@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRoute, useLocation } from "wouter";
+import { motion, AnimatePresence } from "framer-motion";
 import { useForm, useFieldArray } from "react-hook-form";
 import PiratePageLayout from "@/components/layout/PiratePageLayout";
 import { events } from "@/data/eventsData";
@@ -30,6 +31,7 @@ export default function EventRegister() {
   const [match, params] = useRoute("/register/:slug");
   const [, setLocation] = useLocation();
   const { toast } = useToast();
+  const [showSuccessOverlay, setShowSuccessOverlay] = useState(false);
 
   const event = events.find((e) => e.slug === params?.slug);
 
@@ -230,23 +232,20 @@ export default function EventRegister() {
 
       const eventTitle = event?.title ?? "this event";
 
-      toast({
-        title: "Registration Successful!",
-        description: `You have successfully enlisted for ${eventTitle}!`,
-        variant: "default",
-        duration: 3000,
-      });
-      reset();
-
+      // Hide form elements and show success overlay
+      setShowSuccessOverlay(true);
+      
+      reset(); // Reset the form to default values
+      
       setTimeout(() => {
         setLocation(`/events`);
-      }, 3000);
+      }, 4000);
 
     } catch (error: any) {
       toast({
-        title: "Registration Failed",
-        description: error.message || "An error occurred during registration. Please try again.",
-        variant: "destructive"
+        variant: "destructive",
+        title: "Mutiny!",
+        description: error.message || "Registration failed. Try again or check your scrolls.",
       });
     } finally {
       setIsSubmitting(false);
@@ -278,29 +277,28 @@ export default function EventRegister() {
 
         <h2 className="font-pirata text-4xl text-[#d4af37] mb-6 text-center tracking-wider">Register Now</h2>
         <div className="font-cinzel text-gray-300 mb-8 text-center text-sm md:text-base whitespace-pre-line">
-          {event.slug === 'gully-cricket' ? (
-            <div className="space-y-4">
-              <p>This event is exclusively for Nirma University students from all institutes. Team names and team members cannot be changed after registration. Any changes will lead to direct disqualification. All participants are informed to bring their id cards during registration process.</p>
-              <div className="text-[#d4af37] font-bold">
-                Contact: +91 92271 76343 - Desai Siddharth<br />
-                +91 86196 25068 - Jatin Khatri
-              </div>
+          {event.slug === 'gully-cricket' && (
+            <p className="mb-4">This event is exclusively for Nirma University students from all institutes. Team names and team members cannot be changed after registration. Any changes will lead to direct disqualification. All participants are informed to bring their id cards during registration process.</p>
+          )}
+          {event.slug === 'fashion-walk' && (
+            <p className="mb-4">Strut the runway in spectacular fashion or cosplay your favorite character.</p>
+          )}
+          {event.slug === 'dance' && (
+            <p className="mb-4">Unleash your rhythm and grace on the grand stage. Note: For group dance, all members must be from the same branch (Applicable for ITNU students only).</p>
+          )}
+
+          {event.contacts && event.contacts.length > 0 && (
+            <div className="text-[#d4af37] font-bold mt-4">
+              Contact: {event.contacts.map((c: any, i: number) => (
+                <span key={i}>
+                  {c.name}: {c.phone}
+                  {i < event.contacts.length - 1 ? <br /> : ""}
+                </span>
+              ))}
             </div>
-          ) : event.slug === 'cosplay' ? (
-            <div className="space-y-2">
-              <p>Step into the shoes of a legendary pirate or a mythical sea creature.</p>
-              <div className="text-[#d4af37] font-bold text-lg">
-                Costume Theme: Pirates and the Sea
-              </div>
-            </div>
-          ) : event.slug === 'dance' ? (
-            <div className="space-y-4">
-              <p>Unleash your rhythm and grace on the grand stage.</p>
-              <div className="text-[#d4af37] font-bold">
-                Note: For group dance, all members must be from the same branch (Applicable for ITNU students only).
-              </div>
-            </div>
-          ) : (
+          )}
+
+          {(event.slug !== 'gully-cricket' && event.slug !== 'fashion-walk' && event.slug !== 'dance' && !event.contacts) && (
             `Fill in the details below to secure your spot in ${event.title}.`
           )}
           {!isStrictlySolo && (
@@ -577,37 +575,37 @@ export default function EventRegister() {
                       )}
                     </div>
 
-                    {event.slug === 'cosplay' && (
-                      <div className="space-y-1 md:col-span-2">
-                        <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Your Preference</label>
-                        <select
-                          {...register(`members.${index}.preference` as const, { required: "Please select preference" })}
-                          className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.preference ? "border-red-500" : "border-gray-600"
-                            }`}
-                        >
-                          <option value="">Select Preference</option>
-                          <option value="traditional">Traditional</option>
-                          <option value="western">Western</option>
-                        </select>
-                        {errors.members?.[index]?.preference && (
-                          <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.preference?.message}</span>
-                        )}
-                      </div>
-                    )}
-
                     {event.slug === 'fashion-walk' && (
-                      <div className="space-y-1 md:col-span-2">
-                        <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">One habit of yours proud of :</label>
-                        <textarea
-                          {...register(`members.${index}.habit` as const, { required: "This field is required" })}
-                          className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.habit ? "border-red-500" : "border-gray-600"
-                            }`}
-                          placeholder="Tell us about a habit you are proud of..."
-                          rows={2}
-                        />
-                        {errors.members?.[index]?.habit && (
-                          <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.habit?.message}</span>
-                        )}
+                      <div className="space-y-4 md:col-span-2">
+                        <div className="space-y-1">
+                          <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Your Preference</label>
+                          <select
+                            {...register(`members.${index}.preference` as const, { required: "Please select preference" })}
+                            className={`w-full bg-[#0a0a0a] border text-[#d4af37] p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition appearance-none cursor-pointer ${errors.members?.[index]?.preference ? "border-red-500" : "border-gray-600"
+                              }`}
+                          >
+                            <option value="">Select Preference</option>
+                            <option value="traditional">Traditional</option>
+                            <option value="western">Western</option>
+                          </select>
+                          {errors.members?.[index]?.preference && (
+                            <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.preference?.message}</span>
+                          )}
+                        </div>
+
+                        <div className="space-y-1">
+                          <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">One habit of yours proud of :</label>
+                          <textarea
+                            {...register(`members.${index}.habit` as const, { required: "This field is required" })}
+                            className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.habit ? "border-red-500" : "border-gray-600"
+                              }`}
+                            placeholder="Tell us about a habit you are proud of..."
+                            rows={2}
+                          />
+                          {errors.members?.[index]?.habit && (
+                            <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.habit?.message}</span>
+                          )}
+                        </div>
                       </div>
                     )}
 
@@ -655,6 +653,52 @@ export default function EventRegister() {
 
         </form>
       </div>
+
+      <AnimatePresence>
+        {showSuccessOverlay && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/90 backdrop-blur-md p-4"
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              transition={{ 
+                type: "spring",
+                stiffness: 260,
+                damping: 20,
+                delay: 0.1 
+              }}
+              className="max-w-md w-full bg-[#0a0a0a] border-2 border-[#d4af37] p-8 rounded-lg text-center shadow-[0_0_50px_rgba(212,175,55,0.3)] relative overflow-hidden"
+            >
+              <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+              
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring", stiffness: 200 }}
+                className="w-20 h-20 bg-[#d4af37]/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-[#d4af37]/40"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-[#d4af37]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                </svg>
+              </motion.div>
+
+              <h3 className="font-pirata text-4xl text-[#d4af37] mb-4 tracking-widest whitespace-nowrap">AHoy! registered successfully!</h3>
+              <p className="font-cinzel text-gray-300 text-lg mb-8 leading-relaxed">
+                Your crew is now listed on the legendary scrolls of Vaudeville 2026.
+              </p>
+              
+              <div className="flex items-center justify-center gap-2 text-[#d4af37]/60 text-sm font-cinzel">
+                <span className="w-2 h-2 bg-[#d4af37] rounded-full animate-pulse" />
+                Redirecting to the harbor...
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </PiratePageLayout>
   );

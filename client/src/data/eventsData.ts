@@ -15,7 +15,11 @@ export const events = [
         teamSize: "1-10",
         registrationLink: "#",
         image: "/event/GD.png",
-        category: "Performing Arts"
+        category: "Performing Arts",
+        contacts: [
+            { name: "Himani Parikh", phone: "7014592097" },
+            { name: "Pranshu Bhatt", phone: "99251 54882" }
+        ]
     },
     {
         slug: "street-dance",
@@ -27,7 +31,11 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/SD.jpg",
-        category: "Performing Arts"
+        category: "Performing Arts",
+        contacts: [
+            { name: "Himani Parikh", phone: "7014592097" },
+            { name: "Purv Gohil", phone: "79900 93924" }
+        ]
     },
     {
         slug: "music",
@@ -39,7 +47,11 @@ export const events = [
         teamSize: "1-10",
         registrationLink: "#",
         image: "/event/Sing.jpg",
-        category: "Performing Arts"
+        category: "Performing Arts",
+        contacts: [
+            { name: "Kirtan Tandel", phone: "+91 97276 73789" },
+            { name: "Yashvi Bardoliya", phone: "+91 87993 51785" }
+        ]
     },
     {
         slug: "instrumental-solo",
@@ -51,7 +63,11 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/Inst.png",
-        category: "Performing Arts"
+        category: "Performing Arts",
+        contacts: [
+            { name: "Shreya Bhatia", phone: "+91 81540 19127" },
+            { name: "Rutvij Borisagar", phone: "9408226804" }
+        ]
     },
     {
         slug: "e-sports",
@@ -63,7 +79,11 @@ export const events = [
         teamSize: "Solo to 6",
         registrationLink: "#",
         image: "/event/ES.jpg",
-        category: "Gaming"
+        category: "Gaming",
+        contacts: [
+            { name: "Dev Dobariya", phone: "9106121422" },
+            { name: "Jay Panchal", phone: "94284 11275" }
+        ]
     },
     {
         slug: "gully-cricket",
@@ -75,7 +95,11 @@ export const events = [
         teamSize: "6",
         registrationLink: "#",
         image: "/event/GC.png",
-        category: "Sports"
+        category: "Sports",
+        contacts: [
+            { name: "Desai Siddharth", phone: "9824325333" },
+            { name: "Harnish", phone: "9979055525" }
+        ]
     },
     {
         slug: "escape-rooms",
@@ -87,7 +111,11 @@ export const events = [
         teamSize: "4",
         registrationLink: "#",
         image: "/event/ER.png",
-        category: "Mystery"
+        category: "Mystery",
+        contacts: [
+            { name: "Urjah Jain", phone: "8482966616" },
+            { name: "Deep Pawar", phone: "9725471171" }
+        ]
     },
     {
         slug: "treasure-hunt",
@@ -99,11 +127,15 @@ export const events = [
         teamSize: "4",
         registrationLink: "#",
         image: "/event/TH.png",
-        category: "Adventure"
+        category: "Adventure",
+        contacts: [
+            { name: "Yeshav", phone: "9099918712" },
+            { name: "Pratham Shah", phone: "94269 22347" }
+        ]
     },
     {
         slug: "fashion-walk",
-        title: "Sailor's Disguise",
+        title: "The Abyss Walker",
         shortTitle: "Fashion Walk",
         desc: "Strut the runway in spectacular fashion or cosplay your favorite character.",
         description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
@@ -111,7 +143,11 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/FW.png",
-        category: "Fashion"
+        category: "Fashion",
+        contacts: [
+            { name: "Sarabjeet Singh", phone: "9725391105" },
+            { name: "Himani Deopura", phone: "8160020568" }
+        ]
     },
     {
         slug: "literary",
@@ -123,7 +159,11 @@ export const events = [
         teamSize: "Solo / Duet",
         registrationLink: "#",
         image: "/event/Lit.png",
-        category: "Speaking"
+        category: "Speaking",
+        contacts: [
+            { name: "Khushi Trivedi", phone: "+91 6354 148 868" },
+            { name: "Vaidehi Nair", phone: "92656 38626" }
+        ]
     },
     {
         slug: "open-mic",
@@ -135,7 +175,11 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/VV.jpg",
-        category: "Entertainment"
+        category: "Entertainment",
+        contacts: [
+            { name: "Shreya Pareek", phone: "9166698646" },
+            { name: "Het Shah", phone: "8780387038" }
+        ]
     },
     {
         slug: "fine-arts",
@@ -147,7 +191,11 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/FA.png",
-        category: "Art"
+        category: "Art",
+        contacts: [
+            { name: "Namra Shah", phone: "9727729777" },
+            { name: "Kohina", phone: "6376450557" }
+        ]
     },
     {
         slug: "fireless-cooking",
@@ -159,11 +207,15 @@ export const events = [
         teamSize: "2-4",
         registrationLink: "#",
         image: "/event/FC.png",
-        category: "Culinary"
+        category: "Culinary",
+        contacts: [
+            { name: "Revaant Parikh", phone: "89800 04458" },
+            { name: "Tisha Shah", phone: "7990075387" }
+        ]
     },
     {
         slug: "cosplay",
-        title: "The Abyss Walker",
+        title: "Sailor's Disguise",
         shortTitle: "Cosplay",
         desc: "Showcase your pirate-themed costume on the grand stage.",
         description: "Step into the shoes of a legendary pirate or a mythical sea creature. Showcase your craftsmanship and character portrayal in this solo cosplay event.",
@@ -171,6 +223,10 @@ export const events = [
         teamSize: "Solo",
         registrationLink: "#",
         image: "/event/CS.jpg",
-        category: "Creative"
+        category: "Creative",
+        contacts: [
+            { name: "Abhinav Verma", phone: "8866462106" },
+            { name: "Apoorva Saklani", phone: "7435013344" }
+        ]
     }
 ];
