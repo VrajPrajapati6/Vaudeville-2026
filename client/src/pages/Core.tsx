@@ -53,6 +53,21 @@ export default function Core() {
 
       </div>
 
+      {/* CREW CAPTAIN */}
+      <div className="text-center mb-10">
+        <h2 className="font-pirata text-4xl text-[#d4af37]">
+          Crew Captain
+        </h2>
+      </div>
+
+      <div className="flex justify-center mb-16">
+        <img
+          src="/crew/PAS.jpg"
+          alt="Crew Captain"
+          className="max-w-full w-[min(600px,90%)] rounded-xl border border-[#d4af37]/40 shadow-lg"
+        />
+      </div>
+
       {/* CORE COMMITTEE */}
 
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-20">
