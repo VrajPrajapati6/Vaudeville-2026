@@ -18,12 +18,9 @@ export type Stage = "loading" | "compass" | "activating" | "revealing" | "main";
 const STOPS = [
   { title: "About Vaudeville", subtitle: "Discover the legend", link: "/about", align: "left", trigger: 0.12 },
   { title: "Events", subtitle: "Where adventure begins", link: "/events", align: "right", trigger: 0.28 },
-  { title: "Timeline", subtitle: "The chronicles unfold", link: "/timeline", align: "left", trigger: 0.45 },
-  { title: "Sponsors", subtitle: "Our allies at sea", link: "/sponsors", align: "right", trigger: 0.58 },
-
-  // adjusted slightly so they appear earlier and centered
-  { title: "Merch", subtitle: "Wear the legend", link: "/merch", align: "left", trigger: 0.68 },
-  { title: "Core Crew", subtitle: "Meet the captains", link: "/core", align: "right", trigger: 0.80 },
+  { title: "Timeline", subtitle: "The chronicles unfold", link: "/timeline", align: "left", trigger: 0.44 },
+  { title: "Merch", subtitle: "Wear the legend", link: "/merch", align: "right", trigger: 0.60 },
+  { title: "Core Crew", subtitle: "Meet the captains", link: "/core", align: "left", trigger: 0.76 },
 ];
 
 export default function Home() {

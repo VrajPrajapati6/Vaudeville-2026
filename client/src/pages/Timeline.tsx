@@ -18,14 +18,14 @@ export default function Timeline() {
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 mb-20">
 
                 {/* Tabs section */}
-                <div className="flex flex-wrap justify-center gap-4 mb-16">
+                <div className="flex flex-wrap justify-center gap-3 sm:gap-4 mb-12 sm:mb-16 px-2 sm:px-0">
                     {tabs.map((tab, idx) => {
                         const isActive = activeTab === idx
                         return (
                             <button
                                 key={idx}
                                 onClick={() => setActiveTab(idx)}
-                                className={`flex flex-col items-center justify-center px-8 py-4 rounded-xl transition-all duration-300 min-w-[160px]
+                                className={`flex flex-col items-center justify-center py-3 sm:py-4 px-2 sm:px-8 rounded-xl transition-all duration-300 w-[calc(50%-6px)] sm:w-auto sm:min-w-[160px]
                   ${isActive
                                         ? "bg-[#d4af37] text-[#2c1d11] shadow-[0_0_20px_rgba(212,175,55,0.4)]"
                                         : "bg-[#3e2723] text-[#d4af37]/80 hover:bg-[#4e342e] border border-[#d4af37]/20"
@@ -51,7 +51,7 @@ export default function Timeline() {
                         {timeline[activeTab].events.map((event, i) => (
                             <div key={i} className="relative group">
                                 {/* Dot marker */}
-                                <div className="absolute -left-[27px] sm:-left-[43px] top-6 w-3 h-3 rounded-full bg-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.8)] z-10 transition-transform group-hover:scale-150"></div>
+                                <div className="absolute -left-[30px] sm:-left-[46px] top-6 w-3 h-3 rounded-full bg-[#d4af37] shadow-[0_0_10px_rgba(212,175,55,0.8)] z-10 transition-transform group-hover:scale-150"></div>
 
                                 {/* Event Card */}
                                 <div className="bg-[#1a120e]/80 border border-[#d4af37]/20 rounded-xl p-6 sm:p-8 hover:border-[#d4af37]/50 transition-all duration-300 hover:shadow-[0_8px_30px_rgba(0,0,0,0.5)]">

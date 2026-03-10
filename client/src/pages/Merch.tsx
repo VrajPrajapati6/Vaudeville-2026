@@ -77,7 +77,7 @@ Price
 </h3>
 
 <p className="font-cinzel text-xl text-white">
-₹599
+Coming Soon
 </p>
 
 </div>
@@ -90,33 +90,11 @@ Price
 <h3 className="font-pirata text-2xl text-[#d4af37]">
 Select Size
 </h3>
-<button
-  onClick={() => setShowSizeChart(true)}
-  className="text-xs font-cinzel uppercase tracking-widest border border-[#d4af37]/60 text-[#d4af37]/80 px-3 py-1 rounded hover:border-[#d4af37] hover:text-[#d4af37] transition"
->
-  Size Chart
-</button>
 </div>
 
-<div className="flex gap-4">
-
-<button className="px-4 py-2 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">
-S
-</button>
-
-<button className="px-4 py-2 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">
-M
-</button>
-
-<button className="px-4 py-2 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">
-L
-</button>
-
-<button className="px-4 py-2 border border-[#d4af37] text-[#d4af37] hover:bg-[#d4af37] hover:text-black transition">
-XL
-</button>
-
-</div>
+<p className="font-cinzel text-xl text-white uppercase tracking-wider mb-4">
+Coming Soon
+</p>
 
 </div>
 
