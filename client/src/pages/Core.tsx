@@ -42,7 +42,7 @@ export default function Core() {
 
   return (
 
-    <PiratePageLayout title="Core Crew">
+    <PiratePageLayout title="Core">
 
       <div className="text-center mb-16">
 
@@ -66,6 +66,13 @@ export default function Core() {
           alt="Crew Captain"
           className="max-w-full w-[min(600px,90%)] rounded-xl border border-[#d4af37]/40 shadow-lg"
         />
+      </div>
+
+      {/* CORE CREW SUBHEADING */}
+      <div className="text-center mb-10">
+        <h2 className="font-pirata text-4xl text-[#d4af37]">
+          Core Crew
+        </h2>
       </div>
 
       {/* CORE COMMITTEE */}
