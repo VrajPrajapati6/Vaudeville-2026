@@ -13,11 +13,11 @@ export default function About() {
         className="font-cinzel text-base md:text-lg leading-relaxed text-gray-300 space-y-6"
       >
         <p>
-          Vaudeville is the annual cultural and technical festival of the Institute of Technology at Nirma University. It celebrates creativity, innovation, and talent through a vibrant mix of competitions, workshops, and performances.
+          Vaudeville is the annual cultural festival of the Institute of Technology at Nirma University. It celebrates creativity, innovation, and talent through a vibrant mix of competitions, workshops, and performances.
         </p>
 
         <p>
-          Inspired by the adventurous spirit of Pirates of the Caribbean, this year's Vaudeville invites participants to embark on a thrilling journey of exploration and discovery. Like a crew sailing toward hidden treasure, students come together to showcase their skills, collaborate, and create unforgettable experiences.
+          This year's Vaudeville invites participants to embark on a thrilling journey of exploration and discovery. Like a crew sailing toward hidden treasure, students come together to showcase their skills, collaborate, and create unforgettable experiences.
         </p>
 
         <p>
