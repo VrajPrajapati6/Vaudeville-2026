@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useEffect } from "react";
-import introVideo from "@/assets/intro1.mp4";
+import introVideo from "@/assets/intro2.mp4";
 import wheelImage from "@/assets/images/wheel.png";
 
 interface PreloaderProps {
