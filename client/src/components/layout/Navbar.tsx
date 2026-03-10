@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useTransition } from "@/context/TransitionContext";
 
 const navItems = [
+  { name: "Home", path: "/" },
   { name: "About", path: "/about" },
   { name: "Events", path: "/events" },
   { name: "Itinerary", path: "/timeline" },
