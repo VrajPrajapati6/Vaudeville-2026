@@ -11,6 +11,7 @@ const MemberSchema = new mongoose.Schema({
   mobileNo: { type: String, required: true },
   preference: { type: String }, // For Cosplay
   habit: { type: String }, // For Fashion Walk
+  rank: { type: String }, // For Valorant Solo
 });
 
 const RegistrationSchema = new mongoose.Schema({

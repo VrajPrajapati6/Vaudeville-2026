@@ -16,6 +16,7 @@ type MemberData = {
   mobileNo: string;
   preference?: string;
   habit?: string;
+  rank?: string;
 };
 
 type FormData = {
@@ -48,7 +49,8 @@ export default function EventRegister() {
         studentFaculty: "",
         mobileNo: "",
         preference: "",
-        habit: ""
+        habit: "",
+        rank: ""
       }],
     },
   });
@@ -75,6 +77,10 @@ export default function EventRegister() {
     } else if (selectedGame === "Valorant") {
       minMembers = 5;
       maxMembers = 6;
+      isFixedSize = true;
+    } else if (selectedGame === "Bgmi-Solo" || selectedGame === "Valorant-Solo") {
+      minMembers = 1;
+      maxMembers = 1;
       isFixedSize = true;
     }
   }
@@ -134,7 +140,8 @@ export default function EventRegister() {
     studentFaculty: "",
     mobileNo: "",
     preference: "",
-    habit: ""
+    habit: "",
+    rank: ""
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -322,8 +329,10 @@ export default function EventRegister() {
                 {event.slug === "e-sports" ? (
                   <>
                     <option value="Fifa">Fifa</option>
-                    <option value="Bgmi">Bgmi</option>
-                    <option value="Valorant">Valorant</option>
+                    <option value="Bgmi">Bgmi (Team)</option>
+                    <option value="Bgmi-Solo">Bgmi (Solo)</option>
+                    <option value="Valorant">Valorant (Team)</option>
+                    <option value="Valorant-Solo">Valorant (Solo)</option>
                     <option value="Clash Royale">Clash Royale</option>
                   </>
                 ) : event.slug === "music" ? (
@@ -598,6 +607,21 @@ export default function EventRegister() {
                         />
                         {errors.members?.[index]?.habit && (
                           <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.habit?.message}</span>
+                        )}
+                      </div>
+                    )}
+
+                    {selectedGame === 'Valorant-Solo' && (
+                      <div className="space-y-1 md:col-span-2">
+                        <label className="text-gray-300 text-xs uppercase tracking-wider font-bold">Your Rank (Valorant)</label>
+                        <input
+                          {...register(`members.${index}.rank` as const, { required: "Rank is required for Valorant Solo" })}
+                          className={`w-full bg-black/40 border text-white p-2.5 rounded-sm focus:outline-none focus:border-[#d4af37] transition ${errors.members?.[index]?.rank ? "border-red-500" : "border-gray-600"
+                            }`}
+                          placeholder="e.g. Iron, Bronze, Silver, Gold, Platinum, Diamond, Ascendant, Immortal, Radiant"
+                        />
+                        {errors.members?.[index]?.rank && (
+                          <span className="text-red-500 text-xs block mt-1">{errors.members[index]?.rank?.message}</span>
                         )}
                       </div>
                     )}

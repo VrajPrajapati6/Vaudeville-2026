@@ -271,7 +271,8 @@ app.post('/api/register', async (req, res) => {
       gender: m.gender,
       studentFaculty: m.studentFaculty,
       preference: m.preference || 'N/A',
-      habit: m.habit || 'N/A'
+      habit: m.habit || 'N/A',
+      rank: m.rank || 'N/A'
     }));
 
     await appendToGoogleSheet({
