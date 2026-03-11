@@ -1,7 +1,7 @@
 export const events = [
     {
         slug: "dance",
-        title: "Kraken's da-da Dance",
+        title: "Kraken's Da-Da-Dance",
         shortTitle: "Dance",
         desc: "Solo-Classical, Solo-Western, Duet, and Group dance styles.",
         description: "A comprehensive dance competition showcasing various styles from classical Indian to modern western dance. Categories include Solo-Classical, Solo-Western, Duet, and Group (5-10 members).",
@@ -137,7 +137,7 @@ export const events = [
         slug: "fashion-walk",
         title: "The Abyss Walker",
         shortTitle: "Fashion Walk",
-        desc: "Strut the runway in spectacular fashion or cosplay your favorite character.",
+        desc: "Strut the runway in spectacular fashion.",
         description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
         rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
         teamSize: "Solo",
@@ -177,7 +177,7 @@ export const events = [
         image: "/event/VV.jpg",
         category: "Entertainment",
         contacts: [
-            { name: "Shreya Pareek", phone: "9166698646" },
+            { name: "Utkarsh Mishra", phone: "8320557102" },
             { name: "Het Shah", phone: "8780387038" }
         ]
     },
