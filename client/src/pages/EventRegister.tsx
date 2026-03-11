@@ -128,6 +128,15 @@ export default function EventRegister() {
     isFixedSize = true;
   }
 
+  // Literary Dynamic Logic (Pirate's Parliament)
+  if (event?.slug === "literary" && selectedGame) {
+    if (selectedGame === "Elocution" || selectedGame === "Debate") {
+      minMembers = 1;
+      maxMembers = 1;
+      isFixedSize = true;
+    }
+  }
+
   // An event is strictly solo ONLY if max size is 1
   const isStrictlySolo = maxMembers === 1;
   // ----------------------------------
@@ -152,7 +161,7 @@ export default function EventRegister() {
   });
 
   useEffect(() => {
-    if ((event?.slug === "e-sports" || event?.slug === "dance" || event?.slug === "music") && selectedGame) {
+    if ((event?.slug === "e-sports" || event?.slug === "dance" || event?.slug === "music" || event?.slug === "literary") && selectedGame) {
       const currentMembers = getValues("members");
       // For fixed size or minimum initial setup
       const targetCount = isFixedSize ? maxMembers : Math.max(currentMembers.length, minMembers);
@@ -313,10 +322,10 @@ export default function EventRegister() {
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8 font-cinzel">
 
           {/* Category/Game Selection */}
-          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo") && (
+          {(event.slug === "e-sports" || event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo" || event.slug === "literary") && (
             <div className="space-y-2">
               <label className="text-[#d4af37] block font-bold tracking-wider text-sm">
-                {event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo" ? "Select Category" : "Select Game"}
+                {event.slug === "dance" || event.slug === "music" || event.slug === "fine-arts" || event.slug === "instrumental-solo" || event.slug === "literary" ? "Select Category" : "Select Game"}
               </label>
               <select
                 {...register("game", { required: "Please select a category" })}
@@ -350,6 +359,11 @@ export default function EventRegister() {
                   <>
                     <option value="Solo Classical">Solo Classical</option>
                     <option value="Solo Non-Classical">Solo Non-Classical</option>
+                  </>
+                ) : event.slug === "literary" ? (
+                  <>
+                    <option value="Debate">Debate</option>
+                    <option value="Elocution">Elocution</option>
                   </>
                 ) : (
                   <>

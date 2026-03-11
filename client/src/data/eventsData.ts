@@ -156,7 +156,7 @@ export const events = [
         desc: "Debate and Elocution competitions for the eloquent minds.",
         description: "Engage in wordplay, structured arguments, and articulate speeches. Challenge prevailing ideas in debate or enchant the crowd in elocution.",
         rules: ["Topics provided 24 hours prior", "Strict adherence to time limits", "Use of unparliamentary language leads to disqualification"],
-        teamSize: "Solo / Duet",
+        teamSize: "Solo",
         registrationLink: "#",
         image: "/event/Lit.png",
         category: "Speaking",
