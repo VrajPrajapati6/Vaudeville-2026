@@ -1,4 +1,4 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
+require('dotenv').config({ path: require('path').resolve(__dirname, './.env') });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -164,7 +164,7 @@ const EVENT_CATALOGUE = [
   {
     slug: 'literary', title: 'Pirate\'s Parliament',
     desc: 'Debate and Elocution competitions for the eloquent minds.',
-    teamSize: 'Solo / Duet', prize: '₹5,000',
+    teamSize: 'Solo', prize: '₹5,000',
   },
   {
     slug: 'open-mic', title: 'Voices of the Voyage',
