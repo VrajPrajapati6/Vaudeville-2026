@@ -245,7 +245,7 @@ export default function CompassSection({
             transition={{ delay: 0.6 }}
             className="mt-10 text-[#d4af37] font-cinzel tracking-[0.3em] text-sm sm:text-lg text-center"
           >
-            SCROLL TO STEER THE SHIP
+            SCROLL UP TO STEER THE SHIP
           </motion.p>
         )}
 

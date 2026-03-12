@@ -1,4 +1,4 @@
-require('dotenv').config({ path: require('path').resolve(__dirname, './.env') });
+require('dotenv').config({ path: require('path').resolve(__dirname, '../.env') });
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -46,9 +46,9 @@ const upload = multer({
 // ── Google Apps Script webhook helper ────────────────────────────────────────
 // Node's built-in fetch converts POST → GET on 302 redirects (Apps Script does this).
 // We manually follow the redirect with https, keeping POST method.
-function appendToGoogleSheet(data) {
+function appendToGoogleSheet(data, customUrl = null) {
   return new Promise((resolve) => {
-    const url = process.env.GOOGLE_APPS_SCRIPT_URL;
+    const url = customUrl || process.env.GOOGLE_APPS_SCRIPT_URL;
     if (!url || url === 'YOUR_APPS_SCRIPT_WEB_APP_URL') {
       console.warn('Google Apps Script URL not set — skipping sheet update.');
       return resolve();
@@ -243,6 +243,23 @@ app.post('/api/register', async (req, res) => {
     // Get the per-event registration collection  →  reg_<eventId>
     const RegModel = getRegistrationModel(eventId);
 
+    // ── Cross-submission duplicate check ─────────────────────────────────────
+    // Check if any submitted roll number is already registered for this specific sub-event (or event if no sub-event)
+    const duplicateQuery = { "members.rollNo": { $in: submittedRollNos } };
+    if (game) {
+      duplicateQuery.game = game;
+    }
+
+    const existingReg = await RegModel.findOne(duplicateQuery);
+    if (existingReg) {
+      // Pinpoint which roll number is the duplicate for a clear error message
+      const dup = existingReg.members.find(m => submittedRollNos.includes(m.rollNo.toLowerCase()));
+      const categoryMsg = game ? `the "${game}" category` : 'this event';
+      return res.status(409).json({ 
+        error: `Participant ${dup.rollNo.toUpperCase()} is already registered for ${categoryMsg}.`
+      });
+    }
+
     // Save to the event-specific collection
     const leaderInstitute = members[0].institute;
     const normalizedMembers = members.map((m, idx) => ({ 
@@ -312,10 +329,10 @@ app.get('/api/events/:slug/registrations', async (req, res) => {
 // POST /api/merch/order  →  Cloudinary upload + MongoDB + Google Sheets
 app.post('/api/merch/order', upload.single('screenshot'), async (req, res) => {
   try {
-    const { name, transactionId, mobileNumber, rollNumber, year, branch, institute, size } = req.body;
+    const { name, email, rollNumber, mobileNumber, size, transactionId, year, branch, institute } = req.body;
 
     // ── Field validation ──────────────────────────────────────────────────────
-    if (!name || !transactionId || !mobileNumber || !rollNumber || !year || !branch || !institute || !size) {
+    if (!name || !email || !rollNumber || !mobileNumber || !size || !transactionId) {
       return res.status(400).json({ error: 'All fields are required.' });
     }
     if (!/^\d{10}$/.test(mobileNumber)) {
@@ -344,29 +361,32 @@ app.post('/api/merch/order', upload.single('screenshot'), async (req, res) => {
     // ── Save to MongoDB ───────────────────────────────────────────────────────
     const order = new MerchOrder({
       name: name.trim(),
+      email: email.trim(),
       transactionId: transactionId.trim(),
       mobileNumber: mobileNumber.trim(),
-      rollNumber: rollNumber.trim(),
-      year,
-      branch,
-      institute: institute.trim(),
+      rollNumber: rollNumber.trim().toUpperCase(),
+      year: year || 'N/A',
+      branch: branch || 'N/A',
+      institute: institute || 'N/A',
       size,
       screenshotUrl,
     });
     await order.save();
 
-    // ── Append to Google Sheet via Apps Script webhook ──────────────────
-    await appendToGoogleSheet({
+    // ── Append to Google Sheet ──
+    const merchUrl = process.env.MERCH_APPS_SCRIPT_URL;
+    if (merchUrl) {
+      await appendToGoogleSheet({
+      type: 'merch_order',
       name: name.trim(),
+      email: email.trim(),
       transactionId: transactionId.trim(),
       mobileNumber: mobileNumber.trim(),
-      rollNumber: rollNumber.trim(),
-      year,
-      branch,
-      institute: institute.trim(),
+      rollNumber: rollNumber.trim().toUpperCase(),
       size,
       screenshotUrl,
-    });
+      }, merchUrl);
+    }
 
     res.status(201).json({ message: 'Order submitted successfully! We will verify your payment shortly.' });
   } catch (error) {
