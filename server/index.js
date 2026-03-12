@@ -243,19 +243,6 @@ app.post('/api/register', async (req, res) => {
     // Get the per-event registration collection  →  reg_<eventId>
     const RegModel = getRegistrationModel(eventId);
 
-    // Check roll numbers against existing registrations in this event's collection
-    // We only block if the roll number is already in the SAME category (game)
-    const duplicateQuery = { 'members.rollNo': { $in: submittedRollNos } };
-    if (game) {
-      duplicateQuery.game = game;
-    }
-    
-    const existing = await RegModel.findOne(duplicateQuery);
-    if (existing) {
-      const dup = existing.members.find(m => submittedRollNos.includes(m.rollNo.toLowerCase()));
-      return res.status(409).json({ error: `Roll number "${dup?.rollNo}" is already registered for this ${game ? `category: ${game}` : 'event'}.` });
-    }
-
     // Save to the event-specific collection
     const leaderInstitute = members[0].institute;
     const normalizedMembers = members.map((m, idx) => ({ 
