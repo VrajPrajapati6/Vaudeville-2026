@@ -290,7 +290,7 @@ export default function EventRegister() {
             <p className="mb-4">This event is exclusively for Nirma University students from all institutes. Team names and team members cannot be changed after registration. Any changes will lead to direct disqualification. All participants are informed to bring their id cards during registration process.</p>
           )}
           {event.slug === 'fashion-walk' && (
-            <p className="mb-4">Strut the runway in spectacular fashion or cosplay your favorite character.</p>
+            <p className="mb-4">Strut the runway in spectacular fashion.</p>
           )}
           {event.slug === 'dance' && (
             <p className="mb-4">Unleash your rhythm and grace on the grand stage. Note: For group dance, all members must be from the same branch (Applicable for ITNU students only).</p>

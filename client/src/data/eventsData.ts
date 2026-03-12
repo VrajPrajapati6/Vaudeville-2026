@@ -138,7 +138,7 @@ export const events = [
         title: "The Abyss Walker",
         shortTitle: "Fashion Walk",
         desc: "Strut the runway in spectacular fashion.",
-        description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines or embody fictional characters through cosplay.",
+        description: "A glamorous event combining haute couture with geek culture. Participants can walk the ramp in creative fashion lines.",
         rules: ["Time limit: 2 mins on stage", "No hazardous materials/weapons in cosplay", "Judging based on costume accuracy, confidence, and theme"],
         teamSize: "Solo",
         registrationLink: "#",
